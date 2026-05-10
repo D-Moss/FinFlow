@@ -104,6 +104,9 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                 const tableBody = document.getElementById("transactionsBody");
                 tableBody.innerHTML = "";
 
+                let totalIncome = 0;
+                let totalExpenses = 0;
+
                 results.data.forEach((transaction) => {
 
                     const row = document.createElement("tr");
@@ -112,6 +115,12 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
                     const description = (transaction.Description || "").toLowerCase();
                     const amount = parseFloat(transaction.Amount);
+
+                    if (amount > 0) {
+                        totalIncome += amount;
+                    } else if (amount < 0) {
+                        totalExpenses += Math.abs(amount);
+                    }
 
                     if (amount > 0) {
                         category = "Income";
@@ -148,6 +157,13 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                     tableBody.appendChild(row);
 
                 });
+
+                const profit = totalIncome - totalExpenses;
+                const estimatedTax = profit > 0 ? profit * 0.15 : 0;
+
+                document.getElementById("total-income").innerText = `$${totalIncome.toFixed(2)}`;
+                document.getElementById("total-expenses").innerText = `$${totalExpenses.toFixed(2)}`;
+                document.getElementById("est-tax").innerText = `$${estimatedTax.toFixed(2)}`;
 
             }
 
