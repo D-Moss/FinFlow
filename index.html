@@ -26,6 +26,25 @@
         <button id="uploadBtn" class="btn-primary">Upload File</button>
     </div>
 
+    <section class="transactions-section">
+        <h2>Transactions</h2>
+
+        <table id="transactionsTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Vendor</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+
+            <tbody id="transactionsBody"></tbody>
+        </table>
+    </section>
+
     <section class="summary-preview">
         <div class="card">
             <h3>Total Income</h3>
@@ -41,6 +60,7 @@
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <script type="module" src="index.js"></script>
 </body>
 </html>

@@ -94,6 +94,65 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
         alert("File uploaded successfully!");
 
+        // Parse CSV and display transactions
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+
+            complete: function(results) {
+
+                const tableBody = document.getElementById("transactionsBody");
+                tableBody.innerHTML = "";
+
+                results.data.forEach((transaction) => {
+
+                    const row = document.createElement("tr");
+
+                    let category = "Other";
+
+                    const description = transaction.Description.toLowerCase();
+                    const amount = parseFloat(transaction.Amount);
+
+                    if (amount > 0) {
+                        category = "Income";
+                    } 
+                    else if (
+                        description.includes("mcdonalds") ||
+                        description.includes("popeyes") ||
+                        description.includes("7-eleven")
+                    ) {
+                        category = "Meals/Food";
+                    } 
+                    else if (
+                        description.includes("shell") && Math.abs(amount) >= 25
+                    ) {
+                        category = "Gas";
+                    }
+                    else if (
+                        description.includes("disney") ||
+                        description.includes("netflix") ||
+                        description.includes("hulu")
+                    ) {
+                        category = "Entertainment";
+                    }
+
+                    row.innerHTML = `
+                        <td>${transaction.Date}</td>
+                        <td>${category}</td>
+                        <td>${transaction.Vendor}</td>
+                        <td>${transaction.Description}</td>
+                        <td>${transaction.Amount}</td>
+                        <td>${transaction["Payment Method"]}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+
+                });
+
+            }
+
+        });
+
     } catch (error) {
 
         console.error(error);
