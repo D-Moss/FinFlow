@@ -110,7 +110,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
                     let category = "Other";
 
-                    const description = transaction.Description.toLowerCase();
+                    const description = (transaction.Description || "").toLowerCase();
                     const amount = parseFloat(transaction.Amount);
 
                     if (amount > 0) {
@@ -137,12 +137,12 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                     }
 
                     row.innerHTML = `
-                        <td>${transaction.Date}</td>
+                        <td>${transaction.Date || ""}</td>
                         <td>${category}</td>
-                        <td>${transaction.Vendor}</td>
-                        <td>${transaction.Description}</td>
-                        <td>${transaction.Amount}</td>
-                        <td>${transaction["Payment Method"]}</td>
+                        <td>${transaction.Vendor || ""}</td>
+                        <td>${transaction.Description || ""}</td>
+                        <td>${transaction.Amount || ""}</td>
+                        <td>${transaction["Payment Method"] || ""}</td>
                     `;
 
                     tableBody.appendChild(row);
