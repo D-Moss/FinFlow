@@ -136,14 +136,14 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                         category = "Entertainment";
                     }
 
-                    //row.innerHTML = `
-                    //    <td>${transaction.Date || ""}</td>
-                    //    <td>${category}</td>
-                    //    <td>${transaction.Vendor || ""}</td>
-                    //    <td>${transaction.Description || ""}</td>
-                    //    <td>${transaction.Amount || ""}</td>
-                    //    <td>${transaction["Payment Method"] || ""}</td>
-                    //`;
+                    row.innerHTML = `
+                        <td>${transaction.Date || ""}</td>
+                        <td>${category}</td>
+                        <td>${transaction.Vendor || ""}</td>
+                        <td>${transaction.Description || ""}</td>
+                        <td>${transaction.Amount || ""}</td>
+                        <td>${transaction["Payment Method"] || ""}</td>
+                    `;
 
                     tableBody.appendChild(row);
 
