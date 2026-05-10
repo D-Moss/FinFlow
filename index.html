@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinFlow | Automated Accounting</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">FinFlow</div>
+        <div class="nav-links">
+            <button id="loginBtn" class="btn-secondary">Login</button>
+            <button id="signupBtn" class="btn-primary">Sign Up</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Accounting that <span>updates itself.</span></h1>
+        <p>Upload documents, track expenses, and see your estimated tax instantly.</p>
+        <button class="cta-button">Upload Your First Receipt</button>
+    </header>
+
+    <section class="summary-preview">
+        <div class="card">
+            <h3>Total Income</h3>
+            <p id="total-income">$0.00</p>
+        </div>
+        <div class="card">
+            <h3>Total Expenses</h3>
+            <p id="total-expenses">$0.00</p>
+        </div>
+        <div class="card highlight">
+            <h3>Estimated Tax</h3>
+            <p id="est-tax">$0.00</p>
+        </div>
+    </section>
+
+    <script type="module" src="index.js"></script>
+</body>
+</html>
