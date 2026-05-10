@@ -7,6 +7,12 @@ import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
+import {
+    getStorage,
+    ref,
+    uploadBytes
+} from "https://www.gstatic.com/firebasejs/11.7.3/firebase-storage.js";
+
 
 // Firebase Config
 const firebaseConfig = {
@@ -23,6 +29,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 
 // Sign Up
@@ -57,5 +64,41 @@ document.getElementById("loginBtn").addEventListener("click", () => {
         .catch((error) => {
             alert(error.message);
         });
+
+});
+
+
+// File Upload
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("Please log in before uploading a file.");
+        return;
+    }
+
+    const fileInput = document.getElementById("fileUpload");
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Please select a file.");
+        return;
+    }
+
+    try {
+
+        const storageRef = ref(storage, `users/${user.uid}/uploads/${file.name}`);
+
+        await uploadBytes(storageRef, file);
+
+        alert("File uploaded successfully!");
+
+    } catch (error) {
+
+        console.error(error);
+        alert(error.message);
+
+    }
 
 });
