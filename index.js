@@ -13,6 +13,12 @@ import {
     uploadBytes
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-storage.js";
 
+import {
+    getFirestore,
+    collection,
+    addDoc
+} from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+
 
 // Firebase Config
 const firebaseConfig = {
@@ -30,6 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const storage = getStorage(app);
+const db = getFirestore(app);
 
 
 // Sign Up
@@ -99,7 +106,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
             header: true,
             skipEmptyLines: true,
 
-            complete: function(results) {
+            complete: async function(results) {
 
                 const tableBody = document.getElementById("transactionsBody");
                 tableBody.innerHTML = "";
@@ -107,14 +114,14 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                 let totalIncome = 0;
                 let totalExpenses = 0;
 
-                results.data.forEach((transaction) => {
+                for (const transaction of results.data) {
 
                     const row = document.createElement("tr");
 
                     let category = "Other";
 
                     const description = (transaction.Description || "").toLowerCase();
-                    const amount = parseFloat(transaction.Amount);
+                    const amount = parseFloat(transaction.Amount) || 0;
 
                     if (amount > 0) {
                         totalIncome += amount;
@@ -156,7 +163,22 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
                     tableBody.appendChild(row);
 
-                });
+                    // Save transaction to Firestore
+                    await addDoc(
+                        collection(db, "users", user.uid, "transactions"),
+                        {
+                            date: transaction.Date || "",
+                            category: category,
+                            vendor: transaction.Vendor || "",
+                            description: transaction.Description || "",
+                            amount: amount,
+                            paymentMethod: transaction["Payment Method"] || "",
+                            sourceFile: file.name,
+                            createdAt: new Date()
+                        }
+                    );
+
+                }
 
                 const profit = totalIncome - totalExpenses;
                 const estimatedTax = profit > 0 ? profit * 0.15 : 0;
@@ -164,6 +186,8 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                 document.getElementById("total-income").innerText = `$${totalIncome.toFixed(2)}`;
                 document.getElementById("total-expenses").innerText = `$${totalExpenses.toFixed(2)}`;
                 document.getElementById("est-tax").innerText = `$${estimatedTax.toFixed(2)}`;
+
+                alert("Transactions saved to database!");
 
             }
 
