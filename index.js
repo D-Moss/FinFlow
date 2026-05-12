@@ -164,7 +164,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                     tableBody.appendChild(row);
 
                     // Save transaction to Firestore
-                    await addDoc(
+                    /*await addDoc(
                         collection(db, "users", user.uid, "transactions"),
                         {
                             date: transaction.Date || "",
@@ -176,7 +176,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
                             sourceFile: file.name,
                             createdAt: new Date()
                         }
-                    );
+                    );*/
 
                 }
 
