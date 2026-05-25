@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+    <title>FinFlow Dashboard</title>
+</head>
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <h2>FinFlow</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="active-link">
+                    Dashboard
+                </a>
+                <a href="#expense-summary">
+                    Expense Summary
+                </a>
+                <a href="#transactions">
+                    Transactions
+                </a>
+                <a href="#upload-files">
+                    Upload Files
+                </a>
+                <a href="#reports">
+                    Reports
+                </a>
+                <a href="#settings">
+                    Settings
+                </a>
+            </nav>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="dashboard">
+
+            <!-- HEADER -->
+            <header class="dashboard-header">
+
+                <div>
+                    <h1>Good Evening, Love 👋</h1>
+                    <p>
+                        Here’s a quick overview of your business finances.
+                    </p>
+                </div>
+
+            </header>
+
+            <!-- TOP CARDS -->
+            <section class="overview-cards">
+
+                <div class="card">
+                    <span class="card-label">
+                        Total Income
+                    </span>
+
+                    <h3>
+                        $5,180.85
+                    </h3>
+                </div>
+
+                <div class="card">
+                    <span class="card-label">
+                        Total Expenses
+                    </span>
+
+                    <h3>
+                        $432.09
+                    </h3>
+                </div>
+
+                <div class="card">
+                    <span class="card-label">
+                        Profit / Loss
+                    </span>
+
+                    <h3 class="profit">
+                        $4,748.76
+                    </h3>
+                </div>
+
+                <div class="card">
+                    <span class="card-label">
+                        Transactions
+                    </span>
+
+                    <h3>
+                        27
+                    </h3>
+                </div>
+
+            </section>
+
+            <!-- EXPENSE SUMMARY -->
+            <section class="expense-summary" id="expense-summary">
+
+                <div class="section-header">
+                    <h2>Expense Summary</h2>
+                    <span>Year to Date</span>
+                </div>
+
+                <div class="expense-list">
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <span>Advertising</span>
+                            <strong>$164.00</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill advertising"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <span>Office Supplies</span>
+                            <strong>$382.00</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill supplies"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <span>Website</span>
+                            <strong>$109.89</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill website"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <span>Software & Tools</span>
+                            <strong>$293.85</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill software"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="expense-item">
+                        <div class="expense-info">
+                            <span>Utilities</span>
+                            <strong>$1,734.62</strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill utilities"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOWER GRID -->
+            <section class="bottom-grid">
+
+                <!-- RECENT TRANSACTIONS -->
+                <div class="transactions-section" id="transactions">
+
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>May 15</td>
+                                <td>Adobe</td>
+                                <td>Software</td>
+                                <td>-$29.99</td>
+                            </tr>
+
+                            <tr>
+                                <td>May 14</td>
+                                <td>PECO</td>
+                                <td>Utilities</td>
+                                <td>-$143.62</td>
+                            </tr>
+
+                            <tr>
+                                <td>May 12</td>
+                                <td>Staples</td>
+                                <td>Office Supplies</td>
+                                <td>-$32.47</td>
+                            </tr>
+
+                            <tr>
+                                <td>May 10</td>
+                                <td>Namecheap</td>
+                                <td>Website</td>
+                                <td>-$17.18</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="right-column">
+
+                    <!-- TAX REMINDER -->
+                    <div class="tax-reminder">
+                        <h2>Tax Reminder</h2>
+                        <p>
+                            Quarterly estimated taxes may apply.
+                            Contact your tax professional for filing guidance.
+                        </p>
+                    </div>
+
+                    <!-- UPLOAD FILES -->
+                    <div class="upload-section" id="upload-files">
+                        <h2>Upload Statements</h2>
+
+                        <div class="upload-box">
+                            <p>
+                                Drag and drop files here
+                            </p>
+
+                            <button>
+                                Upload Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="dashboard-footer">
+                <h3>FinFlow</h3>
+
+                <div class="footer-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Support</a>
+                </div>
+
+                <p class="footer-copy">
+                    © <span id="currentYear"></span>FinFlow. All rights reserved.
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script type="module" src="index.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

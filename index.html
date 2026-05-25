@@ -1,66 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="index.css">
     <title>FinFlow | Automated Accounting</title>
-    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">FinFlow</div>
+
         <div class="nav-links">
-            <button id="loginBtn" class="btn-secondary">Login</button>
-            <button id="signupBtn" class="btn-primary">Sign Up</button>
+            <button class="btn-secondary" id="loginBtn">
+                Login
+            </button>
+            <button class="btn-primary" id="signupBtn">
+                Sign Up
+            </button>
         </div>
     </nav>
 
     <header class="hero">
-        <h1>Accounting that <span>updates itself.</span></h1>
-        <p>Upload documents, track expenses, and see your estimated tax instantly.</p>
-        <button class="cta-button">Upload Your First Receipt</button>
+        <div class="hero-content">
+            <p class="eyebrow">Automated bookkeeping for small businesses</p>
+
+            <h1>
+                Accounting that <span>updates itself.</span>
+            </h1>
+
+            <p class="hero-text">
+                Upload your business transactions, organize income and expenses, and keep your books cleaner throughout the year.
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn-secondary" id="demoBtn">
+                    View Sample Dashboard
+                </button>
+                <button class="cta-button" id="start-Btn">
+                    Login to Upload Documents
+                </button>
+            </div>
+        </div>
     </header>
 
-    <div class="upload-section">
-        <input type="file" id="fileUpload">
-        <button id="uploadBtn" class="btn-primary">Upload File</button>
-    </div>
-
-    <section class="transactions-section">
-        <h2>Transactions</h2>
-
-        <table id="transactionsTable">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Vendor</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Payment Method</th>
-                </tr>
-            </thead>
-
-            <tbody id="transactionsBody"></tbody>
-        </table>
-    </section>
-
-    <section class="summary-preview">
-        <div class="card">
-            <h3>Total Income</h3>
-            <p id="total-income">$0.00</p>
+    <section class="home-preview">
+        <div class="preview-card">
+            <h3>Track income</h3>
+            <p>See business income totals based on uploaded transactions.</p>
         </div>
-        <div class="card">
-            <h3>Total Expenses</h3>
-            <p id="total-expenses">$0.00</p>
+
+        <div class="preview-card">
+            <h3>Organize expenses</h3>
+            <p>Categorize expenses so your records are easier to review.</p>
         </div>
-        <div class="card highlight">
-            <h3>Estimated Tax</h3>
-            <p id="est-tax">$0.00</p>
+
+        <div class="preview-card">
+            <h3>Estimated profit/loss</h3>
+            <p>Get a cleaner snapshot of how the business is performing.</p>
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <section class="tax-note">
+        <h2>Need tax planning?</h2>
+        <p>
+            FinFlow helps organize your bookkeeping records. For tax estimates, filing questions,
+            or deduction guidance, we recommend speaking with a qualified tax professional.
+        </p>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+
+            <div class="footer-logo">
+                FinFlow
+            </div>
+
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+
+            <p class="footer-copy">
+                © <span id="currentYear"></span>FinFlow. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
     <script type="module" src="index.js"></script>
+
 </body>
 </html>
