@@ -32,12 +32,6 @@
                 <a href="#upload-files">
                     Upload Files
                 </a>
-                <a href="#reports">
-                    Reports
-                </a>
-                <a href="#settings">
-                    Settings
-                </a>
             </nav>
 
         </aside>
@@ -49,7 +43,7 @@
             <header class="dashboard-header">
 
                 <div>
-                    <h1>Good Evening, Love 👋</h1>
+                    <h1 id="greetingText">Good Evening 👋</h1>
                     <p>
                         Here’s a quick overview of your business finances.
                     </p>
@@ -66,7 +60,7 @@
                     </span>
 
                     <h3>
-                        $5,180.85
+                        $0.00
                     </h3>
                 </div>
 
@@ -76,7 +70,7 @@
                     </span>
 
                     <h3>
-                        $432.09
+                        $0.00
                     </h3>
                 </div>
 
@@ -85,8 +79,8 @@
                         Profit / Loss
                     </span>
 
-                    <h3 class="profit">
-                        $4,748.76
+                    <h3 id="profitLossAmount" class="neutral">
+                        $0.00
                     </h3>
                 </div>
 
@@ -96,7 +90,7 @@
                     </span>
 
                     <h3>
-                        27
+                        0
                     </h3>
                 </div>
 
@@ -194,31 +188,9 @@
 
                         <tbody>
                             <tr>
-                                <td>May 15</td>
-                                <td>Adobe</td>
-                                <td>Software</td>
-                                <td>-$29.99</td>
-                            </tr>
-
-                            <tr>
-                                <td>May 14</td>
-                                <td>PECO</td>
-                                <td>Utilities</td>
-                                <td>-$143.62</td>
-                            </tr>
-
-                            <tr>
-                                <td>May 12</td>
-                                <td>Staples</td>
-                                <td>Office Supplies</td>
-                                <td>-$32.47</td>
-                            </tr>
-
-                            <tr>
-                                <td>May 10</td>
-                                <td>Namecheap</td>
-                                <td>Website</td>
-                                <td>-$17.18</td>
+                                <td colspan="4" class="empty-state">
+                                    No transactions uploaded yet.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -264,7 +236,7 @@
                 </div>
 
                 <p class="footer-copy">
-                    © <span id="currentYear"></span>FinFlow. All rights reserved.
+                    © <span id="currentYear"></span> FinFlow. All rights reserved.
                 </p>
             </footer>
         </main>
