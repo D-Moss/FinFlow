@@ -269,7 +269,6 @@ body {
 }
 
 /* TAX REMINDER */
-
 .tax-reminder h2,
 .upload-section h2 {
     margin-bottom: 18px;
@@ -282,7 +281,6 @@ body {
 }
 
 /* UPLOAD SECTION */
-
 .upload-box {
     border: 2px dashed #cbd5e1;
     border-radius: 16px;
@@ -310,8 +308,11 @@ body {
     background-color: #1d4ed8;
 }
 
-/* FOOTER */
+.hidden-expense {
+    display: none;
+}
 
+/* FOOTER */
 .dashboard-footer {
     border-top: 1px solid #e5e7eb;
     padding-top: 32px;

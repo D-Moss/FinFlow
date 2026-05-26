@@ -44,16 +44,6 @@ if (profitLossAmount) {
 
 
 // Upload button placeholder
-/*
-const uploadButton = document.querySelector(".upload-box button");
-
-if (uploadButton) {
-    uploadButton.addEventListener("click", () => {
-        alert("Upload feature coming soon.");
-    });
-}
-*/
-
 const uploadStatementBtn = document.getElementById("uploadStatementBtn");
 const statementUpload = document.getElementById("statementUpload");
 
@@ -100,21 +90,9 @@ const expenseCategories = [
     "Telephone & Internet"
 ];
 
-const expenseTotals = {
-    "Advertising & Marketing": 164,
-    "Office Expenses": 382,
-    "Equipment & Software": 293.85,
-    "Utilities": 1734.62
-};
-
 // TEMPORARY SAMPLE TOTALS
 // Later these will come from uploaded transactions
-const expenseTotals = {
-    "Advertising & Marketing": 164,
-    "Office Expenses": 382,
-    "Equipment & Software": 293.85,
-    "Utilities": 1734.62
-};
+const expenseTotals = {};
 
 
 const expenseList = document.getElementById("expenseList");
