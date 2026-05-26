@@ -199,12 +199,12 @@ body {
 }
 
 .progress-fill {
+    background-color: #2563eb;
     height: 100%;
     border-radius: 999px;
 }
 
 /* PROGRESS COLORS */
-
 .advertising {
     width: 25%;
     background-color: #2563eb;
@@ -231,7 +231,6 @@ body {
 }
 
 /* LOWER GRID */
-
 .bottom-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -240,7 +239,6 @@ body {
 }
 
 /* TRANSACTIONS */
-
 .transactions-section table {
     width: 100%;
     border-collapse: collapse;
@@ -310,6 +308,28 @@ body {
 
 .hidden-expense {
     display: none;
+}
+
+.hidden-expense.show-expense {
+    display: flex;
+}
+
+.view-all-btn {
+    margin-top: 24px;
+    width: 100%;
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
 /* FOOTER */
