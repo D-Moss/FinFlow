@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="dashboard.css">
     <title>FinFlow Dashboard</title>
 </head>
@@ -98,72 +99,16 @@
 
             <!-- EXPENSE SUMMARY -->
             <section class="expense-summary" id="expense-summary">
-
                 <div class="section-header">
                     <h2>Expense Summary</h2>
                     <span>Year to Date</span>
                 </div>
 
-                <div class="expense-list">
-                    <div class="expense-item">
-                        <div class="expense-info">
-                            <span>Advertising</span>
-                            <strong>$164.00</strong>
-                        </div>
+                <div class="expense-list" id="expenseList"></div>
 
-                        <div class="progress-bar">
-                            <div class="progress-fill advertising"></div>
-                        </div>
-
-                    </div>
-
-                    <div class="expense-item">
-                        <div class="expense-info">
-                            <span>Office Supplies</span>
-                            <strong>$382.00</strong>
-                        </div>
-
-                        <div class="progress-bar">
-                            <div class="progress-fill supplies"></div>
-                        </div>
-
-                    </div>
-
-                    <div class="expense-item">
-                        <div class="expense-info">
-                            <span>Website</span>
-                            <strong>$109.89</strong>
-                        </div>
-
-                        <div class="progress-bar">
-                            <div class="progress-fill website"></div>
-                        </div>
-
-                    </div>
-
-                    <div class="expense-item">
-                        <div class="expense-info">
-                            <span>Software & Tools</span>
-                            <strong>$293.85</strong>
-                        </div>
-
-                        <div class="progress-bar">
-                            <div class="progress-fill software"></div>
-                        </div>
-
-                    </div>
-
-                    <div class="expense-item">
-                        <div class="expense-info">
-                            <span>Utilities</span>
-                            <strong>$1,734.62</strong>
-                        </div>
-
-                        <div class="progress-bar">
-                            <div class="progress-fill utilities"></div>
-                        </div>
-                    </div>
-                </div>
+                <button id="toggleExpensesBtn" class="view-all-btn">
+                    View all categories
+                </button>
             </section>
 
             <!-- LOWER GRID -->

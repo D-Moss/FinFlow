@@ -51,3 +51,68 @@ if (uploadButton) {
         alert("Upload feature coming soon.");
     });
 }
+
+const expenseCategories = [
+    "Advertising & Marketing",
+    "Car & Truck Expenses",
+    "Commissions & Fees",
+    "Contract Labor",
+    "Dues & Subscriptions",
+    "Insurance (Non-Health)",
+    "Interest",
+    "Legal & Professional Services",
+    "Meals",
+    "Office Expenses",
+    "Other Expenses",
+    "Property Rent / Lease",
+    "Vehicle Rent / Lease",
+    "Repairs & Maintenance",
+    "Supplies",
+    "Taxes & Licenses",
+    "Travel",
+    "Utilities",
+    "Wages",
+    "Home Office",
+    "Equipment & Software",
+    "Bank Fees",
+    "Education & Training",
+    "Shipping & Postage",
+    "Telephone & Internet"
+];
+
+const expenseTotals = {
+    "Advertising & Marketing": 164,
+    "Office Expenses": 382,
+    "Equipment & Software": 293.85,
+    "Utilities": 1734.62
+};
+
+// TEMPORARY SAMPLE TOTALS
+// Later these will come from uploaded transactions
+const expenseTotals = {
+    "Advertising & Marketing": 164,
+    "Office Expenses": 382,
+    "Equipment & Software": 293.85,
+    "Utilities": 1734.62
+};
+
+
+const expenseList = document.getElementById("expenseList");
+if (expenseList) {
+    expenseCategories.forEach(category => {
+        const amount = expenseTotals[category] || 0;
+        const item = document.createElement("div");
+        item.classList.add("expense-item");
+        item.innerHTML = `
+            <div class="expense-info">
+                <span>${category}</span>
+                <strong>$${amount.toFixed(2)}</strong>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        `;
+        expenseList.appendChild(item);
+    });
+}
