@@ -44,11 +44,31 @@ if (profitLossAmount) {
 
 
 // Upload button placeholder
+/*
 const uploadButton = document.querySelector(".upload-box button");
 
 if (uploadButton) {
     uploadButton.addEventListener("click", () => {
         alert("Upload feature coming soon.");
+    });
+}
+*/
+
+const uploadStatementBtn = document.getElementById("uploadStatementBtn");
+const statementUpload = document.getElementById("statementUpload");
+
+if (uploadStatementBtn && statementUpload) {
+    uploadStatementBtn.addEventListener("click", () => {
+        statementUpload.click();
+    });
+
+    statementUpload.addEventListener("change", () => {
+        const file = statementUpload.files[0];
+
+        if (!file) return;
+
+        console.log("Selected file:", file.name);
+        alert(`Selected file: ${file.name}`);
     });
 }
 
