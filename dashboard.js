@@ -53,13 +53,22 @@ if (uploadStatementBtn && statementUpload) {
     });
 
     statementUpload.addEventListener("change", () => {
-        const file = statementUpload.files[0];
+    const file = statementUpload.files[0];
 
-        if (!file) return;
+    if (!file) return;
 
-        console.log("Selected file:", file.name);
-        alert(`Selected file: ${file.name}`);
+    console.log("Selected file:", file.name);
+    Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            console.log("Parsed CSV Data:", results.data);
+        },
+        error: function(error) {
+            console.error("CSV Parse Error:", error);
+        }
     });
+});
 }
 
 const expenseCategories = [
@@ -97,20 +106,34 @@ const expenseTotals = {};
 
 const expenseList = document.getElementById("expenseList");
 if (expenseList) {
-    expenseCategories.forEach(category => {
-        const amount = expenseTotals[category] || 0;
+    expenseList.innerHTML = "";
+    const sortedCategories = expenseCategories
+        .map(category => ({
+            name: category,
+            amount: expenseTotals[category] || 0
+        }))
+        .sort((a, b) => b.amount - a.amount);
+
+    sortedCategories.forEach((category, index) => {
         const item = document.createElement("div");
+
         item.classList.add("expense-item");
+
+        if (index >= 5) {
+            item.classList.add("hidden-expense");
+        }
+
         item.innerHTML = `
             <div class="expense-info">
-                <span>${category}</span>
-                <strong>$${amount.toFixed(2)}</strong>
+                <span>${category.name}</span>
+                <strong>$${category.amount.toFixed(2)}</strong>
             </div>
 
             <div class="progress-bar">
                 <div class="progress-fill"></div>
             </div>
         `;
+
         expenseList.appendChild(item);
     });
 }
