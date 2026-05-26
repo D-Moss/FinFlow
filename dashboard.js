@@ -76,13 +76,60 @@ function getTransactionAmount(row) {
 }
 
 
+function categorizeTransaction(description, amount) {
+    const text = description.toLowerCase();
+
+    if (amount > 0) {
+        if (
+            text.includes("direct deposit") ||
+            text.includes("payroll") ||
+            text.includes("deposit") ||
+            text.includes("gusto")
+        ) {
+            return "Income";
+        }
+
+        return "Income";
+    }
+
+    if (
+        text.includes("mcdonald") ||
+        text.includes("7-eleven") ||
+        text.includes("restaurant") ||
+        text.includes("food")
+    ) {
+        return "Meals";
+    }
+
+    if (
+        text.includes("disney") ||
+        text.includes("netflix") ||
+        text.includes("hulu") ||
+        text.includes("spotify")
+    ) {
+        return "Subscriptions";
+    }
+
+    return "Other Expenses";
+}
+
+
 // Normalize CSV row
 function normalizeTransaction(row) {
+    const amount = getTransactionAmount(row);
+
+    const description =
+        row.Description ||
+        row.description ||
+        row.Memo ||
+        row.Name ||
+        "";
+
     return {
         date: row.Date || row.date || row["Transaction Date"] || "",
-        description: row.Description || row.description || row.Memo || row.Name || "",
-        category: row.Category || row.category || "Other Expenses",
-        amount: getTransactionAmount(row)
+        description: description,
+        category: categorizeTransaction(description, amount),
+        amount: amount
     };
 }
 
