@@ -103,9 +103,17 @@ const columnAliases = {
 function normalizeHeader(header) {
     return String(header || "")
         .toLowerCase()
-        .replace(/\s+/g, " ")
         .replace(/[._-]/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
+}
+
+function aliasMatches(cell, aliases) {
+    const normalizedCell = normalizeHeader(cell);
+
+    return aliases.some(alias =>
+        normalizeHeader(alias) === normalizedCell
+    );
 }
 
 function getField(row, aliases) {
@@ -170,73 +178,47 @@ function getTransactionAmount(row) {
     return 0;
 }
 
+const merchantRules = {
+    "openai": "Equipment & Software",
+    "chatgpt": "Equipment & Software",
+    "adobe": "Equipment & Software",
+    "canva": "Equipment & Software",
+    "marblism": "Equipment & Software",
+    "microsoft": "Equipment & Software",
+    "google": "Equipment & Software",
+
+    "coursera": "Education & Training",
+    "udemy": "Education & Training",
+
+    "burger king": "Meals",
+    "golden corral": "Meals",
+    "mcdonald": "Meals",
+    "wendy": "Meals",
+    "subway": "Meals",
+    "restaurant": "Meals",
+    "cafe": "Meals",
+    "coffee": "Meals",
+
+    "xfinity": "Telephone & Internet",
+    "comcast": "Telephone & Internet",
+    "verizon": "Telephone & Internet",
+
+    "office depot": "Office Expenses",
+    "staples": "Office Expenses",
+
+    "service fee": "Bank Fees",
+    "bank fee": "Bank Fees"
+};
+
 function categorizeTransaction(description, amount) {
     const text = String(description || "").toLowerCase();
 
     if (amount > 0) return "Income";
 
-    if (
-        text.includes("mcdonald") ||
-        text.includes("restaurant") ||
-        text.includes("food") ||
-        text.includes("cafe") ||
-        text.includes("coffee")
-    ) {
-        return "Meals";
-    }
-
-    if (
-        text.includes("netflix") ||
-        text.includes("hulu") ||
-        text.includes("spotify") ||
-        text.includes("subscription")
-    ) {
-        return "Dues & Subscriptions";
-    }
-
-    if (
-        text.includes("office depot") ||
-        text.includes("staples") ||
-        text.includes("supplies")
-    ) {
-        return "Office Expenses";
-    }
-
-    if (
-        text.includes("internet") ||
-        text.includes("verizon") ||
-        text.includes("comcast") ||
-        text.includes("xfinity") ||
-        text.includes("phone")
-    ) {
-        return "Telephone & Internet";
-    }
-
-    if (
-        text.includes("electric") ||
-        text.includes("gas bill") ||
-        text.includes("water") ||
-        text.includes("utility")
-    ) {
-        return "Utilities";
-    }
-
-    if (
-        text.includes("adobe") ||
-        text.includes("canva") ||
-        text.includes("google") ||
-        text.includes("microsoft") ||
-        text.includes("software")
-    ) {
-        return "Equipment & Software";
-    }
-
-    if (
-        text.includes("service fee") ||
-        text.includes("bank fee") ||
-        text.includes("fee")
-    ) {
-        return "Bank Fees";
+    for (const merchant in merchantRules) {
+        if (text.includes(merchant)) {
+            return merchantRules[merchant];
+        }
     }
 
     return "Other Expenses";
@@ -439,24 +421,22 @@ if (uploadStatementBtn && statementUpload) {
                 }
 
                 const headerIndex = rawRows.findIndex(row => {
-                    const normalizedRow = row.map(cell => normalizeHeader(cell));
+                    const hasDate = row.some(cell =>
+                        aliasMatches(cell, columnAliases.date)
+                        );
 
-                    const hasDate = normalizedRow.some(cell =>
-                        columnAliases.date.includes(cell)
-                    );
+                    const hasDescription = row.some(cell =>
+                        aliasMatches(cell, columnAliases.description)
+                        );
 
-                    const hasDescription = normalizedRow.some(cell =>
-                        columnAliases.description.includes(cell)
-                    );
+                    const hasAmount = row.some(cell =>
+                        aliasMatches(cell, columnAliases.amount)
+                        );
 
-                    const hasAmount = normalizedRow.some(cell =>
-                        columnAliases.amount.includes(cell)
-                    );
-
-                    const hasDebitOrCredit = normalizedRow.some(cell =>
-                        columnAliases.debit.includes(cell) ||
-                        columnAliases.credit.includes(cell)
-                    );
+                    const hasDebitOrCredit = row.some(cell =>
+                        aliasMatches(cell, columnAliases.debit) ||
+                        aliasMatches(cell, columnAliases.credit)
+                        );
 
                     return hasDate && hasDescription && (hasAmount || hasDebitOrCredit);
                 });
