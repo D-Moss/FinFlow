@@ -401,6 +401,7 @@ function resetDashboard() {
 
 updateExpenseSummary([]);
 
+// Upload and parse CSV
 const uploadStatementBtn = document.getElementById("uploadStatementBtn");
 const statementUpload = document.getElementById("statementUpload");
 
@@ -423,46 +424,84 @@ if (uploadStatementBtn && statementUpload) {
         }
 
         Papa.parse(file, {
-            header: true,
+            header: false,
             skipEmptyLines: true,
 
             complete: function(results) {
-                const rows = results.data.filter(row =>
-                    Object.values(row).some(value => String(value || "").trim() !== "")
+                const rawRows = results.data.filter(row =>
+                    row.some(cell => String(cell || "").trim() !== "")
                 );
 
-                if (!rows.length) {
+                if (!rawRows.length) {
                     alert("No transactions were found in this file.");
                     resetDashboard();
                     return;
                 }
 
-                console.log("CSV Headers:", Object.keys(rows[0]));
-                console.log("Parsed CSV Data:", rows);
+                const headerIndex = rawRows.findIndex(row => {
+                    const normalizedRow = row.map(cell => normalizeHeader(cell));
 
-                if (!hasDetectableColumns(rows[0])) {
-                    alert(
-                        "FinFlow could not detect the needed columns. Please make sure your CSV has a date, description, and amount column — or debit/credit columns."
+                    const hasDate = normalizedRow.some(cell =>
+                        columnAliases.date.includes(cell)
                     );
 
-                    console.log("Detected headers:", Object.keys(rows[0]));
+                    const hasDescription = normalizedRow.some(cell =>
+                        columnAliases.description.includes(cell)
+                    );
+
+                    const hasAmount = normalizedRow.some(cell =>
+                        columnAliases.amount.includes(cell)
+                    );
+
+                    const hasDebitOrCredit = normalizedRow.some(cell =>
+                        columnAliases.debit.includes(cell) ||
+                        columnAliases.credit.includes(cell)
+                    );
+
+                    return hasDate && hasDescription && (hasAmount || hasDebitOrCredit);
+                });
+
+                if (headerIndex === -1) {
+                    alert("FinFlow could not find a transaction table in this CSV.");
+                    console.log("CSV rows checked:", rawRows);
                     resetDashboard();
                     return;
                 }
+
+                const headers = rawRows[headerIndex];
+                const transactionRows = rawRows.slice(headerIndex + 1);
+
+                const rows = transactionRows
+                    .map(row => {
+                        const obj = {};
+
+                        headers.forEach((header, index) => {
+                            obj[header] = row[index] || "";
+                        });
+
+                        return obj;
+                    })
+                    .filter(row => {
+                        const description = getField(row, columnAliases.description);
+                        const amount = getField(row, columnAliases.amount);
+                        const debit = getField(row, columnAliases.debit);
+                        const credit = getField(row, columnAliases.credit);
+
+                        return description && (amount || debit || credit);
+                    });
 
                 const transactions = rows
                     .map(normalizeTransaction)
                     .filter(transaction => transaction.amount !== 0);
 
                 if (!transactions.length) {
-                    alert(
-                        "The file was read, but no valid transaction amounts were detected. Check the CSV amount, debit, or credit columns."
-                    );
-
+                    alert("The transaction table was found, but no valid transaction amounts were detected.");
                     resetDashboard();
                     return;
                 }
 
+                console.log("Detected Header Row:", headers);
+                console.log("Rows Used:", rows);
                 console.log("Normalized Transactions:", transactions);
 
                 renderTransactions(transactions);
