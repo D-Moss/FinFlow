@@ -13,7 +13,6 @@ if (greetingText) {
     }
 }
 
-
 // Highlight active sidebar link when clicked
 const sidebarLinks = document.querySelectorAll(".sidebar-nav a");
 
@@ -23,7 +22,6 @@ sidebarLinks.forEach(link => {
         link.classList.add("active-link");
     });
 });
-
 
 // Expense categories
 const expenseCategories = [
@@ -54,87 +52,220 @@ const expenseCategories = [
     "Telephone & Internet"
 ];
 
+const columnAliases = {
+    date: [
+        "date",
+        "transaction date",
+        "trans date",
+        "trans. date",
+        "posted date",
+        "post date",
+        "posting date"
+    ],
+    description: [
+        "description",
+        "transaction description",
+        "memo",
+        "name",
+        "payee",
+        "merchant",
+        "details",
+        "extended details",
+        "appears on your statement as"
+    ],
+    amount: [
+        "amount",
+        "transaction amount",
+        "net amount"
+    ],
+    debit: [
+        "debit",
+        "debits",
+        "withdrawal",
+        "withdrawals",
+        "charge",
+        "charges",
+        "money out",
+        "money outflow"
+    ],
+    credit: [
+        "credit",
+        "credits",
+        "deposit",
+        "deposits",
+        "payment",
+        "payments",
+        "money in",
+        "money inflow"
+    ]
+};
 
-// Format money
+function normalizeHeader(header) {
+    return String(header || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .replace(/[._-]/g, " ")
+        .trim();
+}
+
+function getField(row, aliases) {
+    const keys = Object.keys(row);
+
+    const matchedKey = keys.find(key =>
+        aliases.includes(normalizeHeader(key))
+    );
+
+    return matchedKey ? row[matchedKey] : "";
+}
+
+function cleanMoney(value) {
+    if (value === null || value === undefined || value === "") return 0;
+
+    let text = String(value)
+        .replace(/[$,]/g, "")
+        .trim();
+
+    if (text.startsWith("(") && text.endsWith(")")) {
+        text = "-" + text.slice(1, -1);
+    }
+
+    return parseFloat(text) || 0;
+}
+
 function formatCurrency(amount) {
     return `$${Number(amount || 0).toFixed(2)}`;
 }
 
-
-// Get amount safely from CSV row
 function getTransactionAmount(row) {
-    const rawAmount =
-        row.Amount ||
-        row.amount ||
-        row.TransactionAmount ||
-        row["Transaction Amount"] ||
-        row.Debit ||
-        row.Credit ||
-        "0";
+    const debit = cleanMoney(getField(row, columnAliases.debit));
+    const credit = cleanMoney(getField(row, columnAliases.credit));
+    const amount = cleanMoney(getField(row, columnAliases.amount));
+    const description = String(getField(row, columnAliases.description)).toLowerCase();
 
-    return parseFloat(String(rawAmount).replace(/[$,]/g, "")) || 0;
+    if (debit !== 0 || credit !== 0) {
+        if (debit !== 0) return -Math.abs(debit);
+        if (credit !== 0) return Math.abs(credit);
+    }
+
+    if (amount !== 0) {
+        const looksLikeIncome =
+            description.includes("deposit") ||
+            description.includes("payment received") ||
+            description.includes("direct deposit") ||
+            description.includes("payroll") ||
+            description.includes("refund") ||
+            description.includes("credit");
+
+        const looksLikePaymentToCard =
+            description.includes("payment") &&
+            !description.includes("payment received");
+
+        if (amount < 0) return amount;
+        if (looksLikeIncome) return Math.abs(amount);
+        if (looksLikePaymentToCard) return Math.abs(amount);
+
+        return -Math.abs(amount);
+    }
+
+    return 0;
 }
 
-
 function categorizeTransaction(description, amount) {
-    const text = description.toLowerCase();
+    const text = String(description || "").toLowerCase();
 
-    if (amount > 0) {
-        if (
-            text.includes("direct deposit") ||
-            text.includes("payroll") ||
-            text.includes("deposit") ||
-            text.includes("gusto")
-        ) {
-            return "Income";
-        }
-
-        return "Income";
-    }
+    if (amount > 0) return "Income";
 
     if (
         text.includes("mcdonald") ||
-        text.includes("7-eleven") ||
         text.includes("restaurant") ||
-        text.includes("food")
+        text.includes("food") ||
+        text.includes("cafe") ||
+        text.includes("coffee")
     ) {
         return "Meals";
     }
 
     if (
-        text.includes("disney") ||
         text.includes("netflix") ||
         text.includes("hulu") ||
-        text.includes("spotify")
+        text.includes("spotify") ||
+        text.includes("subscription")
     ) {
-        return "Subscriptions";
+        return "Dues & Subscriptions";
+    }
+
+    if (
+        text.includes("office depot") ||
+        text.includes("staples") ||
+        text.includes("supplies")
+    ) {
+        return "Office Expenses";
+    }
+
+    if (
+        text.includes("internet") ||
+        text.includes("verizon") ||
+        text.includes("comcast") ||
+        text.includes("xfinity") ||
+        text.includes("phone")
+    ) {
+        return "Telephone & Internet";
+    }
+
+    if (
+        text.includes("electric") ||
+        text.includes("gas bill") ||
+        text.includes("water") ||
+        text.includes("utility")
+    ) {
+        return "Utilities";
+    }
+
+    if (
+        text.includes("adobe") ||
+        text.includes("canva") ||
+        text.includes("google") ||
+        text.includes("microsoft") ||
+        text.includes("software")
+    ) {
+        return "Equipment & Software";
+    }
+
+    if (
+        text.includes("service fee") ||
+        text.includes("bank fee") ||
+        text.includes("fee")
+    ) {
+        return "Bank Fees";
     }
 
     return "Other Expenses";
 }
 
-
-// Normalize CSV row
 function normalizeTransaction(row) {
     const amount = getTransactionAmount(row);
 
-    const description =
-        row.Description ||
-        row.description ||
-        row.Memo ||
-        row.Name ||
-        "";
+    const description = getField(row, columnAliases.description);
+    const date = getField(row, columnAliases.date);
 
     return {
-        date: row.Date || row.date || row["Transaction Date"] || "",
-        description: description,
+        date: date || "No date",
+        description: description || "No description",
         category: categorizeTransaction(description, amount),
         amount: amount
     };
 }
 
+function hasDetectableColumns(row) {
+    const hasDate = getField(row, columnAliases.date);
+    const hasDescription = getField(row, columnAliases.description);
+    const hasAmount = getField(row, columnAliases.amount);
+    const hasDebit = getField(row, columnAliases.debit);
+    const hasCredit = getField(row, columnAliases.credit);
 
-// Render recent transactions table
+    return hasDate && hasDescription && (hasAmount || hasDebit || hasCredit);
+}
+
 function renderTransactions(transactions) {
     const tableBody = document.querySelector(".transactions-section tbody");
 
@@ -167,8 +298,6 @@ function renderTransactions(transactions) {
     });
 }
 
-
-// Update dashboard cards
 function updateDashboardTotals(transactions) {
     const cards = document.querySelectorAll(".overview-cards .card h3");
 
@@ -202,8 +331,6 @@ function updateDashboardTotals(transactions) {
     }
 }
 
-
-// Update expense summary
 function updateExpenseSummary(transactions) {
     const expenseList = document.getElementById("expenseList");
 
@@ -266,12 +393,14 @@ function updateExpenseSummary(transactions) {
     });
 }
 
+function resetDashboard() {
+    renderTransactions([]);
+    updateDashboardTotals([]);
+    updateExpenseSummary([]);
+}
 
-// Initial empty expense summary
 updateExpenseSummary([]);
 
-
-// Upload and parse CSV
 const uploadStatementBtn = document.getElementById("uploadStatementBtn");
 const statementUpload = document.getElementById("statementUpload");
 
@@ -285,16 +414,54 @@ if (uploadStatementBtn && statementUpload) {
 
         if (!file) return;
 
-        console.log("Selected file:", file.name);
+        const fileName = file.name.toLowerCase();
+
+        if (!fileName.endsWith(".csv")) {
+            alert("Please upload a CSV file. PDF uploads will need a separate parser later.");
+            statementUpload.value = "";
+            return;
+        }
 
         Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
 
             complete: function(results) {
-                console.log("Parsed CSV Data:", results.data);
+                const rows = results.data.filter(row =>
+                    Object.values(row).some(value => String(value || "").trim() !== "")
+                );
 
-                const transactions = results.data.map(normalizeTransaction);
+                if (!rows.length) {
+                    alert("No transactions were found in this file.");
+                    resetDashboard();
+                    return;
+                }
+
+                console.log("CSV Headers:", Object.keys(rows[0]));
+                console.log("Parsed CSV Data:", rows);
+
+                if (!hasDetectableColumns(rows[0])) {
+                    alert(
+                        "FinFlow could not detect the needed columns. Please make sure your CSV has a date, description, and amount column — or debit/credit columns."
+                    );
+
+                    console.log("Detected headers:", Object.keys(rows[0]));
+                    resetDashboard();
+                    return;
+                }
+
+                const transactions = rows
+                    .map(normalizeTransaction)
+                    .filter(transaction => transaction.amount !== 0);
+
+                if (!transactions.length) {
+                    alert(
+                        "The file was read, but no valid transaction amounts were detected. Check the CSV amount, debit, or credit columns."
+                    );
+
+                    resetDashboard();
+                    return;
+                }
 
                 console.log("Normalized Transactions:", transactions);
 
@@ -305,13 +472,12 @@ if (uploadStatementBtn && statementUpload) {
 
             error: function(error) {
                 console.error("CSV Parse Error:", error);
+                alert("There was a problem reading this CSV file.");
             }
         });
     });
 }
 
-
-// View all categories button
 const toggleExpensesBtn = document.getElementById("toggleExpensesBtn");
 
 if (toggleExpensesBtn) {
