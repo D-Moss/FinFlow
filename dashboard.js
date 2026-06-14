@@ -210,9 +210,10 @@ const merchantRules = {
     "curlys": "Meals",
     "sonic": "Meals",
     "dd/br": "Meals",
-    "shoprite": "Meals",
-    "acme": "Meals",
     "7-eleven": "Meals",
+
+    "shoprite": "Other Expenses",
+    "acme": "Other Expenses",
 
     "septa": "Travel",
 
@@ -435,7 +436,7 @@ function parsePdfTransactions(text) {
 
     const incomeStart = text.indexOf("Deposits and Other Additions");
     const expenseStart = text.indexOf(
-    "Banking/Debit Card Withdrawals and Purchases",
+    "Banking/Debit Card Withdrawals and Purchases   There was",
     incomeStart
     );
     const electronicStart = text.indexOf("Online and Electronic Banking Deductions");
