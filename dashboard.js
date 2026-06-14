@@ -405,35 +405,73 @@ if (toggleExpensesBtn) {
 function parsePdfTransactions(text) {
     const transactions = [];
 
-    const transactionPattern =
-        /(\d{2}\/\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(.+?)(?=\s+\d{2}\/\d{2}\s+\d{1,3}(?:,\d{3})*\.\d{2}|$)/g;
+    const incomeSectionStart = text.indexOf("Deposits and Other Additions");
+    const expenseSectionStart = text.indexOf("Banking/Debit Card Withdrawals and Purchases");
+    const electronicSectionStart = text.indexOf("Online and Electronic Banking Deductions");
+    const dailyBalanceStart = text.indexOf("Daily Balance Detail");
 
-    let match;
+    function parseSection(sectionText, type) {
+        const transactionPattern =
+            /(\d{2}\/\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(.+?)(?=\s+\d{2}\/\d{2}\s+\d{1,3}(?:,\d{3})*\.\d{2}|$)/g;
 
-    while ((match = transactionPattern.exec(text)) !== null) {
-        const date = match[1];
-        const amount = cleanMoney(match[2]);
-        let description = match[3].trim();
+        let match;
 
-        if (
-            description.toLowerCase().includes("balance") ||
-            description.toLowerCase().includes("page") ||
-            description.toLowerCase().includes("continued") ||
-            description.toLowerCase().includes("date amount description")
-        ) {
-            continue;
+        while ((match = transactionPattern.exec(sectionText)) !== null) {
+            const date = match[1];
+            const rawAmount = cleanMoney(match[2]);
+            let description = match[3].replace(/\s+/g, " ").trim();
+
+            const lowerDescription = description.toLowerCase();
+
+            if (
+                lowerDescription.includes("there were") ||
+                lowerDescription.includes("there was") ||
+                lowerDescription.includes("date amount description") ||
+                lowerDescription.includes("continued") ||
+                lowerDescription.includes("daily balance") ||
+                lowerDescription.includes("member fdic") ||
+                lowerDescription.includes("page ")
+            ) {
+                continue;
+            }
+
+            const amount = type === "income"
+                ? Math.abs(rawAmount)
+                : -Math.abs(rawAmount);
+
+            transactions.push({
+                date,
+                description,
+                category: categorizeTransaction(description, amount),
+                amount
+            });
         }
+    }
 
-        description = description
-            .replace(/\s+/g, " ")
-            .trim();
+    if (incomeSectionStart !== -1 && expenseSectionStart !== -1) {
+        const incomeText = text.slice(incomeSectionStart, expenseSectionStart);
+        parseSection(incomeText, "income");
+    }
 
-        transactions.push({
-            date,
-            description,
-            category: categorizeTransaction(description, -Math.abs(amount)),
-            amount: -Math.abs(amount)
-        });
+    if (expenseSectionStart !== -1) {
+        const expenseEnd =
+            electronicSectionStart !== -1 ? electronicSectionStart : dailyBalanceStart;
+
+        const expenseText = text.slice(
+            expenseSectionStart,
+            expenseEnd !== -1 ? expenseEnd : text.length
+        );
+
+        parseSection(expenseText, "expense");
+    }
+
+    if (electronicSectionStart !== -1) {
+        const electronicText = text.slice(
+            electronicSectionStart,
+            dailyBalanceStart !== -1 ? dailyBalanceStart : text.length
+        );
+
+        parseSection(electronicText, "expense");
     }
 
     return transactions;
