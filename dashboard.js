@@ -434,13 +434,12 @@ if (toggleExpensesBtn) {
 function parsePdfTransactions(text) {
     const transactions = [];
 
-    const incomeStart = text.indexOf("Deposits and Other Additions");
-    const expenseStart = text.indexOf(
-    "Banking/Debit Card Withdrawals and Purchases   There was",
-    incomeStart
-    );
-    const electronicStart = text.indexOf("Online and Electronic Banking Deductions");
-    const dailyBalanceStart = text.indexOf("Daily Balance Detail");
+    const cleanText = text.replace(/\s+/g, " ").trim();
+
+    const incomeStart = cleanText.indexOf("Deposits and Other Additions");
+    const expenseStart = cleanText.indexOf("Banking/Debit Card Withdrawals and Purchases", incomeStart);
+    const electronicStart = cleanText.indexOf("Online and Electronic Banking Deductions");
+    const dailyBalanceStart = cleanText.indexOf("Daily Balance Detail");
 
     function parseSection(sectionText, type) {
         const transactionPattern =
@@ -471,9 +470,6 @@ function parsePdfTransactions(text) {
                 ? Math.abs(rawAmount)
                 : -Math.abs(rawAmount);
 
-            console.log(type, date, description, rawAmount);
-
-
             transactions.push({
                 date,
                 description,
@@ -484,22 +480,25 @@ function parsePdfTransactions(text) {
     }
 
     if (incomeStart !== -1 && expenseStart !== -1) {
-        parseSection(text.slice(incomeStart, expenseStart), "income");
+        parseSection(cleanText.slice(incomeStart, expenseStart), "income");
     }
 
     if (expenseStart !== -1) {
-        const expenseEnd =
-            electronicStart !== -1 ? electronicStart : dailyBalanceStart;
-
         parseSection(
-            text.slice(expenseStart, expenseEnd !== -1 ? expenseEnd : text.length),
+            cleanText.slice(
+                expenseStart,
+                electronicStart !== -1 ? electronicStart : dailyBalanceStart
+            ),
             "expense"
         );
     }
 
     if (electronicStart !== -1) {
         parseSection(
-            text.slice(electronicStart, dailyBalanceStart !== -1 ? dailyBalanceStart : text.length),
+            cleanText.slice(
+                electronicStart,
+                dailyBalanceStart !== -1 ? dailyBalanceStart : cleanText.length
+            ),
             "expense"
         );
     }
