@@ -159,13 +159,13 @@
 
                         <div class="upload-box">
                             <p>
-                                Drag and drop files here
+                                Drag and drop your PDF statement here
                             </p>
 
-                            <input type="file" id="statementUpload" accept=".csv,.pdf" hidden>
+                            <input type="file" id="statementUpload" accept="application/pdf,.pdf" hidden>
 
                             <button id="uploadStatementBtn" type="button">
-                                Upload Files
+                                Upload PDF Statement
                             </button>
                         </div>
                     </div>
@@ -189,8 +189,8 @@
         </main>
     </div>
 
-    <!-- PapaParse -->
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <!-- Firebase -->
     <script type="module" src="index.js"></script>

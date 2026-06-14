@@ -383,120 +383,6 @@ function resetDashboard() {
 
 updateExpenseSummary([]);
 
-// Upload and parse CSV
-const uploadStatementBtn = document.getElementById("uploadStatementBtn");
-const statementUpload = document.getElementById("statementUpload");
-
-if (uploadStatementBtn && statementUpload) {
-    uploadStatementBtn.addEventListener("click", () => {
-        statementUpload.click();
-    });
-
-    statementUpload.addEventListener("change", () => {
-        const file = statementUpload.files[0];
-
-        if (!file) return;
-
-        const fileName = file.name.toLowerCase();
-
-        if (!fileName.endsWith(".csv")) {
-            alert("Please upload a CSV file. PDF uploads will need a separate parser later.");
-            statementUpload.value = "";
-            return;
-        }
-
-        Papa.parse(file, {
-            header: false,
-            skipEmptyLines: true,
-
-            complete: function(results) {
-                const rawRows = results.data.filter(row =>
-                    row.some(cell => String(cell || "").trim() !== "")
-                );
-
-                if (!rawRows.length) {
-                    alert("No transactions were found in this file.");
-                    resetDashboard();
-                    return;
-                }
-
-                const headerIndex = rawRows.findIndex(row => {
-                    const hasDate = row.some(cell =>
-                        aliasMatches(cell, columnAliases.date)
-                        );
-
-                    const hasDescription = row.some(cell =>
-                        aliasMatches(cell, columnAliases.description)
-                        );
-
-                    const hasAmount = row.some(cell =>
-                        aliasMatches(cell, columnAliases.amount)
-                        );
-
-                    const hasDebitOrCredit = row.some(cell =>
-                        aliasMatches(cell, columnAliases.debit) ||
-                        aliasMatches(cell, columnAliases.credit)
-                        );
-
-                    return hasDate && hasDescription && (hasAmount || hasDebitOrCredit);
-                });
-
-                if (headerIndex === -1) {
-                    alert("FinFlow could not find a transaction table in this CSV.");
-                    console.log("CSV rows checked:", rawRows);
-                    resetDashboard();
-                    return;
-                }
-
-                const headers = rawRows[headerIndex];
-                const transactionRows = rawRows.slice(headerIndex + 1);
-
-                const rows = transactionRows
-                    .map(row => {
-                        const obj = {};
-
-                        headers.forEach((header, index) => {
-                            obj[header] = row[index] || "";
-                        });
-
-                        return obj;
-                    })
-                    .filter(row => {
-                        const description = getField(row, columnAliases.description);
-                        const amount = getField(row, columnAliases.amount);
-                        const debit = getField(row, columnAliases.debit);
-                        const credit = getField(row, columnAliases.credit);
-
-                        return description && (amount || debit || credit);
-                    });
-
-                const transactions = rows
-                    .map(normalizeTransaction)
-                    .filter(transaction => transaction.amount !== 0);
-
-                if (!transactions.length) {
-                    alert("The transaction table was found, but no valid transaction amounts were detected.");
-                    resetDashboard();
-                    return;
-                }
-
-                console.log("Detected Header Row:", headers);
-                console.log("Rows Used:", rows);
-                console.log("Normalized Transactions:", transactions);
-
-                renderTransactions(transactions);
-                updateDashboardTotals(transactions);
-                updateExpenseSummary(transactions);
-            },
-
-            error: function(error) {
-                console.error("CSV Parse Error:", error);
-                alert("There was a problem reading this CSV file.");
-            }
-        });
-    });
-}
-
 const toggleExpensesBtn = document.getElementById("toggleExpensesBtn");
 
 if (toggleExpensesBtn) {
@@ -507,10 +393,61 @@ if (toggleExpensesBtn) {
             item.classList.toggle("show-expense");
         });
 
-        const isExpanded = toggleExpensesBtn.textContent === "Show fewer categories";
+        const isExpanded =
+            toggleExpensesBtn.textContent === "Show fewer categories";
 
         toggleExpensesBtn.textContent = isExpanded
             ? "View all categories"
             : "Show fewer categories";
+    });
+}
+
+// Upload and read PDF statement
+const uploadStatementBtn = document.getElementById("uploadStatementBtn");
+const statementUpload = document.getElementById("statementUpload");
+
+if (uploadStatementBtn && statementUpload) {
+    uploadStatementBtn.addEventListener("click", () => {
+        statementUpload.click();
+    });
+
+    statementUpload.addEventListener("change", async () => {
+        const file = statementUpload.files[0];
+
+        if (!file) return;
+
+        const fileName = file.name.toLowerCase();
+
+        if (!fileName.endsWith(".pdf")) {
+            alert("Please upload a PDF bank statement.");
+            statementUpload.value = "";
+            return;
+        }
+
+        const fileReader = new FileReader();
+
+        fileReader.onload = async function () {
+            const typedArray = new Uint8Array(this.result);
+
+            const pdf = await pdfjsLib.getDocument(typedArray).promise;
+
+            let fullText = "";
+
+            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                const page = await pdf.getPage(pageNumber);
+                const textContent = await page.getTextContent();
+
+                const pageText = textContent.items
+                    .map(item => item.str)
+                    .join(" ");
+
+                fullText += pageText + "\n";
+            }
+
+            console.log("Extracted PDF Text:", fullText);
+            alert("PDF uploaded successfully. Check the console to see the extracted text.");
+        };
+
+        fileReader.readAsArrayBuffer(file);
     });
 }
