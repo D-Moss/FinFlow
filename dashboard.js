@@ -470,6 +470,9 @@ function parsePdfTransactions(text) {
                 ? Math.abs(rawAmount)
                 : -Math.abs(rawAmount);
 
+            console.log(type, date, description, rawAmount);
+
+
             transactions.push({
                 date,
                 description,
