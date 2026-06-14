@@ -189,8 +189,8 @@ const merchantRules = {
     "canva": "Equipment & Software",
     "marblism": "Equipment & Software",
     "microsoft": "Equipment & Software",
-    "google": "Equipment & Software",
     "google one": "Equipment & Software",
+    "google": "Equipment & Software",
     "gusto": "Equipment & Software",
 
     "coursera": "Education & Training",
