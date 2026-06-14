@@ -190,6 +190,7 @@ const merchantRules = {
     "marblism": "Equipment & Software",
     "microsoft": "Equipment & Software",
     "google": "Equipment & Software",
+    "google one": "Equipment & Software",
     "gusto": "Equipment & Software",
 
     "coursera": "Education & Training",
@@ -198,6 +199,7 @@ const merchantRules = {
     "burger king": "Meals",
     "golden corral": "Meals",
     "mcdonald": "Meals",
+    "mcdonalds": "Meals",
     "wendy": "Meals",
     "subway": "Meals",
     "restaurant": "Meals",
@@ -210,6 +212,7 @@ const merchantRules = {
     "dd/br": "Meals",
     "shoprite": "Meals",
     "acme": "Meals",
+    "7-eleven": "Meals",
 
     "septa": "Travel",
 
@@ -431,7 +434,10 @@ function parsePdfTransactions(text) {
     const transactions = [];
 
     const incomeStart = text.indexOf("Deposits and Other Additions");
-    const expenseStart = text.indexOf("Banking/Debit Card Withdrawals and Purchases");
+    const expenseStart = text.indexOf(
+    "Banking/Debit Card Withdrawals and Purchases",
+    incomeStart
+    );
     const electronicStart = text.indexOf("Online and Electronic Banking Deductions");
     const dailyBalanceStart = text.indexOf("Daily Balance Detail");
 
