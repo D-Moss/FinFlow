@@ -403,23 +403,30 @@ if (toggleExpensesBtn) {
 }
 
 function parsePdfTransactions(text) {
-    const lines = text
-        .split(/\n|\r/)
-        .map(line => line.replace(/\s+/g, " ").trim())
-        .filter(line => line.length > 0);
-
     const transactions = [];
 
-    lines.forEach(line => {
-        const match = line.match(
-            /(\d{1,2}\/\d{1,2})\s+(\$?\d+(?:,\d{3})*(?:\.\d{2}))\s+(.+)/
-        );
+    const transactionPattern =
+        /(\d{2}\/\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(.+?)(?=\s+\d{2}\/\d{2}\s+\d{1,3}(?:,\d{3})*\.\d{2}|$)/g;
 
-        if (!match) return;
+    let match;
 
+    while ((match = transactionPattern.exec(text)) !== null) {
         const date = match[1];
         const amount = cleanMoney(match[2]);
-        const description = match[3];
+        let description = match[3].trim();
+
+        if (
+            description.toLowerCase().includes("balance") ||
+            description.toLowerCase().includes("page") ||
+            description.toLowerCase().includes("continued") ||
+            description.toLowerCase().includes("date amount description")
+        ) {
+            continue;
+        }
+
+        description = description
+            .replace(/\s+/g, " ")
+            .trim();
 
         transactions.push({
             date,
@@ -427,7 +434,7 @@ function parsePdfTransactions(text) {
             category: categorizeTransaction(description, -Math.abs(amount)),
             amount: -Math.abs(amount)
         });
-    });
+    }
 
     return transactions;
 }
