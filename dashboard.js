@@ -402,6 +402,36 @@ if (toggleExpensesBtn) {
     });
 }
 
+function parsePdfTransactions(text) {
+    const lines = text
+        .split(/\n|\r/)
+        .map(line => line.replace(/\s+/g, " ").trim())
+        .filter(line => line.length > 0);
+
+    const transactions = [];
+
+    lines.forEach(line => {
+        const match = line.match(
+            /(\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)\s+(.+?)\s+(-?\$?\(?\d+(?:,\d{3})*(?:\.\d{2})\)?)$/
+        );
+
+        if (!match) return;
+
+        const date = match[1];
+        const description = match[2];
+        const amount = cleanMoney(match[3]);
+
+        transactions.push({
+            date,
+            description,
+            category: categorizeTransaction(description, amount),
+            amount: -Math.abs(amount)
+        });
+    });
+
+    return transactions;
+}
+
 // Upload and read PDF statement
 const uploadStatementBtn = document.getElementById("uploadStatementBtn");
 const statementUpload = document.getElementById("statementUpload");
@@ -445,7 +475,22 @@ if (uploadStatementBtn && statementUpload) {
             }
 
             console.log("Extracted PDF Text:", fullText);
-            alert("PDF uploaded successfully. Check the console to see the extracted text.");
+
+            const transactions = parsePdfTransactions(fullText);
+
+            console.log("Parsed PDF Transactions:", transactions);
+
+            if (!transactions.length) {
+                alert("PDF uploaded, but FinFlow could not detect transaction lines yet.");
+                resetDashboard();
+                return;
+            }
+
+            renderTransactions(transactions);
+            updateDashboardTotals(transactions);
+            updateExpenseSummary(transactions);
+
+            alert("PDF uploaded and transactions were added successfully.");
         };
 
         fileReader.readAsArrayBuffer(file);
