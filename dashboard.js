@@ -412,19 +412,19 @@ function parsePdfTransactions(text) {
 
     lines.forEach(line => {
         const match = line.match(
-            /(\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)\s+(.+?)\s+(-?\$?\(?\d+(?:,\d{3})*(?:\.\d{2})\)?)$/
+            /(\d{1,2}\/\d{1,2})\s+(\$?\d+(?:,\d{3})*(?:\.\d{2}))\s+(.+)/
         );
 
         if (!match) return;
 
         const date = match[1];
-        const description = match[2];
-        const amount = cleanMoney(match[3]);
+        const amount = cleanMoney(match[2]);
+        const description = match[3];
 
         transactions.push({
             date,
             description,
-            category: categorizeTransaction(description, amount),
+            category: categorizeTransaction(description, -Math.abs(amount)),
             amount: -Math.abs(amount)
         });
     });
