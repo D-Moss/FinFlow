@@ -179,6 +179,10 @@ function getTransactionAmount(row) {
 }
 
 const merchantRules = {
+    "paramount": "Dues & Subscriptions",
+    "disney": "Dues & Subscriptions",
+    "duolingo": "Dues & Subscriptions",
+
     "openai": "Equipment & Software",
     "chatgpt": "Equipment & Software",
     "adobe": "Equipment & Software",
@@ -186,6 +190,7 @@ const merchantRules = {
     "marblism": "Equipment & Software",
     "microsoft": "Equipment & Software",
     "google": "Equipment & Software",
+    "gusto": "Equipment & Software",
 
     "coursera": "Education & Training",
     "udemy": "Education & Training",
@@ -198,10 +203,30 @@ const merchantRules = {
     "restaurant": "Meals",
     "cafe": "Meals",
     "coffee": "Meals",
+    "popeyes": "Meals",
+    "mister p pizza": "Meals",
+    "curlys": "Meals",
+    "sonic": "Meals",
+    "dd/br": "Meals",
+    "shoprite": "Meals",
+    "acme": "Meals",
+
+    "septa": "Travel",
+
+    "wal-mart": "Supplies",
+    "walmart": "Supplies",
+    "dollar general": "Supplies",
+    "cvs": "Supplies",
+
+    "irs ptin": "Taxes & Licenses",
 
     "xfinity": "Telephone & Internet",
     "comcast": "Telephone & Internet",
     "verizon": "Telephone & Internet",
+    "phila water": "Utilities",
+    "peco": "Utilities",
+    "att": "Telephone & Internet",
+    "at&t": "Telephone & Internet",
 
     "office depot": "Office Expenses",
     "staples": "Office Expenses",
@@ -405,9 +430,9 @@ if (toggleExpensesBtn) {
 function parsePdfTransactions(text) {
     const transactions = [];
 
-    const incomeSectionStart = text.indexOf("Deposits and Other Additions");
-    const expenseSectionStart = text.indexOf("Banking/Debit Card Withdrawals and Purchases");
-    const electronicSectionStart = text.indexOf("Online and Electronic Banking Deductions");
+    const incomeStart = text.indexOf("Deposits and Other Additions");
+    const expenseStart = text.indexOf("Banking/Debit Card Withdrawals and Purchases");
+    const electronicStart = text.indexOf("Online and Electronic Banking Deductions");
     const dailyBalanceStart = text.indexOf("Daily Balance Detail");
 
     function parseSection(sectionText, type) {
@@ -421,16 +446,16 @@ function parsePdfTransactions(text) {
             const rawAmount = cleanMoney(match[2]);
             let description = match[3].replace(/\s+/g, " ").trim();
 
-            const lowerDescription = description.toLowerCase();
+            const lower = description.toLowerCase();
 
             if (
-                lowerDescription.includes("there were") ||
-                lowerDescription.includes("there was") ||
-                lowerDescription.includes("date amount description") ||
-                lowerDescription.includes("continued") ||
-                lowerDescription.includes("daily balance") ||
-                lowerDescription.includes("member fdic") ||
-                lowerDescription.includes("page ")
+                lower.includes("there were") ||
+                lower.includes("there was") ||
+                lower.includes("date amount description") ||
+                lower.includes("continued") ||
+                lower.includes("daily balance") ||
+                lower.includes("member fdic") ||
+                lower.includes("page ")
             ) {
                 continue;
             }
@@ -448,30 +473,25 @@ function parsePdfTransactions(text) {
         }
     }
 
-    if (incomeSectionStart !== -1 && expenseSectionStart !== -1) {
-        const incomeText = text.slice(incomeSectionStart, expenseSectionStart);
-        parseSection(incomeText, "income");
+    if (incomeStart !== -1 && expenseStart !== -1) {
+        parseSection(text.slice(incomeStart, expenseStart), "income");
     }
 
-    if (expenseSectionStart !== -1) {
+    if (expenseStart !== -1) {
         const expenseEnd =
-            electronicSectionStart !== -1 ? electronicSectionStart : dailyBalanceStart;
+            electronicStart !== -1 ? electronicStart : dailyBalanceStart;
 
-        const expenseText = text.slice(
-            expenseSectionStart,
-            expenseEnd !== -1 ? expenseEnd : text.length
+        parseSection(
+            text.slice(expenseStart, expenseEnd !== -1 ? expenseEnd : text.length),
+            "expense"
         );
-
-        parseSection(expenseText, "expense");
     }
 
-    if (electronicSectionStart !== -1) {
-        const electronicText = text.slice(
-            electronicSectionStart,
-            dailyBalanceStart !== -1 ? dailyBalanceStart : text.length
+    if (electronicStart !== -1) {
+        parseSection(
+            text.slice(electronicStart, dailyBalanceStart !== -1 ? dailyBalanceStart : text.length),
+            "expense"
         );
-
-        parseSection(electronicText, "expense");
     }
 
     return transactions;
