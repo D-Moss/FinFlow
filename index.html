@@ -6,23 +6,33 @@
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>FinFlow | Automated Accounting</title>
 </head>
+
 <body>
+
+    <!-- NAVIGATION -->
     <nav class="navbar">
-        <div class="logo">FinFlow</div>
+        <a href="index.html" class="logo" aria-label="FinFlow Home">
+            FinFlow
+        </a>
 
         <div class="nav-links">
-            <button class="btn-secondary" id="loginBtn">
+            <button class="btn-secondary" id="loginBtn" type="button">
                 Login
             </button>
-            <button class="btn-primary" id="signupBtn">
+
+            <button class="btn-primary" id="signupBtn" type="button">
                 Sign Up
             </button>
         </div>
     </nav>
 
+
+    <!-- HERO -->
     <header class="hero">
         <div class="hero-content">
-            <p class="eyebrow">Automated bookkeeping for small businesses</p>
+            <p class="eyebrow">
+                Automated bookkeeping for small businesses
+            </p>
 
             <h1>
                 Accounting that <span>updates itself.</span>
@@ -33,41 +43,55 @@
             </p>
 
             <div class="hero-actions">
-                <button class="btn-secondary" id="demoBtn">
+                <button class="btn-secondary" id="demoBtn" type="button">
                     View Sample Dashboard
                 </button>
-                <button class="cta-button" id="start-Btn">
+
+                <button class="cta-button" id="startBtn" type="button">
                     Login to Upload Documents
                 </button>
             </div>
         </div>
     </header>
 
+
+    <!-- BENEFITS -->
     <section class="home-preview">
         <div class="preview-card">
             <h3>Track income</h3>
-            <p>See business income totals based on uploaded transactions.</p>
+            <p>
+                See business income totals based on uploaded transactions.
+            </p>
         </div>
 
         <div class="preview-card">
             <h3>Organize expenses</h3>
-            <p>Categorize expenses so your records are easier to review.</p>
+            <p>
+                Categorize expenses so your records are easier to review.
+            </p>
         </div>
 
         <div class="preview-card">
             <h3>Estimated profit/loss</h3>
-            <p>Get a cleaner snapshot of how the business is performing.</p>
+            <p>
+                Get a cleaner snapshot of how the business is performing.
+            </p>
         </div>
     </section>
 
+
+    <!-- TAX DISCLAIMER -->
     <section class="tax-note">
         <h2>Need tax planning?</h2>
+
         <p>
             FinFlow helps organize your bookkeeping records. For tax estimates, filing questions,
             or deduction guidance, we recommend speaking with a qualified tax professional.
         </p>
     </section>
 
+
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
 
@@ -76,16 +100,360 @@
             </div>
 
             <div class="footer-links">
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
-                <a href="#">Contact</a>
+                <a href="#" id="privacyLink">Privacy</a>
+                <a href="#" id="termsLink">Terms</a>
+                <a href="#" id="contactLink">Contact</a>
             </div>
 
             <p class="footer-copy">
                 © <span id="currentYear"></span> FinFlow. All rights reserved.
             </p>
+
         </div>
     </footer>
+
+
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="loginModal" hidden>
+        <div class="modal-box" role="dialog"
+             aria-modal="true" aria-labelledby="loginTitle">
+
+            <button class="modal-close" type="button"
+                    aria-label="Close login" data-close-modal>
+                &times;
+            </button>
+
+            <h2 id="loginTitle">Welcome Back</h2>
+
+            <p>Log in to your FinFlow account.</p>
+
+            <form id="loginForm">
+
+                <!-- STEP 1: EMAIL -->
+                <div id="loginEmailStep">
+                    <label for="loginEmail">Email Address</label>
+
+                    <input type="email" id="loginEmail"
+                           name="email" autocomplete="email"
+                           placeholder="Enter your email" required>
+
+                    <button type="button" class="btn-primary"
+                            id="loginContinueBtn">
+                        Continue
+                    </button>
+                </div>
+
+                <!-- STEP 2: PASSWORD -->
+                <div id="loginPasswordStep" hidden>
+                    <p id="loginEmailDisplay"></p>
+
+                    <label for="loginPassword">Password</label>
+
+                    <input type="password" id="loginPassword"
+                           name="password"
+                           autocomplete="current-password"
+                           placeholder="Enter your password" required>
+
+                    <button type="submit" class="btn-primary">
+                        Login
+                    </button>
+
+                    <button type="button" class="text-button"
+                            id="loginBackBtn">
+                        Back
+                    </button>
+
+                    <button type="button" class="text-button"
+                            id="forgotPasswordBtn">
+                        Forgot Password?
+                    </button>
+                </div>
+
+                <p class="form-message" id="loginMessage"
+                   role="status" aria-live="polite"></p>
+
+            </form>
+        </div>
+    </div>
+
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal-overlay" id="signupModal" hidden>
+        <div class="modal-box" role="dialog"
+             aria-modal="true" aria-labelledby="signupTitle">
+
+            <button class="modal-close" type="button"
+                    aria-label="Close signup" data-close-modal>
+                &times;
+            </button>
+
+            <h2 id="signupTitle">Create Your Account</h2>
+
+            <p>Get started with FinFlow.</p>
+
+            <form id="signupForm">
+
+                <label for="signupEmail">Email Address</label>
+                <input type="email" id="signupEmail"
+                       name="email" autocomplete="email"
+                       placeholder="Enter your email" required>
+
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword"
+                       name="password" autocomplete="new-password"
+                       placeholder="Create a password"
+                       minlength="6" required>
+
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword"
+                       name="confirmPassword"
+                       autocomplete="new-password"
+                       placeholder="Confirm your password"
+                       minlength="6" required>
+
+                <button type="submit" class="btn-primary">
+                    Create Account
+                </button>
+
+                <p class="form-message" id="signupMessage"
+                   role="status" aria-live="polite"></p>
+
+            </form>
+
+            <p>
+                Already have an account?
+                <button type="button" class="text-button"
+                        id="switchToLoginBtn">
+                    Login
+                </button>
+            </p>
+        </div>
+    </div>
+
+
+    <!-- SAMPLE DASHBOARD OVERLAY -->
+    <div class="demo-overlay" id="demoOverlay" hidden>
+        <div class="demo-container" role="dialog"
+             aria-modal="true" aria-labelledby="demoTitle">
+
+            <div class="demo-header">
+                <div>
+                    <h2 id="demoTitle">FinFlow Preview</h2>
+                    <p>
+                        Explore sample bookkeeping information.
+                        All data shown is fictional.
+                    </p>
+                </div>
+
+                <button type="button" class="modal-close"
+                        id="closeDemoBtn"
+                        aria-label="Close sample dashboard">
+                    &times;
+                </button>
+            </div>
+
+            <!-- PREVIEW NAVIGATION -->
+            <div class="demo-navigation">
+                <button type="button" id="demoPrevBtn"
+                        aria-label="Previous preview">
+                    &#8592;
+                </button>
+
+                <span id="demoPageLabel">Dashboard</span>
+
+                <button type="button" id="demoNextBtn"
+                        aria-label="Next preview">
+                    &#8594;
+                </button>
+            </div>
+
+            <!-- PREVIEW 1: DASHBOARD -->
+            <section class="demo-page" id="demoDashboard">
+                <h3>Sample Business Dashboard</h3>
+
+                <div class="demo-stats">
+                    <div class="demo-stat-card">
+                        <p>Total Income</p>
+                        <h3>$18,450.00</h3>
+                    </div>
+
+                    <div class="demo-stat-card">
+                        <p>Total Expenses</p>
+                        <h3>$9,275.00</h3>
+                    </div>
+
+                    <div class="demo-stat-card">
+                        <p>Net Profit</p>
+                        <h3>$9,175.00</h3>
+                    </div>
+
+                    <div class="demo-stat-card">
+                        <p>Transactions</p>
+                        <h3>86</h3>
+                    </div>
+                </div>
+
+                <h4>Expense Overview</h4>
+
+                <div class="demo-table-wrap">
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rent</td>
+                                <td>$3,200.00</td>
+                            </tr>
+                            <tr>
+                                <td>Software</td>
+                                <td>$875.00</td>
+                            </tr>
+                            <tr>
+                                <td>Advertising</td>
+                                <td>$650.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- PREVIEW 2: MONTHLY SUMMARY -->
+            <section class="demo-page" id="demoMonthlySummary" hidden>
+                <h3>Monthly Summary</h3>
+
+                <div class="demo-table-wrap">
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Income</th>
+                                <th>Expenses</th>
+                                <th>Net Profit</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>January</td>
+                                <td>$5,800</td>
+                                <td>$3,100</td>
+                                <td>$2,700</td>
+                            </tr>
+                            <tr>
+                                <td>February</td>
+                                <td>$6,250</td>
+                                <td>$2,975</td>
+                                <td>$3,275</td>
+                            </tr>
+                            <tr>
+                                <td>March</td>
+                                <td>$6,400</td>
+                                <td>$3,200</td>
+                                <td>$3,200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- PREVIEW 3: ACCOUNTS -->
+            <section class="demo-page" id="demoAccounts" hidden>
+                <h3>Sample Account Transactions</h3>
+
+                <p>Example: Business Checking •••• 1234</p>
+
+                <div class="demo-table-wrap">
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Vendor</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>03/02/2026</td>
+                                <td>Client Payment</td>
+                                <td>Business Income</td>
+                                <td>$1,500.00</td>
+                            </tr>
+                            <tr>
+                                <td>03/05/2026</td>
+                                <td>Office Supply Store</td>
+                                <td>Office Supplies</td>
+                                <td>-$125.00</td>
+                            </tr>
+                            <tr>
+                                <td>03/08/2026</td>
+                                <td>Software Provider</td>
+                                <td>Software</td>
+                                <td>-$49.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <p class="demo-disclaimer">
+                Demonstration only. No real client information is displayed.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- CONTACT MODAL -->
+    <div class="modal-overlay" id="contactModal" hidden>
+        <div class="modal-box" role="dialog"
+             aria-modal="true" aria-labelledby="contactTitle">
+
+            <button class="modal-close" type="button"
+                    aria-label="Close contact form" data-close-modal>
+                &times;
+            </button>
+
+            <h2 id="contactTitle">Contact FinFlow</h2>
+
+            <p>Have a question? Send us a message.</p>
+
+            <form id="contactForm">
+
+                <label for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail"
+                       name="email" autocomplete="email"
+                       placeholder="Your email" required>
+
+                <label for="contactPhone">Phone Number</label>
+                <input type="tel" id="contactPhone"
+                       name="phone" autocomplete="tel"
+                       placeholder="Your phone number">
+
+                <label for="contactQuestion">Questions or Comments</label>
+                <textarea id="contactQuestion"
+                          name="message" rows="5"
+                          placeholder="How can we help?"
+                          required></textarea>
+
+                <button type="submit" class="btn-primary">
+                    Send Message
+                </button>
+
+                <p class="form-message" id="contactMessage"
+                   role="status" aria-live="polite"></p>
+
+            </form>
+        </div>
+    </div>
+
 
     <script type="module" src="index.js"></script>
 
