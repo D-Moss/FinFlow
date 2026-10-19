@@ -1,6 +1,8 @@
+
 /* =========================================
-   FIREBASE IMPORTS
+   FIREBASE CONFIGURATION
    ========================================= */
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
 
 import {
@@ -10,10 +12,6 @@ import {
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
-
-/* =========================================
-   FIREBASE CONFIGURATION
-   ========================================= */
 const firebaseConfig = {
     apiKey: "AIzaSyDKNumgI1MvLAdPqD4u3Qah_SbWWAbfwR4",
     authDomain: "finflow-dcab6.firebaseapp.com",
@@ -29,8 +27,9 @@ const auth = getAuth(app);
 
 
 /* =========================================
-   FOOTER YEAR
+   FOOTER
    ========================================= */
+
 const currentYear = document.getElementById("currentYear");
 
 if (currentYear) {
@@ -39,8 +38,9 @@ if (currentYear) {
 
 
 /* =========================================
-   MODAL ELEMENTS
+   MODAL CONTROLS
    ========================================= */
+
 const loginModal = document.getElementById("loginModal");
 const signupModal = document.getElementById("signupModal");
 const contactModal = document.getElementById("contactModal");
@@ -53,50 +53,96 @@ const allOverlays = [
     demoOverlay
 ].filter(Boolean);
 
+const CLOSE_ANIMATION_MS = 220;
+
+const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+);
+
 let activeOverlay = null;
 let previousFocus = null;
+let closingTimer = null;
+let modalTransitioning = false;
 
+function animationDuration() {
+    return prefersReducedMotion.matches
+        ? 0
+        : CLOSE_ANIMATION_MS;
+}
 
-/* =========================================
-   MODAL HELPERS
-   ========================================= */
-function openModal(modal) {
-    if (!modal) return;
-
-    // Close any other open overlay
-    allOverlays.forEach(overlay => {
-        overlay.hidden = true;
-    });
-
-    previousFocus = document.activeElement;
-    activeOverlay = modal;
-
-    modal.hidden = false;
-    document.body.classList.add("modal-open");
-
-    // Focus the first usable field or control
-    const firstControl = modal.querySelector(
-        "input:not([disabled]), textarea:not([disabled]), button:not([disabled])"
+function focusFirstField(modal) {
+    const firstField = modal.querySelector(
+        'input:not([disabled]), textarea:not([disabled])'
     );
 
-    if (firstControl) {
-        firstControl.focus();
+    const closeButton = modal.querySelector(
+        '[data-close-modal], #closeDemoBtn'
+    );
+
+    const target = firstField || closeButton;
+
+    if (target) {
+        target.focus({ preventScroll: true });
     }
 }
 
-function closeModal() {
-    if (!activeOverlay) return;
+function openModal(modal) {
+    if (!modal) return;
 
-    activeOverlay.hidden = true;
-    activeOverlay = null;
-
-    document.body.classList.remove("modal-open");
-
-    if (previousFocus && previousFocus.isConnected) {
-        previousFocus.focus();
+    // Cancel a pending close if another modal is opened.
+    if (closingTimer !== null) {
+        clearTimeout(closingTimer);
+        closingTimer = null;
     }
 
-    previousFocus = null;
+    if (!activeOverlay) {
+        previousFocus = document.activeElement;
+    }
+
+    allOverlays.forEach(overlay => {
+        overlay.classList.remove("is-closing");
+        overlay.hidden = overlay !== modal;
+    });
+
+    activeOverlay = modal;
+    modalTransitioning = false;
+
+    document.body.classList.add("modal-open");
+
+    focusFirstField(modal);
+}
+
+function closeModal() {
+    if (!activeOverlay || modalTransitioning) return;
+
+    modalTransitioning = true;
+
+    const modalToClose = activeOverlay;
+
+    modalToClose.classList.add("is-closing");
+
+    closingTimer = window.setTimeout(() => {
+        modalToClose.hidden = true;
+        modalToClose.classList.remove("is-closing");
+
+        if (activeOverlay === modalToClose) {
+            activeOverlay = null;
+        }
+
+        document.body.classList.remove("modal-open");
+
+        modalTransitioning = false;
+        closingTimer = null;
+
+        if (
+            previousFocus &&
+            typeof previousFocus.focus === "function"
+        ) {
+            previousFocus.focus({ preventScroll: true });
+        }
+
+        previousFocus = null;
+    }, animationDuration());
 }
 
 // Close buttons
@@ -104,7 +150,7 @@ document.querySelectorAll("[data-close-modal]").forEach(button => {
     button.addEventListener("click", closeModal);
 });
 
-// Click outside modal to close
+// Clicking outside a popup
 allOverlays.forEach(overlay => {
     overlay.addEventListener("click", event => {
         if (event.target === overlay) {
@@ -113,49 +159,84 @@ allOverlays.forEach(overlay => {
     });
 });
 
-// Escape key closes active overlay
+// Escape key
 document.addEventListener("keydown", event => {
     if (event.key === "Escape" && activeOverlay) {
         closeModal();
     }
 });
 
+// Keep keyboard focus inside the active overlay.
+document.addEventListener("keydown", event => {
+    if (event.key !== "Tab" || !activeOverlay) return;
+
+    const focusableElements = [
+        ...activeOverlay.querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+    ].filter(element => {
+        return !element.closest("[hidden]") &&
+            element.getClientRects().length > 0;
+    });
+
+    if (!focusableElements.length) {
+        event.preventDefault();
+        return;
+    }
+
+    const first = focusableElements[0];
+    const last = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    } else if (
+        !event.shiftKey &&
+        document.activeElement === last
+    ) {
+        event.preventDefault();
+        first.focus();
+    }
+});
+
 
 /* =========================================
-   FORM MESSAGE HELPER
+   FORM MESSAGES
    ========================================= */
-function showMessage(element, message, type = "") {
+
+function showMessage(element, message, type = "error") {
     if (!element) return;
 
     element.textContent = message;
+
     element.classList.remove("error", "success");
 
-    if (type) {
+    if (message) {
         element.classList.add(type);
     }
 }
 
 function getAuthErrorMessage(error) {
     switch (error.code) {
-        case "auth/email-already-in-use":
-            return "An account with this email already exists. Please log in.";
-
         case "auth/invalid-email":
             return "Please enter a valid email address.";
-
-        case "auth/weak-password":
-            return "Please choose a stronger password.";
 
         case "auth/invalid-credential":
         case "auth/wrong-password":
         case "auth/user-not-found":
             return "The email or password is incorrect.";
 
+        case "auth/email-already-in-use":
+            return "An account already exists with this email address.";
+
+        case "auth/weak-password":
+            return "Please choose a stronger password.";
+
         case "auth/too-many-requests":
             return "Too many attempts. Please try again later.";
 
         case "auth/network-request-failed":
-            return "Connection problem. Please check your internet and try again.";
+            return "Network error. Please check your connection.";
 
         default:
             return "Something went wrong. Please try again.";
@@ -166,295 +247,528 @@ function getAuthErrorMessage(error) {
 /* =========================================
    LOGIN MODAL
    ========================================= */
+
 const loginBtn = document.getElementById("loginBtn");
 const startBtn = document.getElementById("startBtn");
 
 const loginForm = document.getElementById("loginForm");
+
 const loginEmailStep = document.getElementById("loginEmailStep");
 const loginPasswordStep = document.getElementById("loginPasswordStep");
 
 const loginEmail = document.getElementById("loginEmail");
 const loginPassword = document.getElementById("loginPassword");
 
-const loginContinueBtn = document.getElementById("loginContinueBtn");
-const loginBackBtn = document.getElementById("loginBackBtn");
-const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+const loginContinueBtn = document.getElementById(
+    "loginContinueBtn"
+);
 
-const loginEmailDisplay = document.getElementById("loginEmailDisplay");
+const loginBackBtn = document.getElementById("loginBackBtn");
+
+const forgotPasswordBtn = document.getElementById(
+    "forgotPasswordBtn"
+);
+
+const loginEmailDisplay = document.getElementById(
+    "loginEmailDisplay"
+);
+
 const loginMessage = document.getElementById("loginMessage");
 
-function resetLoginSteps() {
-    loginForm?.reset();
+function showLoginStep(step) {
+    const isEmailStep = step === "email";
 
-    if (loginEmailStep) loginEmailStep.hidden = false;
-    if (loginPasswordStep) loginPasswordStep.hidden = true;
+    if (loginEmailStep) {
+        loginEmailStep.hidden = !isEmailStep;
+    }
+
+    if (loginPasswordStep) {
+        loginPasswordStep.hidden = isEmailStep;
+    }
+
+    // Prevent hidden inputs from blocking form submission.
+    if (loginEmail) {
+        loginEmail.disabled = !isEmailStep;
+    }
+
+    if (loginPassword) {
+        loginPassword.disabled = isEmailStep;
+    }
 
     showMessage(loginMessage, "");
+
+    const target = isEmailStep
+        ? loginEmail
+        : loginPassword;
+
+    if (target) {
+        target.focus({ preventScroll: true });
+    }
 }
 
 function openLogin() {
-    resetLoginSteps();
+    if (loginForm) {
+        loginForm.reset();
+        loginForm.noValidate = true;
+    }
+
     openModal(loginModal);
-    loginEmail?.focus();
+    showLoginStep("email");
 }
 
-loginBtn?.addEventListener("click", openLogin);
-startBtn?.addEventListener("click", openLogin);
+if (loginBtn) {
+    loginBtn.addEventListener("click", openLogin);
+}
 
-// Step 1: Email
-loginContinueBtn?.addEventListener("click", () => {
-    if (!loginEmail.checkValidity()) {
-        loginEmail.reportValidity();
-        return;
-    }
+if (startBtn) {
+    startBtn.addEventListener("click", openLogin);
+}
 
-    loginEmailDisplay.textContent = loginEmail.value.trim();
-
-    loginEmailStep.hidden = true;
-    loginPasswordStep.hidden = false;
-
-    showMessage(loginMessage, "");
-    loginPassword.focus();
-});
-
-// Allow Enter on email step
-loginEmail?.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        loginContinueBtn.click();
-    }
-});
-
-// Return to email step
-loginBackBtn?.addEventListener("click", () => {
-    loginPasswordStep.hidden = true;
-    loginEmailStep.hidden = false;
-
-    loginPassword.value = "";
-    showMessage(loginMessage, "");
-
-    loginEmail.focus();
-});
-
-// Step 2: Password and Firebase login
-loginForm?.addEventListener("submit", async event => {
-    event.preventDefault();
-
-    if (loginPasswordStep.hidden) {
-        loginContinueBtn.click();
-        return;
-    }
+function continueLogin() {
+    if (!loginEmail) return;
 
     const email = loginEmail.value.trim();
-    const password = loginPassword.value;
 
-    if (!email || !password) {
-        showMessage(loginMessage, "Please enter your email and password.", "error");
-        return;
-    }
-
-    const submitBtn = loginForm.querySelector(
-        '#loginPasswordStep button[type="submit"]'
-    );
-
-    if (submitBtn) submitBtn.disabled = true;
-
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-
-        showMessage(loginMessage, "Login successful!", "success");
-
-        window.location.href = "dashboard.html";
-    } catch (error) {
-        showMessage(loginMessage, getAuthErrorMessage(error), "error");
-    } finally {
-        if (submitBtn) submitBtn.disabled = false;
-    }
-});
-
-// Forgot password
-forgotPasswordBtn?.addEventListener("click", async () => {
-    const email = loginEmail.value.trim();
-
-    if (!email) {
-        showMessage(loginMessage, "Please enter your email first.", "error");
-        return;
-    }
-
-    forgotPasswordBtn.disabled = true;
-
-    try {
-        await sendPasswordResetEmail(auth, email);
-
+    if (!email || !loginEmail.checkValidity()) {
         showMessage(
             loginMessage,
-            "If an account exists for this email, a password reset link will be sent.",
-            "success"
+            "Please enter a valid email address."
         );
-    } catch (error) {
-        if (
-            error.code === "auth/user-not-found" ||
-            error.code === "auth/invalid-credential"
-        ) {
+
+        loginEmail.focus();
+        return;
+    }
+
+    if (loginEmailDisplay) {
+        loginEmailDisplay.textContent = email;
+    }
+
+    showLoginStep("password");
+}
+
+if (loginContinueBtn) {
+    loginContinueBtn.addEventListener("click", event => {
+        event.preventDefault();
+        continueLogin();
+    });
+}
+
+if (loginEmail) {
+    loginEmail.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            continueLogin();
+        }
+    });
+}
+
+if (loginBackBtn) {
+    loginBackBtn.addEventListener("click", event => {
+        event.preventDefault();
+        showLoginStep("email");
+    });
+}
+
+// Sign in
+if (loginForm) {
+    loginForm.noValidate = true;
+
+    loginForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        if (loginPasswordStep?.hidden) {
+            continueLogin();
+            return;
+        }
+
+        const email = loginEmail?.value.trim();
+        const password = loginPassword?.value;
+
+        if (!email || !password) {
+            showMessage(
+                loginMessage,
+                "Please enter your email and password."
+            );
+            return;
+        }
+
+        const submitButton = loginForm.querySelector(
+            'button[type="submit"]'
+        );
+
+        if (submitButton?.disabled) return;
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        showMessage(loginMessage, "");
+
+        try {
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            window.location.href = "dashboard.html";
+        } catch (error) {
+            showMessage(
+                loginMessage,
+                getAuthErrorMessage(error)
+            );
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+    });
+}
+
+// Password reset
+if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener("click", async event => {
+        event.preventDefault();
+
+        const email = loginEmail?.value.trim();
+
+        if (!email) {
+            showMessage(
+                loginMessage,
+                "Please enter your email address first."
+            );
+            return;
+        }
+
+        forgotPasswordBtn.disabled = true;
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+
             showMessage(
                 loginMessage,
                 "If an account exists for this email, a password reset link will be sent.",
                 "success"
             );
-        } else {
-            showMessage(loginMessage, getAuthErrorMessage(error), "error");
+        } catch (error) {
+            if (error.code === "auth/too-many-requests") {
+                showMessage(
+                    loginMessage,
+                    getAuthErrorMessage(error)
+                );
+            } else {
+                showMessage(
+                    loginMessage,
+                    "If an account exists for this email, a password reset link will be sent.",
+                    "success"
+                );
+            }
+        } finally {
+            forgotPasswordBtn.disabled = false;
         }
-    } finally {
-        forgotPasswordBtn.disabled = false;
-    }
-});
+    });
+}
 
 
 /* =========================================
    SIGN UP MODAL
    ========================================= */
+
 const signupBtn = document.getElementById("signupBtn");
 const signupForm = document.getElementById("signupForm");
 
 const signupEmail = document.getElementById("signupEmail");
-const signupPassword = document.getElementById("signupPassword");
-const confirmPassword = document.getElementById("confirmPassword");
+const signupPassword = document.getElementById(
+    "signupPassword"
+);
 
-const signupMessage = document.getElementById("signupMessage");
-const switchToLoginBtn = document.getElementById("switchToLoginBtn");
+const confirmPassword = document.getElementById(
+    "confirmPassword"
+);
 
-signupBtn?.addEventListener("click", () => {
-    signupForm?.reset();
+const signupMessage = document.getElementById(
+    "signupMessage"
+);
+
+const switchToLoginBtn = document.getElementById(
+    "switchToLoginBtn"
+);
+
+function openSignup() {
+    if (signupForm) {
+        signupForm.reset();
+    }
+
     showMessage(signupMessage, "");
-
     openModal(signupModal);
-    signupEmail?.focus();
-});
+}
 
-signupForm?.addEventListener("submit", async event => {
-    event.preventDefault();
+if (signupBtn) {
+    signupBtn.addEventListener("click", openSignup);
+}
 
-    const email = signupEmail.value.trim();
-    const password = signupPassword.value;
-    const confirmation = confirmPassword.value;
+if (switchToLoginBtn) {
+    switchToLoginBtn.addEventListener("click", event => {
+        event.preventDefault();
+        openLogin();
+    });
+}
 
-    if (password !== confirmation) {
-        showMessage(signupMessage, "Passwords do not match.", "error");
-        return;
-    }
+if (signupForm) {
+    signupForm.addEventListener("submit", async event => {
+        event.preventDefault();
 
-    if (password.length < 6) {
-        showMessage(
-            signupMessage,
-            "Your password must contain at least 6 characters.",
-            "error"
+        const email = signupEmail?.value.trim();
+        const password = signupPassword?.value;
+        const confirmation = confirmPassword?.value;
+
+        if (!email || !signupEmail.checkValidity()) {
+            showMessage(
+                signupMessage,
+                "Please enter a valid email address."
+            );
+            return;
+        }
+
+        if (!password || password.length < 6) {
+            showMessage(
+                signupMessage,
+                "Your password must contain at least 6 characters."
+            );
+            return;
+        }
+
+        if (password !== confirmation) {
+            showMessage(
+                signupMessage,
+                "Your passwords do not match."
+            );
+            return;
+        }
+
+        const submitButton = signupForm.querySelector(
+            'button[type="submit"]'
         );
-        return;
-    }
 
-    const submitBtn = signupForm.querySelector('button[type="submit"]');
+        if (submitButton?.disabled) return;
 
-    if (submitBtn) submitBtn.disabled = true;
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
 
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        showMessage(signupMessage, "");
 
-        showMessage(signupMessage, "Account created successfully!", "success");
+        try {
+            await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
 
-        window.location.href = "dashboard.html";
-    } catch (error) {
-        showMessage(signupMessage, getAuthErrorMessage(error), "error");
-    } finally {
-        if (submitBtn) submitBtn.disabled = false;
-    }
-});
-
-// Switch from Sign Up to Login
-switchToLoginBtn?.addEventListener("click", openLogin);
+            window.location.href = "dashboard.html";
+        } catch (error) {
+            showMessage(
+                signupMessage,
+                getAuthErrorMessage(error)
+            );
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+    });
+}
 
 
 /* =========================================
-   SAMPLE DASHBOARD
+   SAMPLE DASHBOARD OVERLAY
    ========================================= */
+
 const demoBtn = document.getElementById("demoBtn");
 const closeDemoBtn = document.getElementById("closeDemoBtn");
 
 const demoPrevBtn = document.getElementById("demoPrevBtn");
 const demoNextBtn = document.getElementById("demoNextBtn");
-const demoPageLabel = document.getElementById("demoPageLabel");
+
+const demoPageLabel = document.getElementById(
+    "demoPageLabel"
+);
 
 const demoPages = [
     {
         element: document.getElementById("demoDashboard"),
-        title: "Dashboard"
+        label: "Dashboard"
     },
     {
         element: document.getElementById("demoMonthlySummary"),
-        title: "Monthly Summary"
+        label: "Monthly Summary"
     },
     {
         element: document.getElementById("demoAccounts"),
-        title: "Accounts"
+        label: "Accounts"
     }
 ];
 
 let currentDemoPage = 0;
+let demoTransitioning = false;
 
-function showDemoPage(index) {
-    if (index < 0 || index >= demoPages.length) return;
+function renderDemoPage(direction = 0) {
+    demoPages.forEach((page, index) => {
+        if (!page.element) return;
 
-    currentDemoPage = index;
+        page.element.classList.remove(
+            "slide-in-left",
+            "slide-in-right"
+        );
 
-    demoPages.forEach((page, pageIndex) => {
-        if (page.element) {
-            page.element.hidden = pageIndex !== index;
-        }
+        page.element.hidden = index !== currentDemoPage;
     });
 
-    demoPageLabel.textContent = demoPages[index].title;
+    const activePage = demoPages[currentDemoPage];
 
-    demoPrevBtn.disabled = index === 0;
-    demoNextBtn.disabled = index === demoPages.length - 1;
+    if (demoPageLabel) {
+        demoPageLabel.textContent = activePage.label;
+    }
+
+    if (demoPrevBtn) {
+        demoPrevBtn.disabled =
+            demoTransitioning || currentDemoPage === 0;
+    }
+
+    if (demoNextBtn) {
+        demoNextBtn.disabled =
+            demoTransitioning ||
+            currentDemoPage === demoPages.length - 1;
+    }
+
+    if (!activePage.element || direction === 0) return;
+
+    if (prefersReducedMotion.matches) return;
+
+    // Restart the slide animation when changing screens.
+    void activePage.element.offsetWidth;
+
+    activePage.element.classList.add(
+        direction > 0
+            ? "slide-in-right"
+            : "slide-in-left"
+    );
 }
 
-demoBtn?.addEventListener("click", () => {
-    showDemoPage(0);
+function changeDemoPage(direction) {
+    if (demoTransitioning) return;
+
+    const nextPage = currentDemoPage + direction;
+
+    if (nextPage < 0 || nextPage >= demoPages.length) {
+        return;
+    }
+
+    demoTransitioning = true;
+    currentDemoPage = nextPage;
+
+    renderDemoPage(direction);
+
+    window.setTimeout(() => {
+        demoTransitioning = false;
+        renderDemoPage();
+    }, prefersReducedMotion.matches ? 0 : 280);
+}
+
+function openDemo() {
+    currentDemoPage = 0;
+    demoTransitioning = false;
+
+    renderDemoPage();
     openModal(demoOverlay);
-});
+}
 
-closeDemoBtn?.addEventListener("click", closeModal);
+if (demoBtn) {
+    demoBtn.addEventListener("click", openDemo);
+}
 
-demoPrevBtn?.addEventListener("click", () => {
-    showDemoPage(currentDemoPage - 1);
-});
+if (closeDemoBtn) {
+    closeDemoBtn.addEventListener("click", closeModal);
+}
 
-demoNextBtn?.addEventListener("click", () => {
-    showDemoPage(currentDemoPage + 1);
-});
+if (demoPrevBtn) {
+    demoPrevBtn.addEventListener("click", () => {
+        changeDemoPage(-1);
+    });
+}
+
+if (demoNextBtn) {
+    demoNextBtn.addEventListener("click", () => {
+        changeDemoPage(1);
+    });
+}
+
+// Set the initial demo screen.
+renderDemoPage();
 
 
 /* =========================================
    CONTACT MODAL
    ========================================= */
+
 const contactLink = document.getElementById("contactLink");
 const contactForm = document.getElementById("contactForm");
-const contactMessage = document.getElementById("contactMessage");
 
-contactLink?.addEventListener("click", event => {
-    event.preventDefault();
+const contactName = document.getElementById("contactName");
+const contactEmail = document.getElementById("contactEmail");
+const contactPhone = document.getElementById("contactPhone");
+const contactQuestion = document.getElementById(
+    "contactQuestion"
+);
 
-    contactForm?.reset();
+const contactMessage = document.getElementById(
+    "contactMessage"
+);
+
+function openContact() {
+    if (contactForm) {
+        contactForm.reset();
+    }
+
     showMessage(contactMessage, "");
-
     openModal(contactModal);
-});
 
-contactForm?.addEventListener("submit", event => {
-    event.preventDefault();
+    if (contactName) {
+        contactName.focus({ preventScroll: true });
+    }
+}
 
-    showMessage(
-        contactMessage,
-        "The contact form is not connected to message delivery yet.",
-        "error"
-    );
-});
+if (contactLink) {
+    contactLink.addEventListener("click", event => {
+        event.preventDefault();
+        openContact();
+    });
+}
+
+if (contactForm) {
+    contactForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const name = contactName?.value.trim() || "";
+        const email = contactEmail?.value.trim() || "";
+        const phone = contactPhone?.value.trim() || "";
+        const question = contactQuestion?.value.trim() || "";
+
+        if (!email || !question) {
+            showMessage(
+                contactMessage,
+                "Please enter your email and question."
+            );
+            return;
+        }
+
+        // The form will send inquiries to DnA Financial
+        // once an email delivery service is connected.
+        // No message is sent by this placeholder.
+
+        showMessage(
+            contactMessage,
+            "The contact form is not connected to message delivery yet."
+        );
+    });
+}

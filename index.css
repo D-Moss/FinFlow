@@ -2,6 +2,7 @@
 /* =========================================
    GLOBAL STYLES
    ========================================= */
+
 * {
     box-sizing: border-box;
 }
@@ -17,12 +18,10 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Hide inactive modal steps and preview screens */
 [hidden] {
     display: none !important;
 }
 
-/* Prevent background scrolling when a modal is open */
 body.modal-open {
     overflow: hidden;
 }
@@ -31,6 +30,7 @@ body.modal-open {
 /* =========================================
    BUTTONS
    ========================================= */
+
 .btn-secondary {
     padding: 12px 24px;
     background: #ffffff;
@@ -52,13 +52,32 @@ body.modal-open {
     cursor: pointer;
 }
 
-.btn-secondary:hover,
-.btn-primary:hover,
-.cta-button:hover {
-    opacity: 0.7;
+.btn-secondary,
+.btn-primary,
+.cta-button {
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-secondary:hover:not(:disabled),
+.btn-primary:hover:not(:disabled),
+.cta-button:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(37, 99, 235, 0.12);
+}
+
+.btn-secondary:active:not(:disabled),
+.btn-primary:active:not(:disabled),
+.cta-button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 button:disabled {
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
@@ -66,6 +85,7 @@ button:disabled {
 /* =========================================
    NAVIGATION
    ========================================= */
+
 .navbar {
     padding: 20px 5%;
     background: #ffffff;
@@ -75,7 +95,6 @@ button:disabled {
     border-bottom: 1px solid #e2e8f0;
 }
 
-/* Clickable FinFlow logo */
 .logo {
     display: inline-block;
     color: #2563eb;
@@ -83,11 +102,14 @@ button:disabled {
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-    transition: opacity 0.2s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
 
 .logo:hover {
     opacity: 0.85;
+    transform: scale(1.03);
 }
 
 .nav-links {
@@ -100,6 +122,7 @@ button:disabled {
 /* =========================================
    HERO
    ========================================= */
+
 .hero {
     text-align: center;
     padding: 80px 5%;
@@ -141,6 +164,7 @@ button:disabled {
 /* =========================================
    HOME PREVIEW
    ========================================= */
+
 .home-preview {
     padding: 20px 5% 50px;
     display: flex;
@@ -172,6 +196,7 @@ button:disabled {
 /* =========================================
    TAX DISCLAIMER
    ========================================= */
+
 .tax-note {
     margin: 0 auto 60px;
     padding: 35px;
@@ -195,6 +220,7 @@ button:disabled {
 /* =========================================
    FOOTER
    ========================================= */
+
 .footer {
     margin-top: 80px;
     padding: 40px 5%;
@@ -227,6 +253,7 @@ button:disabled {
     color: #64748b;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
@@ -243,7 +270,7 @@ button:disabled {
 /* =========================================
    LOGIN MODAL
    ========================================= */
-/* Shared modal overlay */
+
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -269,6 +296,57 @@ button:disabled {
     box-shadow: 0 20px 55px rgba(0, 0, 0, 0.22);
 }
 
+/* Fade + slide up when opening */
+.modal-overlay:not([hidden]):not(.is-closing) {
+    animation: modalBackdropIn 0.25s ease both;
+}
+
+.modal-overlay:not([hidden]):not(.is-closing) .modal-box {
+    animation: modalSlideIn 0.28s ease-out both;
+}
+
+/* Fade + slide down when closing */
+.modal-overlay.is-closing {
+    animation: modalBackdropOut 0.22s ease both;
+    pointer-events: none;
+}
+
+.modal-overlay.is-closing .modal-box {
+    animation: modalSlideOut 0.22s ease-in both;
+}
+
+@keyframes modalBackdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalBackdropOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
 .modal-box h2 {
     margin: 0 0 10px;
     color: #1e293b;
@@ -281,7 +359,6 @@ button:disabled {
     line-height: 1.5;
 }
 
-/* Shared modal close button */
 .modal-close {
     position: absolute;
     top: 14px;
@@ -299,7 +376,6 @@ button:disabled {
     color: #2563eb;
 }
 
-/* Shared form styling */
 .modal-box form {
     display: flex;
     flex-direction: column;
@@ -325,7 +401,9 @@ button:disabled {
     font-family: inherit;
     font-size: 15px;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .modal-box input:focus,
@@ -341,7 +419,6 @@ button:disabled {
     padding: 13px 20px;
 }
 
-/* Login email and password steps */
 #loginEmailStep,
 #loginPasswordStep {
     width: 100%;
@@ -362,7 +439,6 @@ button:disabled {
     overflow-wrap: anywhere;
 }
 
-/* Login navigation and password reset */
 .text-button {
     display: inline-block;
     padding: 5px 0;
@@ -374,9 +450,11 @@ button:disabled {
     font-weight: 600;
     text-align: left;
     cursor: pointer;
+    transition: opacity 0.2s ease;
 }
 
 .text-button:hover {
+    opacity: 0.7;
     text-decoration: underline;
 }
 
@@ -388,7 +466,6 @@ button:disabled {
     margin-top: 6px;
 }
 
-/* Shared form feedback */
 .form-message {
     margin: 12px 0 0;
     font-size: 14px;
@@ -407,7 +484,6 @@ button:disabled {
 /* =========================================
    SIGN UP MODAL
    ========================================= */
-/* Uses shared modal and form styles above */
 
 #signupModal .modal-box > p:last-child {
     margin-top: 20px;
@@ -424,6 +500,7 @@ button:disabled {
 /* =========================================
    SAMPLE DASHBOARD OVERLAY
    ========================================= */
+
 .demo-overlay {
     position: fixed;
     inset: 0;
@@ -436,7 +513,6 @@ button:disabled {
     overflow-y: auto;
 }
 
-/* Main preview container */
 .demo-container {
     position: relative;
     width: 100%;
@@ -447,6 +523,57 @@ button:disabled {
     background: #ffffff;
     border-radius: 14px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Soft zoom when opening */
+.demo-overlay:not([hidden]):not(.is-closing) {
+    animation: demoBackdropIn 0.25s ease both;
+}
+
+.demo-overlay:not([hidden]):not(.is-closing) .demo-container {
+    animation: demoZoomIn 0.3s ease-out both;
+}
+
+/* Soft zoom when closing */
+.demo-overlay.is-closing {
+    animation: demoBackdropOut 0.22s ease both;
+    pointer-events: none;
+}
+
+.demo-overlay.is-closing .demo-container {
+    animation: demoZoomOut 0.22s ease-in both;
+}
+
+@keyframes demoBackdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes demoBackdropOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes demoZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes demoZoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.97);
+    }
 }
 
 /* Preview header */
@@ -472,7 +599,7 @@ button:disabled {
     line-height: 1.5;
 }
 
-/* Preview navigation arrows */
+/* Preview navigation */
 .demo-navigation {
     display: flex;
     justify-content: center;
@@ -494,12 +621,16 @@ button:disabled {
     border-radius: 50%;
     font-size: 22px;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .demo-navigation button:hover:not(:disabled) {
     background: #2563eb;
     color: #ffffff;
+    transform: scale(1.06);
 }
 
 .demo-navigation button:disabled {
@@ -514,9 +645,40 @@ button:disabled {
     text-align: center;
 }
 
-/* Preview screens */
+/* Demo screens */
 .demo-page {
     min-height: 280px;
+}
+
+/* Slide between screens */
+.demo-page.slide-in-right {
+    animation: demoSlideFromRight 0.28s ease both;
+}
+
+.demo-page.slide-in-left {
+    animation: demoSlideFromLeft 0.28s ease both;
+}
+
+@keyframes demoSlideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes demoSlideFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .demo-page h3 {
@@ -565,7 +727,7 @@ button:disabled {
     overflow-wrap: anywhere;
 }
 
-/* Monthly summary and accounts tables */
+/* Tables */
 .demo-table-wrap {
     width: 100%;
     overflow-x: auto;
@@ -604,7 +766,6 @@ button:disabled {
     text-align: right;
 }
 
-/* Preview disclaimer */
 .demo-disclaimer {
     margin: 30px 0 0;
     padding-top: 18px;
@@ -618,7 +779,6 @@ button:disabled {
 /* =========================================
    CONTACT MODAL
    ========================================= */
-/* Uses shared modal and form styles above */
 
 #contactForm textarea {
     resize: vertical;
@@ -631,8 +791,9 @@ button:disabled {
 
 
 /* =========================================
-   RESPONSIVE STYLES
+   RESPONSIVE & ACCESSIBILITY
    ========================================= */
+
 @media (max-width: 900px) {
     .demo-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -738,5 +899,20 @@ button:disabled {
 
     .demo-stats {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Respect visitors who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
