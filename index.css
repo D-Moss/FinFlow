@@ -1,8 +1,6 @@
-
 /* =========================================
    GLOBAL STYLES
    ========================================= */
-
 * {
     box-sizing: border-box;
 }
@@ -30,7 +28,6 @@ body.modal-open {
 /* =========================================
    BUTTONS
    ========================================= */
-
 .btn-secondary {
     padding: 12px 24px;
     background: #ffffff;
@@ -85,7 +82,6 @@ button:disabled {
 /* =========================================
    NAVIGATION
    ========================================= */
-
 .navbar {
     padding: 20px 5%;
     background: #ffffff;
@@ -122,7 +118,6 @@ button:disabled {
 /* =========================================
    HERO
    ========================================= */
-
 .hero {
     text-align: center;
     padding: 80px 5%;
@@ -164,7 +159,6 @@ button:disabled {
 /* =========================================
    HOME PREVIEW
    ========================================= */
-
 .home-preview {
     padding: 20px 5% 50px;
     display: flex;
@@ -196,7 +190,6 @@ button:disabled {
 /* =========================================
    TAX DISCLAIMER
    ========================================= */
-
 .tax-note {
     margin: 0 auto 60px;
     padding: 35px;
@@ -220,7 +213,6 @@ button:disabled {
 /* =========================================
    FOOTER
    ========================================= */
-
 .footer {
     margin-top: 80px;
     padding: 40px 5%;
@@ -270,7 +262,6 @@ button:disabled {
 /* =========================================
    LOGIN MODAL
    ========================================= */
-
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -298,21 +289,21 @@ button:disabled {
 
 /* Fade + slide up when opening */
 .modal-overlay:not([hidden]):not(.is-closing) {
-    animation: modalBackdropIn 0.25s ease both;
+    animation: modalBackdropIn 0.4s ease-in-out both;
 }
 
 .modal-overlay:not([hidden]):not(.is-closing) .modal-box {
-    animation: modalSlideIn 0.28s ease-out both;
+    animation: modalSlideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Fade + slide down when closing */
 .modal-overlay.is-closing {
-    animation: modalBackdropOut 0.22s ease both;
+    animation: modalBackdropOut 0.4s ease-in-out both;
     pointer-events: none;
 }
 
 .modal-overlay.is-closing .modal-box {
-    animation: modalSlideOut 0.22s ease-in both;
+    animation: modalSlideOut 0.4s ease-in-out both;
 }
 
 @keyframes modalBackdropIn {
@@ -484,7 +475,6 @@ button:disabled {
 /* =========================================
    SIGN UP MODAL
    ========================================= */
-
 #signupModal .modal-box > p:last-child {
     margin-top: 20px;
     margin-bottom: 0;
@@ -500,7 +490,6 @@ button:disabled {
 /* =========================================
    SAMPLE DASHBOARD OVERLAY
    ========================================= */
-
 .demo-overlay {
     position: fixed;
     inset: 0;
@@ -527,21 +516,21 @@ button:disabled {
 
 /* Soft zoom when opening */
 .demo-overlay:not([hidden]):not(.is-closing) {
-    animation: demoBackdropIn 0.25s ease both;
+    animation: demoBackdropIn 0.4s ease-in-out both;
 }
 
 .demo-overlay:not([hidden]):not(.is-closing) .demo-container {
-    animation: demoZoomIn 0.3s ease-out both;
+    animation: demoZoomIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Soft zoom when closing */
 .demo-overlay.is-closing {
-    animation: demoBackdropOut 0.22s ease both;
+    animation: demoBackdropOut 0.4s ease-in-out both;
     pointer-events: none;
 }
 
 .demo-overlay.is-closing .demo-container {
-    animation: demoZoomOut 0.22s ease-in both;
+    animation: demoZoomOut 0.4s ease-in-out both;
 }
 
 @keyframes demoBackdropIn {
@@ -652,11 +641,11 @@ button:disabled {
 
 /* Slide between screens */
 .demo-page.slide-in-right {
-    animation: demoSlideFromRight 0.28s ease both;
+    animation: demoSlideFromRight 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .demo-page.slide-in-left {
-    animation: demoSlideFromLeft 0.28s ease both;
+    animation: demoSlideFromLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes demoSlideFromRight {

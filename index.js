@@ -1,8 +1,6 @@
-
 /* =========================================
    FIREBASE CONFIGURATION
    ========================================= */
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
 
 import {
@@ -29,7 +27,6 @@ const auth = getAuth(app);
 /* =========================================
    FOOTER
    ========================================= */
-
 const currentYear = document.getElementById("currentYear");
 
 if (currentYear) {
@@ -40,7 +37,6 @@ if (currentYear) {
 /* =========================================
    MODAL CONTROLS
    ========================================= */
-
 const loginModal = document.getElementById("loginModal");
 const signupModal = document.getElementById("signupModal");
 const contactModal = document.getElementById("contactModal");
@@ -53,7 +49,7 @@ const allOverlays = [
     demoOverlay
 ].filter(Boolean);
 
-const CLOSE_ANIMATION_MS = 220;
+const CLOSE_ANIMATION_MS = 400;
 
 const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -203,7 +199,6 @@ document.addEventListener("keydown", event => {
 /* =========================================
    FORM MESSAGES
    ========================================= */
-
 function showMessage(element, message, type = "error") {
     if (!element) return;
 
@@ -247,7 +242,6 @@ function getAuthErrorMessage(error) {
 /* =========================================
    LOGIN MODAL
    ========================================= */
-
 const loginBtn = document.getElementById("loginBtn");
 const startBtn = document.getElementById("startBtn");
 
@@ -473,7 +467,6 @@ if (forgotPasswordBtn) {
 /* =========================================
    SIGN UP MODAL
    ========================================= */
-
 const signupBtn = document.getElementById("signupBtn");
 const signupForm = document.getElementById("signupForm");
 
@@ -583,7 +576,6 @@ if (signupForm) {
 /* =========================================
    SAMPLE DASHBOARD OVERLAY
    ========================================= */
-
 const demoBtn = document.getElementById("demoBtn");
 const closeDemoBtn = document.getElementById("closeDemoBtn");
 
@@ -672,7 +664,7 @@ function changeDemoPage(direction) {
     window.setTimeout(() => {
         demoTransitioning = false;
         renderDemoPage();
-    }, prefersReducedMotion.matches ? 0 : 280);
+    }, prefersReducedMotion.matches ? 0 : 450);
 }
 
 function openDemo() {
@@ -710,7 +702,6 @@ renderDemoPage();
 /* =========================================
    CONTACT MODAL
    ========================================= */
-
 const contactLink = document.getElementById("contactLink");
 const contactForm = document.getElementById("contactForm");
 
