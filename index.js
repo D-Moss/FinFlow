@@ -7,7 +7,9 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
 
@@ -22,6 +24,61 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+
+/* =========================================
+   LOGOUT & PAGE AUTHENTICATION
+   ========================================= */
+
+const protectedPages = [
+    "dashboard.html",
+    "pandl.html",
+    "monthly.html",
+    "transactions.html",
+    "questions.html",
+    "settings.html"
+];
+
+const currentPage = window.location.pathname.split("/").pop();
+const isProtectedPage = protectedPages.includes(currentPage);
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+// Check whether the user is authenticated
+if (isProtectedPage) {
+    onAuthStateChanged(auth, user => {
+        if (!user) {
+            window.location.replace("index.html");
+        }
+    });
+
+    // Recheck authentication when using browser history
+    window.addEventListener("pageshow", async () => {
+        await auth.authStateReady();
+
+        if (!auth.currentUser) {
+            window.location.replace("index.html");
+        }
+    });
+}
+
+// Logout
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async event => {
+        event.preventDefault();
+
+        logoutBtn.disabled = true;
+
+        try {
+            await signOut(auth);
+            window.location.replace("index.html");
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert("Unable to log out. Please try again.");
+            logoutBtn.disabled = false;
+        }
+    });
+}
 
 
 /* =========================================
