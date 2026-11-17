@@ -1,309 +1,289 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* =========================================
+   FINFLOW — DASHBOARD
+   Dashboard-specific styling
+   ========================================= */
+
+
+/* =========================================
+   DASHBOARD SECTION STYLING
+   ========================================= */
+
+.business-profile,
+.bookkeeping-overview,
+.expense-summary,
+.accounts-overview,
+.transactions-section,
+.questions-summary,
+.tax-reminder,
+.upload-section {
+    background-color: var(--surface);
+    border: 1px solid #edf0f5;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
 }
 
-/* BODY */
-body {
-    color: #1e293b;
-    background-color: #f5f7fb;
-    font-family: 'Inter', sans-serif;
+
+/* =========================================
+   CLIENT & BUSINESS PROFILE
+   ========================================= */
+
+.business-profile {
+    margin-bottom: 30px;
 }
 
-/* DASHBOARD LAYOUT */
-.dashboard-container {
-    display: flex;
-    min-height: 100vh;
-}
 
-/* SIDEBAR */
-.sidebar {
-    padding: 32px 24px;
-    background-color: #ffffff;
-    border-right: 1px solid #e5e7eb;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 250px;
-}
+/* CLIENT SELECTOR */
 
-.sidebar-logo h2 {
-    margin-bottom: 40px;
-    color: #2563eb;
-    font-size: 28px;
-}
-
-.sidebar-nav {
+.client-selection {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
+    max-width: 420px;
+    margin-bottom: 26px;
 }
 
-.sidebar-nav a {
-    text-decoration: none;
-    color: #64748b;
-    padding: 12px 16px;
-    border-radius: 12px;
-    transition: 0.3s ease;
-    font-weight: 500;
+.client-selection label,
+.detail-label,
+.transaction-filters label {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.sidebar-nav a:hover {
-    background-color: #eff6ff;
-    color: #2563eb;
+
+/* BUSINESS DETAILS */
+
+.business-details {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    padding: 22px;
+    background-color: #f8faff;
+    border: 1px solid #edf2ff;
+    border-radius: var(--radius-md);
 }
 
-.active-link {
-    background-color: #2563eb;
-    color: white !important;
+.business-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
 }
 
-/* MAIN CONTENT */
-
-.main-content {
-    flex: 1;
-    padding: 40px;
+.business-detail strong {
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
-/* HEADER */
-
-.dashboard-header {
-    margin-bottom: 32px;
+.business-detail select {
+    min-height: 38px;
 }
 
-.dashboard-header h1 {
-    font-size: 34px;
-    margin-bottom: 10px;
-    color: #0f172a;
-}
 
-.dashboard-header p {
-    color: #64748b;
-    font-size: 16px;
-}
+/* =========================================
+   FINANCIAL OVERVIEW
+   ========================================= */
 
-/* OVERVIEW CARDS */
+.financial-overview {
+    margin-bottom: 30px;
+}
 
 .overview-cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
 }
 
 .card {
-    background-color: white;
-    border-radius: 18px;
+    min-width: 0;
     padding: 24px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    background-color: var(--surface);
+    border: 1px solid #e8edf5;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
 }
 
 .card-label {
-    color: #64748b;
-    font-size: 14px;
     display: block;
-    margin-bottom: 12px;
-}
-
-.card h3 {
-    font-size: 28px;
-    color: #0f172a;
-}
-
-.loss {
-    color: #dc2626;
-}
-
-.neutral {
-    color: #64748b;
-}
-
-.empty-state {
-    text-align: center;
-    color: #94a3b8;
-    padding: 28px 0 !important;
-}
-
-/* SECTION STYLING */
-
-.expense-summary,
-.transactions-section,
-.tax-reminder,
-.upload-section {
-    background-color: white;
-    border-radius: 20px;
-    padding: 28px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-}
-
-/* SECTION HEADERS */
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-}
-
-.section-header h2 {
-    font-size: 24px;
-    color: #0f172a;
-}
-
-.section-header span {
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* EXPENSE SUMMARY */
-
-.expense-summary {
-    margin-bottom: 32px;
-}
-
-.expense-list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.expense-item {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.expense-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.expense-info span {
-    color: #334155;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+    font-size: 12px;
     font-weight: 500;
 }
 
-.expense-info strong {
-    color: #0f172a;
+.card h3 {
+    color: var(--text-dark);
+    font-size: clamp(20px, 2vw, 27px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    overflow-wrap: anywhere;
 }
+
+.financial-overview .card:first-child {
+    border-top: 3px solid var(--primary);
+}
+
+.financial-overview .card:nth-child(2) {
+    border-top: 3px solid var(--warning);
+}
+
+.financial-overview .card:nth-child(3) {
+    border-top: 3px solid var(--success);
+}
+
+.financial-overview .card:nth-child(4) {
+    border-top: 3px solid var(--purple);
+}
+
+
+/* PROFIT / LOSS STATES */
+
+#profitLossAmount.profit {
+    color: var(--success);
+}
+
+#profitLossAmount.loss {
+    color: var(--danger);
+}
+
+#profitLossAmount.neutral {
+    color: var(--text-muted);
+}
+
+
+/* =========================================
+   BOOKKEEPING OVERVIEW
+   ========================================= */
+
+.bookkeeping-overview {
+    margin-bottom: 30px;
+}
+
+.bookkeeping-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.bookkeeping-cards .card {
+    background-color: #f8fafc;
+    box-shadow: none;
+}
+
+.bookkeeping-cards .card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.bookkeeping-cards .card:nth-child(2) h3 {
+    color: var(--success);
+}
+
+.bookkeeping-cards .card:nth-child(3) h3 {
+    color: #d97706;
+}
+
+
+/* REVIEW PROGRESS */
+
+.review-progress {
+    margin-top: 26px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.review-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.review-progress-header h3 {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.review-progress-header span {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+
+/* PROGRESS BAR */
 
 .progress-bar {
     width: 100%;
-    height: 10px;
-    background-color: #e2e8f0;
+    height: 9px;
+    background-color: var(--border);
     border-radius: 999px;
     overflow: hidden;
 }
 
 .progress-fill {
-    background-color: #2563eb;
+    width: 0;
     height: 100%;
+    background-color: var(--primary);
     border-radius: 999px;
+    transition: width 0.3s ease;
 }
 
-/* PROGRESS COLORS */
-.advertising {
-    width: 25%;
-    background-color: #2563eb;
+.review-progress .progress-fill {
+    background-color: var(--success);
 }
 
-.supplies {
-    width: 40%;
-    background-color: #8b5cf6;
+
+/* =========================================
+   EXPENSE SUMMARY
+   ========================================= */
+
+.expense-summary {
+    margin-bottom: 30px;
 }
 
-.website {
-    width: 18%;
-    background-color: #06b6d4;
-}
-
-.software {
-    width: 35%;
-    background-color: #f59e0b;
-}
-
-.utilities {
-    width: 75%;
-    background-color: #16a34a;
-}
-
-/* LOWER GRID */
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-    margin-bottom: 40px;
-}
-
-/* TRANSACTIONS */
-.transactions-section table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.transactions-section th {
-    text-align: left;
-    padding-bottom: 18px;
-    color: #64748b;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.transactions-section td {
-    padding: 14px 0;
-    border-top: 1px solid #f1f5f9;
-    color: #334155;
-}
-
-/* RIGHT COLUMN */
-
-.right-column {
+.expense-list {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 22px;
 }
 
-/* TAX REMINDER */
-.tax-reminder h2,
-.upload-section h2 {
-    margin-bottom: 18px;
-    color: #0f172a;
+.expense-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.tax-reminder p {
-    color: #64748b;
-    line-height: 1.7;
+.expense-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
 }
 
-/* UPLOAD SECTION */
-.upload-box {
-    border: 2px dashed #cbd5e1;
-    border-radius: 16px;
-    padding: 40px 24px;
-    text-align: center;
+.expense-info span {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 500;
 }
 
-.upload-box p {
-    color: #64748b;
-    margin-bottom: 20px;
-}
-
-.upload-box button {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 22px;
-    border-radius: 10px;
-    cursor: pointer;
+.expense-info strong {
+    color: var(--text-dark);
+    font-size: 13px;
     font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.upload-box button:hover {
-    background-color: #1d4ed8;
 }
 
 .hidden-expense {
@@ -314,97 +294,309 @@ body {
     display: flex;
 }
 
+
+/* VIEW ALL CATEGORIES */
+
 .view-all-btn {
-    margin-top: 24px;
     width: 100%;
-    background-color: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    margin-top: 24px;
     padding: 12px 18px;
-    border-radius: 12px;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s ease;
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
 
 .view-all-btn:hover {
-    background-color: #2563eb;
-    color: #ffffff;
+    color: var(--surface);
+    background-color: var(--primary);
 }
 
-/* FOOTER */
-.dashboard-footer {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 32px;
+
+/* =========================================
+   ACCOUNTS OVERVIEW
+   ========================================= */
+
+.accounts-overview {
+    margin-bottom: 30px;
+}
+
+.accounts-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.accounts-table th,
+.accounts-table td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #edf0f5;
+    font-size: 13px;
+}
+
+.accounts-table thead th {
+    color: var(--text-muted);
+    background-color: #f8fafc;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.accounts-table tbody td {
+    color: #334155;
+}
+
+.accounts-table tfoot th,
+.accounts-table tfoot td {
+    color: var(--text-dark);
+    background-color: #f8fafc;
+    font-weight: 700;
+    border-bottom: none;
+}
+
+
+/* =========================================
+   LOWER GRID
+   ========================================= */
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 40px;
+}
+
+
+/* =========================================
+   RECENT TRANSACTIONS
+   ========================================= */
+
+.transaction-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.transaction-filters select {
+    max-width: 220px;
+}
+
+.transactions-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.transactions-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transactions-section th {
+    padding: 14px 12px;
+    color: var(--text-muted);
+    background-color: #f8fafc;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.transactions-section td {
+    padding: 15px 12px;
+    color: #334155;
+    border-top: 1px solid var(--surface-muted);
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RIGHT COLUMN
+   ========================================= */
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+/* QUESTIONS REQUIRING ATTENTION */
+
+.questions-summary .section-header {
+    margin-bottom: 16px;
+}
+
+.questions-summary .section-header h2 {
+    font-size: 18px;
+}
+
+.empty-message {
+    padding: 20px 12px;
+    color: var(--text-light);
+    background-color: #f8fafc;
+    border-radius: 10px;
+    font-size: 13px;
     text-align: center;
 }
 
-.dashboard-footer h3 {
-    color: #2563eb;
-    margin-bottom: 18px;
-    font-size: 26px;
+
+/* TAX REMINDER */
+
+.tax-reminder h2,
+.upload-section h2 {
+    margin-bottom: 16px;
+    color: var(--text-dark);
+    font-size: 18px;
 }
 
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-bottom: 18px;
+.tax-reminder p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
 }
 
-.footer-links a {
-    text-decoration: none;
-    color: #64748b;
-    transition: 0.3s ease;
+
+/* =========================================
+   UPLOAD STATEMENTS
+   ========================================= */
+
+.upload-box {
+    padding: 30px 20px;
+    border: 2px dashed var(--border-input);
+    border-radius: 14px;
+    background-color: #fafcff;
+    text-align: center;
 }
 
-.footer-links a:hover {
-    color: #2563eb;
+.upload-box p {
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
 }
 
-.dashboard-footer p {
-    color: #94a3b8;
-    font-size: 14px;
+.upload-box button {
+    padding: 12px 20px;
+    color: var(--surface);
+    background-color: var(--primary);
+    border: none;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background-color 0.25s ease;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-    .overview-cards {
-        grid-template-columns: repeat(2, 1fr);
+.upload-box button:hover {
+    background-color: var(--primary-hover);
+}
+
+
+/* =========================================
+   EMPTY STATES
+   ========================================= */
+
+.empty-state {
+    padding: 28px 12px !important;
+    color: var(--text-light) !important;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center !important;
+}
+
+
+/* =========================================
+   RESPONSIVE — LARGE TABLETS
+   ========================================= */
+
+@media (max-width: 1200px) {
+
+    .business-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .overview-cards,
+    .bookkeeping-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .bottom-grid {
         grid-template-columns: 1fr;
     }
+
 }
+
+
+/* =========================================
+   RESPONSIVE — TABLETS & MOBILE
+   ========================================= */
 
 @media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
+
+    .business-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    .sidebar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    .main-content {
-        padding: 24px;
-    }
-    .overview-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .dashboard-header h1 {
-        font-size: 28px;
-    }
+
 }
 
+
+/* =========================================
+   RESPONSIVE — SMALL PHONES
+   ========================================= */
+
 @media (max-width: 500px) {
-    .overview-cards {
-        grid-template-columns: 1fr;
+
+    .business-profile,
+    .bookkeeping-overview,
+    .expense-summary,
+    .accounts-overview,
+    .transactions-section,
+    .questions-summary,
+    .tax-reminder,
+    .upload-section {
+        padding: 20px 16px;
+        border-radius: 14px;
     }
+
+    .business-details {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .overview-cards,
+    .bookkeeping-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .card h3 {
+        font-size: 25px;
+    }
+
+    .review-progress-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .transaction-filters {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .transaction-filters select {
+        max-width: none;
+    }
+
 }

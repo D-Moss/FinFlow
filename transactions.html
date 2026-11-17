@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinFlow | Transactions</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="transactions.css">
+
+    <!-- JAVASCRIPT -->
+    <script src="transactions.js" defer></script>
+
+</head>
+
+<body class="finflow-app transactions-page">
+
+    <div class="dashboard-container">
+
+        <!-- ===================================== -->
+        <!-- SIDEBAR -->
+        <!-- ===================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <h2>FinFlow</h2>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Dashboard navigation">
+
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="pandl.html">
+                    <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                    <span>Income &amp; Expense Report</span>
+                </a>
+
+                <a href="monthly.html">
+                    <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                    <span>Monthly Reports</span>
+                </a>
+
+                <a href="transactions.html" class="active-link" aria-current="page">
+                    <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="questions.html">
+                    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                    <span>Client Questions</span>
+                </a>
+
+                <a href="settings.html">
+                    <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                    <span>Categories &amp; Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-actions">
+
+                <a href="dashboard.html#upload-files" class="sidebar-action-link">
+                    <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                    <span>Upload Statements</span>
+                </a>
+
+            </div>
+
+            <div class="sidebar-account">
+
+                <button type="button" id="logoutBtn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ===================================== -->
+        <!-- MAIN CONTENT -->
+        <!-- ===================================== -->
+
+        <main class="main-content" id="mainContent">
+
+            <!-- PAGE HEADER -->
+
+            <header class="page-header">
+
+                <div>
+
+                    <h1>Transactions</h1>
+
+                    <p>
+                        View, categorize, and review your financial transactions.
+                    </p>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <a href="dashboard.html#upload-files" class="primary-btn">
+                        <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                        Upload Statements
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- ===================================== -->
+            <!-- CLIENT & REPORTING PERIOD -->
+            <!-- ===================================== -->
+
+            <section class="transaction-context" aria-label="Transaction selection">
+
+                <div class="context-fields">
+
+                    <div class="field-group">
+
+                        <label for="transactionClientSelect">
+                            Select Client
+                        </label>
+
+                        <select id="transactionClientSelect" disabled>
+
+                            <option value="">
+                                Client profiles not connected yet
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionBusinessSelect">
+                            Business / Property
+                        </label>
+
+                        <select id="transactionBusinessSelect" disabled>
+
+                            <option value="all">
+                                All Businesses / Properties
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionYear">
+                            Year
+                        </label>
+
+                        <select id="transactionYear">
+
+                            <!-- Years populated by JavaScript -->
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionPeriod">
+                            Reporting Period
+                        </label>
+
+                        <select id="transactionPeriod">
+
+                            <option value="all">Full Year</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                            <option value="custom">Custom Date Range</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOM DATE RANGE -->
+
+                <div id="customDateRange" class="custom-date-range" hidden>
+
+                    <div class="field-group">
+
+                        <label for="transactionStartDate">
+                            Start Date
+                        </label>
+
+                        <input type="date" id="transactionStartDate">
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionEndDate">
+                            End Date
+                        </label>
+
+                        <input type="date" id="transactionEndDate">
+
+                    </div>
+
+                    <button type="button" id="applyDateRangeBtn" class="primary-btn">
+                        Apply Dates
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- TRANSACTION OVERVIEW -->
+            <!-- ===================================== -->
+
+            <section class="transactions-overview" aria-label="Transaction overview">
+
+                <div class="overview-cards">
+
+                    <article class="summary-card">
+
+                        <span>Total Income</span>
+
+                        <h2 id="transactionIncomeTotal">$0.00</h2>
+
+                    </article>
+
+                    <article class="summary-card">
+
+                        <span>Total Expenses</span>
+
+                        <h2 id="transactionExpenseTotal">$0.00</h2>
+
+                    </article>
+
+                    <article class="summary-card">
+
+                        <span>Total Transactions</span>
+
+                        <h2 id="transactionCount">0</h2>
+
+                    </article>
+
+                    <article class="summary-card">
+
+                        <span>Needs Review</span>
+
+                        <h2 id="transactionReviewCount">0</h2>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- ALL TRANSACTIONS -->
+            <!-- ===================================== -->
+
+            <section class="transactions-panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>All Transactions</h2>
+
+                        <p>
+                            Select a transaction to view or update its details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ===================================== -->
+                <!-- TRANSACTION FILTERS -->
+                <!-- ===================================== -->
+
+                <div class="transaction-filters">
+
+                    <div class="field-group search-field">
+
+                        <label for="transactionSearch">
+                            Search Transactions
+                        </label>
+
+                        <input type="search" id="transactionSearch" placeholder="Search vendor, description, or amount...">
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionAccountFilter">
+                            Bank / Credit Card
+                        </label>
+
+                        <select id="transactionAccountFilter" disabled>
+
+                            <option value="all">All Accounts</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionCategoryFilter">
+                            Detailed Category
+                        </label>
+
+                        <select id="transactionCategoryFilter" disabled>
+
+                            <option value="all">All Categories</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionTypeFilter">
+                            Category Type
+                        </label>
+
+                        <select id="transactionTypeFilter">
+
+                            <option value="all">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                            <option value="transfer">Transfer</option>
+                            <option value="personal">Personal</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionReviewFilter">
+                            Review Status
+                        </label>
+
+                        <select id="transactionReviewFilter">
+
+                            <option value="all">All Statuses</option>
+                            <option value="unreviewed">Not Reviewed</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="question">Has Open Question</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label for="transactionSort">
+                            Sort By
+                        </label>
+
+                        <select id="transactionSort">
+
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="highest">Highest Amount</option>
+                            <option value="lowest">Lowest Amount</option>
+                            <option value="vendor">Vendor A-Z</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ===================================== -->
+                <!-- FILTER & REVIEW ACTIONS -->
+                <!-- ===================================== -->
+
+                <div class="transaction-toolbar">
+
+                    <div class="toolbar-left">
+
+                        <span id="displayedTransactionCount" aria-live="polite">
+                            Showing 0 transactions
+                        </span>
+
+                        <button type="button" id="clearTransactionFiltersBtn" class="text-btn">
+                            Clear Filters
+                        </button>
+
+                    </div>
+
+                    <div class="toolbar-right admin-only" hidden>
+
+                        <span id="selectedTransactionCount">
+                            0 selected
+                        </span>
+
+                        <button type="button" id="bulkReviewBtn" class="secondary-btn" disabled>
+                            <i class="fa-solid fa-check-double" aria-hidden="true"></i>
+                            Mark Selected as Reviewed
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ===================================== -->
+                <!-- TRANSACTIONS TABLE -->
+                <!-- ===================================== -->
+
+                <div class="table-wrapper">
+
+                    <table class="transactions-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th scope="col" class="selection-column admin-only" hidden>
+
+                                    <input type="checkbox" id="selectAllTransactions" aria-label="Select all displayed transactions">
+
+                                </th>
+
+                                <th scope="col">Date</th>
+                                <th scope="col">Vendor</th>
+                                <th scope="col">Business / Property</th>
+                                <th scope="col">Detailed Category</th>
+                                <th scope="col" class="amount-column">Amount</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="transactionsTableBody">
+
+                            <tr id="transactionEmptyRow">
+
+                                <td colspan="7" class="empty-state">
+
+                                    <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+
+                                    <p>No transactions to display.</p>
+
+                                    <span>
+                                        Uploaded transactions will appear here.
+                                    </span>
+
+                                    <a href="dashboard.html#upload-files" class="primary-btn">
+                                        Upload Statements
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- ===================================== -->
+                <!-- PAGINATION -->
+                <!-- ===================================== -->
+
+                <div class="transaction-pagination">
+
+                    <div class="pagination-info">
+
+                        <label for="transactionsPerPage">
+                            Transactions per page
+                        </label>
+
+                        <select id="transactionsPerPage">
+
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="pagination-controls">
+
+                        <button type="button" id="previousTransactionPage" class="secondary-btn" disabled>
+                            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                            Previous
+                        </button>
+
+                        <span id="transactionPageInfo" aria-live="polite">
+                            Page 1 of 1
+                        </span>
+
+                        <button type="button" id="nextTransactionPage" class="secondary-btn" disabled>
+                            Next
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- TRANSACTION ROW TEMPLATE -->
+            <!-- ===================================== -->
+
+            <template id="transactionRowTemplate">
+
+                <tr class="transaction-row">
+
+                    <td class="selection-column admin-only" hidden>
+
+                        <input type="checkbox" class="transaction-checkbox" aria-label="Select transaction">
+
+                    </td>
+
+                    <td data-field="date"></td>
+
+                    <td data-field="vendor"></td>
+
+                    <td data-field="business"></td>
+
+                    <td data-field="detailedCategory"></td>
+
+                    <td data-field="amount" class="amount-column"></td>
+
+                    <td data-field="status"></td>
+
+                    <td>
+
+                        <button type="button" class="transaction-details-btn secondary-btn" aria-expanded="false">
+                            View Details
+
+                            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </template>
+
+
+            <!-- ===================================== -->
+            <!-- EXPANDED TRANSACTION DETAILS -->
+            <!-- Inserted underneath selected row -->
+            <!-- ===================================== -->
+
+            <template id="transactionDetailsTemplate">
+
+                <tr class="transaction-details-row">
+
+                    <td colspan="7" class="transaction-details-cell">
+
+                        <div class="transaction-details">
+
+                            <div class="section-header">
+
+                                <div>
+
+                                    <h3>Transaction Details</h3>
+
+                                    <p data-field="transactionReference"></p>
+
+                                </div>
+
+                                <button type="button" class="close-details-btn secondary-btn">
+
+                                    Close
+
+                                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- ORIGINAL BANK INFORMATION -->
+
+                            <section class="original-transaction-info">
+
+                                <h4>Original Bank Information</h4>
+
+                                <div class="original-info-grid">
+
+                                    <div class="detail-item">
+
+                                        <span>Bank / Credit Card Account</span>
+
+                                        <strong data-field="bankAccount">—</strong>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span>Original Transaction Date</span>
+
+                                        <strong data-field="originalDate">—</strong>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span>Original Amount</span>
+
+                                        <strong data-field="originalAmount">—</strong>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span>Upload Source</span>
+
+                                        <strong data-field="uploadSource">—</strong>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="original-description">
+
+                                    <span>Original Bank Description</span>
+
+                                    <p data-field="originalDescription">—</p>
+
+                                </div>
+
+                            </section>
+
+
+                            <!-- ===================================== -->
+                            <!-- BOOKKEEPING INFORMATION -->
+                            <!-- ===================================== -->
+
+                            <form class="transaction-edit-form">
+
+                                <section class="bookkeeping-information">
+
+                                    <h4>Bookkeeping Information</h4>
+
+                                    <fieldset class="bookkeeping-fields" disabled>
+
+                                        <div class="transaction-form-grid">
+
+                                            <!-- DATE -->
+
+                                            <label class="field-group">
+
+                                                <span>Date</span>
+
+                                                <input type="date" name="date" required>
+
+                                            </label>
+
+
+                                            <!-- VENDOR -->
+
+                                            <label class="field-group">
+
+                                                <span>Vendor</span>
+
+                                                <input type="text" name="vendor" placeholder="Enter vendor name" required>
+
+                                            </label>
+
+
+                                            <!-- BUSINESS / PROPERTY -->
+
+                                            <label class="field-group">
+
+                                                <span>Business / Property</span>
+
+                                                <select name="businessId">
+
+                                                    <option value="">
+                                                        Select Business / Property
+                                                    </option>
+
+                                                </select>
+
+                                            </label>
+
+
+                                            <!-- DESCRIPTION -->
+
+                                            <label class="field-group">
+
+                                                <span>Description</span>
+
+                                                <input type="text" name="description" placeholder="Enter transaction purpose">
+
+                                            </label>
+
+
+                                            <!-- DETAILED CATEGORY -->
+
+                                            <label class="field-group">
+
+                                                <span>Detailed Category</span>
+
+                                                <select name="detailedCategoryId">
+
+                                                    <option value="">
+                                                        Select Detailed Category
+                                                    </option>
+
+                                                </select>
+
+                                            </label>
+
+
+                                            <!-- TAX CATEGORY -->
+
+                                            <label class="field-group">
+
+                                                <span>Tax Category</span>
+
+                                                <input type="text" name="taxCategory" placeholder="Automatically populated" readonly>
+
+                                            </label>
+
+
+                                            <!-- AMOUNT -->
+
+                                            <label class="field-group">
+
+                                                <span>Amount</span>
+
+                                                <input type="number" name="amount" step="0.01" required>
+
+                                            </label>
+
+
+                                            <!-- CATEGORY TYPE -->
+
+                                            <label class="field-group">
+
+                                                <span>Category Type</span>
+
+                                                <input type="text" name="categoryType" list="categoryTypeOptions" placeholder="Enter category type">
+
+                                            </label>
+
+                                        </div>
+
+
+                                        <!-- TRANSACTION QUESTION -->
+
+                                        <div class="transaction-question-group">
+
+                                            <label class="field-group">
+
+                                                <span>Question</span>
+
+                                                <textarea name="question"
+                                                    rows="3" placeholder="Enter a question about this transaction..."
+                                                ></textarea>
+
+                                            </label>
+
+                                            <p class="helper-text">
+
+                                                Saving a transaction question will create or update its linked record on the Questions page.
+
+                                            </p>
+
+                                            <a href="questions.html" class="text-link linked-question-link" hidden>
+                                                View Linked Question
+                                            </a>
+
+                                        </div>
+
+
+                                        <!-- NOTES -->
+
+                                        <label class="field-group transaction-notes-group">
+
+                                            <span>Notes</span>
+
+                                            <textarea name="notes" rows="3" placeholder="Enter additional bookkeeping notes..."
+                                            ></textarea>
+
+                                        </label>
+
+                                    </fieldset>
+
+                                </section>
+
+
+                                <!-- ===================================== -->
+                                <!-- REVIEW INFORMATION -->
+                                <!-- ===================================== -->
+
+                                <section class="transaction-review-info">
+
+                                    <h4>Review Information</h4>
+
+                                    <div class="review-info-grid">
+
+                                        <div class="detail-item">
+
+                                            <span>Review Status</span>
+
+                                            <strong data-field="reviewStatus">
+                                                Not Reviewed
+                                            </strong>
+
+                                        </div>
+
+                                        <div class="detail-item">
+
+                                            <span>Reviewed By</span>
+
+                                            <strong data-field="reviewedBy">—</strong>
+
+                                        </div>
+
+                                        <div class="detail-item">
+
+                                            <span>Reviewed On</span>
+
+                                            <strong data-field="reviewedDate">—</strong>
+
+                                        </div>
+
+                                        <div class="detail-item">
+
+                                            <span>Question Status</span>
+
+                                            <strong data-field="questionStatus">—</strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </section>
+
+
+                                <!-- ===================================== -->
+                                <!-- TRANSACTION ACTIONS -->
+                                <!-- ===================================== -->
+
+                                <div class="transaction-detail-actions">
+
+                                    <div class="detail-actions-left admin-only" hidden>
+
+                                        <button type="submit" class="save-transaction-btn primary-btn">
+                                            Save Changes
+                                        </button>
+
+                                        <button type="button" class="mark-reviewed-btn secondary-btn">
+
+                                            <i class="fa-solid fa-check" aria-hidden="true"></i>
+
+                                            Mark as Reviewed
+
+                                        </button>
+
+                                    </div>
+
+                                    <div class="detail-actions-right">
+
+                                        <button type="button" class="next-transaction-btn secondary-btn">
+
+                                            Next Transaction
+
+                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                                <p class="transaction-form-message" role="status" aria-live="polite"></p>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </template>
+
+
+            <!-- ===================================== -->
+            <!-- CATEGORY TYPE SUGGESTIONS -->
+            <!-- ===================================== -->
+
+            <datalist id="categoryTypeOptions">
+
+                <option value="Income"></option>
+                <option value="Expense"></option>
+                <option value="Transfer"></option>
+                <option value="Personal"></option>
+
+            </datalist>
+
+
+            <!-- ===================================== -->
+            <!-- PAGE NOTIFICATIONS -->
+            <!-- ===================================== -->
+
+            <div id="transactionNotification" class="transaction-notification" role="status" aria-live="polite" hidden ></div>
+
+
+            <!-- ===================================== -->
+            <!-- FOOTER -->
+            <!-- ===================================== -->
+
+            <footer class="dashboard-footer">
+
+                <h3>FinFlow</h3>
+
+                <div class="footer-links">
+
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Support</a>
+
+                </div>
+
+                <p>
+                    &copy; <span id="currentYear"></span>
+                    FinFlow. All rights reserved.
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

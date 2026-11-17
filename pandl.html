@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinFlow | Profit &amp; Loss</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="pandl.css">
+
+    <script src="pandl.js" defer></script>
+</head>
+
+<body class="finflow-app pandl-page">
+
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <h2>FinFlow</h2>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Dashboard navigation">
+
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="pandl.html" class="active-link" aria-current="page">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Income &amp; Expense Report</span>
+                </a>
+
+                <a href="monthly.html">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Monthly Reports</span>
+                </a>
+
+                <a href="transactions.html">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="questions.html">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Client Questions</span>
+                </a>
+
+                <a href="settings.html">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Categories &amp; Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-actions">
+
+                <a href="dashboard.html#upload-files" class="sidebar-action-link">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Statements</span>
+                </a>
+
+            </div>
+
+            <div class="sidebar-account">
+
+                <button type="button" id="logoutBtn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content" id="mainContent">
+
+            <!-- PAGE HEADER -->
+
+            <header class="page-header">
+
+                <div>
+
+                    <h1>Income &amp; Expense Report</h1>
+
+                    <p>
+                        Profit &amp; Loss statement for your selected
+                        business and reporting period.
+                    </p>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <button type="button" id="printReportBtn" class="outline-btn">
+                        <i class="fa-solid fa-print"></i>
+                        Print / Save PDF
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- REPORT FILTERS -->
+
+            <section class="panel filters" aria-label="Report filters">
+
+                <div class="field-group">
+
+                    <label for="clientSelect">Client / Business</label>
+
+                    <select id="clientSelect" disabled>
+
+                        <option value="">
+                            Business profiles not connected yet
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="field-group">
+
+                    <label for="reportingYear">Reporting Year</label>
+
+                    <select id="reportingYear"></select>
+
+                </div>
+
+                <div class="field-group">
+
+                    <label for="periodSelect">Reporting Period</label>
+
+                    <select id="periodSelect">
+
+                        <option value="year">Full Year</option>
+                        <option value="jan">January</option>
+                        <option value="feb">February</option>
+                        <option value="mar">March</option>
+                        <option value="apr">April</option>
+                        <option value="may">May</option>
+                        <option value="jun">June</option>
+                        <option value="jul">July</option>
+                        <option value="aug">August</option>
+                        <option value="sep">September</option>
+                        <option value="oct">October</option>
+                        <option value="nov">November</option>
+                        <option value="dec">December</option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+            <!-- REPORT TOTALS -->
+
+            <section class="metrics" aria-label="Report totals">
+
+                <article class="metric income">
+
+                    <span>Total Income</span>
+
+                    <strong id="incomeCard">$0.00</strong>
+
+                </article>
+
+                <article class="metric expense">
+
+                    <span>Total Expenses</span>
+
+                    <strong id="expenseCard">$0.00</strong>
+
+                </article>
+
+                <article class="metric profit">
+
+                    <span>Net Profit / Loss</span>
+
+                    <strong id="profitCard">$0.00</strong>
+
+                </article>
+
+            </section>
+
+
+            <!-- PROFIT & LOSS STATEMENT -->
+
+            <section class="panel report" aria-label="Profit and loss statement">
+
+                <div class="report-heading">
+
+                    <div>
+
+                        <h2>Profit &amp; Loss Statement</h2>
+
+                        <p id="periodLabel">Full Year</p>
+
+                    </div>
+
+                    <div class="report-controls">
+
+                        <button type="button" id="expandAll" class="secondary-btn">
+                            Expand All
+                        </button>
+
+                        <button type="button" id="collapseAll" class="secondary-btn">
+                            Collapse All
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INCOME SUMMARY -->
+
+                <div class="section-title">
+                    Income Summary
+                </div>
+
+                <div class="line">
+
+                    <span>Gross Receipts / Sales</span>
+                    <span>$0.00</span>
+
+                </div>
+
+                <div class="line">
+
+                    <span>Other Income</span>
+                    <span>$0.00</span>
+
+                </div>
+
+                <div class="line total">
+
+                    <strong>Total Income</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+
+                <!-- COST OF GOODS SOLD -->
+
+                <div class="section-title">
+                    Cost of Goods Sold
+                </div>
+
+                <div class="line">
+
+                    <span>Cost of Goods Sold</span>
+                    <span>$0.00</span>
+
+                </div>
+
+                <div class="line total">
+
+                    <strong>Total Cost of Goods Sold</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+                <div class="line total">
+
+                    <strong>Gross Profit</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+
+                <!-- EXPENSE SUMMARY -->
+
+                <div class="section-title">
+                    Expense Summary
+                </div>
+
+                <div class="line total">
+
+                    <strong>Total Operating Expenses</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+                <div class="line total">
+
+                    <strong>Total Expenses</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+
+                <!-- NET PROFIT / LOSS -->
+
+                <div class="line grand-total">
+
+                    <strong>Net Profit / Loss</strong>
+                    <strong>$0.00</strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+
+            <footer class="dashboard-footer">
+
+                <h3>FinFlow</h3>
+
+                <div class="footer-links">
+
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Support</a>
+
+                </div>
+
+                <p>
+                    &copy; <span id="currentYear"></span>
+                    FinFlow. All rights reserved.
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

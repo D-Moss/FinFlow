@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinFlow | Monthly Reports</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="monthly.css">
+
+    <script src="monthly.js" defer></script>
+</head>
+
+<body class="finflow-app monthly-page">
+
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <h2>FinFlow</h2>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Dashboard navigation">
+
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="pandl.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Income &amp; Expense Report</span>
+                </a>
+
+                <a href="monthly.html" class="active-link" aria-current="page">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Monthly Reports</span>
+                </a>
+
+                <a href="transactions.html">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="questions.html">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Client Questions</span>
+                </a>
+
+                <a href="settings.html">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Categories &amp; Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-actions">
+
+                <a href="dashboard.html#upload-files" class="sidebar-action-link">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Statements</span>
+                </a>
+
+            </div>
+
+            <div class="sidebar-account">
+
+                <button type="button" id="logoutBtn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content" id="mainContent">
+
+
+            <!-- PAGE HEADER -->
+
+            <header class="page-header">
+
+                <div>
+                    <h1>Monthly Summary</h1>
+
+                    <p>Review your business financial performance throughout the year.</p>
+                </div>
+
+            </header>
+
+
+            <!-- REPORT FILTERS -->
+
+            <section class="report-panel" aria-labelledby="reportSettingsTitle">
+
+                <div class="section-header">
+                    <h2 id="reportSettingsTitle">Report Settings</h2>
+                </div>
+
+                <div class="report-filters">
+
+                    <div class="filter-group">
+
+                        <label for="clientSelect">
+                            Client / Business
+                        </label>
+
+                        <select id="clientSelect" disabled>
+                            <option value="">
+                                Business profiles not connected yet
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label for="reportingYear">
+                            Reporting Year
+                        </label>
+
+                        <select id="reportingYear"></select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ANNUAL OVERVIEW -->
+
+            <section class="annual-overview" aria-labelledby="annualOverviewTitle">
+
+                <div class="section-header">
+
+                    <h2 id="annualOverviewTitle">
+                        Annual Overview
+                    </h2>
+
+                    <span id="annualPeriodLabel"></span>
+
+                </div>
+
+                <div class="overview-cards">
+
+                    <article class="summary-card income-card">
+
+                        <span>Total Income</span>
+
+                        <h3 id="annualIncome">$0.00</h3>
+
+                    </article>
+
+                    <article class="summary-card cogs-card">
+
+                        <span>Cost of Goods Sold</span>
+
+                        <h3 id="annualCOGS">$0.00</h3>
+
+                    </article>
+
+                    <article class="summary-card expense-card">
+
+                        <span>Operating Expenses</span>
+
+                        <h3 id="annualExpenses">$0.00</h3>
+
+                    </article>
+
+                    <article class="summary-card profit-card">
+
+                        <span>Net Profit / Loss</span>
+
+                        <h3 id="annualProfit">$0.00</h3>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- MONTHLY FINANCIAL SUMMARY -->
+
+            <section class="report-panel" aria-labelledby="monthlySummaryTitle">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2 id="monthlySummaryTitle">
+                            Monthly Financial Summary
+                        </h2>
+
+                        <p>
+                            Compare income, expenses, and profitability by month.
+                        </p>
+
+                    </div>
+
+                    <div class="report-actions">
+
+                        <button type="button" id="expandAllBtn" class="secondary-btn">
+                            Expand All
+                        </button>
+
+                        <button type="button" id="collapseAllBtn" class="secondary-btn">
+                            Collapse All
+                        </button>
+
+                        <button type="button" id="printReportBtn" class="outline-btn">
+                            <i class="fa-solid fa-print"></i>
+                            Print / Save PDF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MONTHLY SUMMARY TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table class="monthly-table">
+
+                        <thead>
+
+                            <tr>
+                                <th scope="col">Month</th>
+                                <th scope="col">Income</th>
+                                <th scope="col">COGS</th>
+                                <th scope="col">Operating Expenses</th>
+                                <th scope="col">Net Profit / Loss</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="monthlyTableBody"></tbody>
+
+                        <tfoot>
+
+                            <tr>
+
+                                <th scope="row">Annual Total</th>
+
+                                <td id="footerIncome">$0.00</td>
+
+                                <td id="footerCOGS">$0.00</td>
+
+                                <td id="footerExpenses">$0.00</td>
+
+                                <td id="footerProfit">$0.00</td>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+
+            <footer class="dashboard-footer">
+
+                <h3>FinFlow</h3>
+
+                <div class="footer-links">
+
+                    <a href="#">Privacy</a>
+
+                    <a href="#">Terms</a>
+
+                    <a href="#">Support</a>
+
+                </div>
+
+                <p>
+                    &copy; <span id="currentYear"></span>
+                    FinFlow. All rights reserved.
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

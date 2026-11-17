@@ -1,23 +1,11 @@
 /* =========================================
    GLOBAL STYLES
    ========================================= */
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     margin: 0;
-    background-color: #f8fafc;
-    color: #1e293b;
+    background-color: var(--background);
+    color: var(--text);
     font-family: 'Segoe UI', sans-serif;
-}
-
-[hidden] {
-    display: none !important;
 }
 
 body.modal-open {
@@ -41,8 +29,8 @@ body.modal-open {
 .btn-primary,
 .cta-button {
     padding: 12px 24px;
-    background: #2563eb;
-    color: #ffffff;
+    background: var(--primary);
+    color: var(--surface);
     font-weight: 600;
     border: none;
     border-radius: 8px;
@@ -888,20 +876,5 @@ button:disabled {
 
     .demo-stats {
         grid-template-columns: 1fr;
-    }
-}
-
-/* Respect visitors who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
     }
 }

@@ -1,0 +1,580 @@
+/* =========================================
+   FINFLOW — MONTHLY REPORTS
+   Page-specific styling
+   ========================================= */
+
+
+/* =========================================
+   REPORT PANELS
+   ========================================= */
+
+.report-panel {
+    min-width: 0;
+    padding: 26px;
+    margin-bottom: 26px;
+    background-color: var(--surface);
+    border: 1px solid #edf0f5;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* =========================================
+   REPORT FILTERS
+   ========================================= */
+
+.report-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 20px;
+}
+
+.report-filters select {
+    background-color: #f8fafc;
+}
+
+.report-filters select:disabled {
+    color: var(--text-light);
+}
+
+
+/* =========================================
+   ANNUAL OVERVIEW
+   ========================================= */
+
+.annual-overview {
+    margin-bottom: 26px;
+}
+
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+
+/* SUMMARY CARDS */
+
+.summary-card {
+    min-width: 0;
+    padding: 24px;
+    background-color: var(--surface);
+    border: 1px solid #edf0f5;
+    border-top: 3px solid var(--primary);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
+}
+
+.summary-card span {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.summary-card h3 {
+    color: var(--text-dark);
+    font-size: clamp(20px, 2vw, 27px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+
+/* CARD COLORS */
+
+.income-card {
+    border-top-color: var(--primary);
+}
+
+.cogs-card {
+    border-top-color: var(--purple);
+}
+
+.expense-card {
+    border-top-color: var(--warning);
+}
+
+.profit-card {
+    border-top-color: var(--success);
+}
+
+
+/* PROFIT / LOSS COLORS */
+
+.positive,
+.summary-card h3.positive {
+    color: var(--success);
+}
+
+.negative,
+.summary-card h3.negative {
+    color: var(--danger);
+}
+
+.neutral,
+.summary-card h3.neutral {
+    color: var(--text-muted);
+}
+
+
+/* =========================================
+   REPORT ACTIONS
+   ========================================= */
+
+.report-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+/* =========================================
+   MONTHLY SUMMARY TABLE
+   ========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.monthly-table {
+    width: 100%;
+    min-width: 750px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+
+/* TABLE CELLS */
+
+.monthly-table th,
+.monthly-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.monthly-table th:first-child,
+.monthly-table td:first-child {
+    text-align: left;
+}
+
+
+/* TABLE HEADER */
+
+.monthly-table thead {
+    background-color: var(--surface-muted);
+    color: var(--text-muted);
+}
+
+.monthly-table thead th {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MONTH ROWS
+   ========================================= */
+
+.month-row {
+    background-color: var(--surface);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.month-row:hover {
+    background-color: #f8fbff;
+}
+
+.month-row[aria-expanded="true"] {
+    background-color: #f8fafc;
+}
+
+.month-row:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+}
+
+
+/* MONTH NAME */
+
+.month-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.month-name i {
+    width: 14px;
+    color: var(--primary);
+    font-size: 12px;
+    text-align: center;
+}
+
+
+/* MONTH EXPAND / COLLAPSE BUTTON */
+
+button.month-name {
+    padding: 0;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: inherit;
+}
+
+
+/* =========================================
+   EXPANDED MONTH DETAILS
+   ========================================= */
+
+.detail-row {
+    background-color: #f8fafc;
+}
+
+.detail-row[hidden] {
+    display: none;
+}
+
+.monthly-table .detail-row td {
+    padding: 0 20px 20px 42px;
+    text-align: left;
+    white-space: normal;
+}
+
+
+/* MONTHLY DETAILS GRID */
+
+.month-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding-top: 18px;
+}
+
+
+/* INDIVIDUAL DETAIL ITEMS */
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-width: 0;
+    padding: 15px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.detail-item span {
+    min-width: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.detail-item strong {
+    flex-shrink: 0;
+    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   ANNUAL TOTALS
+   ========================================= */
+
+.monthly-table tfoot {
+    background-color: var(--primary-light);
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.monthly-table tfoot th,
+.monthly-table tfoot td {
+    padding: 18px 16px;
+    border-top: 2px solid #dbeafe;
+    border-bottom: none;
+}
+
+
+/* =========================================
+   FOOTER SPACING
+   ========================================= */
+
+.monthly-page .dashboard-footer {
+    margin-top: 40px;
+}
+
+
+/* =========================================
+   RESPONSIVE — LARGE TABLETS
+   ========================================= */
+
+@media (max-width: 1100px) {
+
+    .overview-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-card {
+        padding: 20px;
+    }
+
+    .report-panel .section-header {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE — MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .report-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .report-panel {
+        padding: 22px;
+    }
+
+    .report-panel .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .report-actions {
+        width: 100%;
+    }
+
+    .month-details {
+        grid-template-columns: 1fr;
+    }
+
+    .monthly-table th,
+    .monthly-table td {
+        padding: 14px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE — SMALL PHONES
+   ========================================= */
+
+@media (max-width: 500px) {
+
+    .report-panel {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .overview-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .summary-card {
+        padding: 20px;
+    }
+
+    .summary-card h3 {
+        font-size: 25px;
+    }
+
+    .report-actions {
+        gap: 8px;
+    }
+
+    .report-actions button {
+        flex: 1;
+    }
+
+    #printReportBtn {
+        flex-basis: 100%;
+    }
+
+    .monthly-table {
+        font-size: 12px;
+    }
+
+    .monthly-table .detail-row td {
+        padding-left: 24px;
+    }
+
+    .detail-item {
+        padding: 12px;
+    }
+
+}
+
+
+/* =========================================
+   PRINT / SAVE PDF
+   ========================================= */
+
+@media print {
+
+    html,
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .sidebar,
+    .report-actions,
+    .dashboard-footer {
+        display: none !important;
+    }
+
+    .dashboard-container {
+        display: block;
+        min-height: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-header {
+        margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .report-panel {
+        padding: 14px;
+        margin-bottom: 16px;
+        box-shadow: none;
+        border: 1px solid #dddddd;
+    }
+
+    .report-panel .section-header {
+        margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+
+    .report-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .annual-overview {
+        margin-bottom: 16px;
+    }
+
+    .overview-cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 12px;
+        box-shadow: none;
+        border: 1px solid #dddddd;
+        break-inside: avoid;
+    }
+
+    .summary-card span {
+        margin-bottom: 8px;
+        font-size: 10px;
+    }
+
+    .summary-card h3 {
+        font-size: 18px;
+    }
+
+    .table-wrapper {
+        overflow: visible;
+    }
+
+    .monthly-table {
+        min-width: 0;
+        font-size: 10px;
+    }
+
+    .monthly-table th,
+    .monthly-table td {
+        padding: 8px;
+    }
+
+    .monthly-table thead {
+        display: table-header-group;
+    }
+
+    .monthly-table tfoot {
+        display: table-row-group;
+    }
+
+    .monthly-table tr {
+        break-inside: avoid;
+    }
+
+    .month-row[aria-expanded="true"] {
+        break-after: avoid;
+    }
+
+    .month-name i {
+        display: none;
+    }
+
+    .monthly-table .detail-row td {
+        padding: 0 12px 12px 20px;
+    }
+
+    .month-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding-top: 10px;
+    }
+
+    .detail-item {
+        padding: 8px;
+    }
+
+    .detail-item span,
+    .detail-item strong {
+        font-size: 10px;
+    }
+
+    .detail-row[hidden] {
+        display: none !important;
+    }
+
+    @page {
+        size: landscape;
+        margin: 12mm;
+    }
+
+}

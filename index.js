@@ -10,14 +10,14 @@ import {
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
+
 const firebaseConfig = {
-    apiKey: "AIzaSyDKNumgI1MvLAdPqD4u3Qah_SbWWAbfwR4",
-    authDomain: "finflow-dcab6.firebaseapp.com",
-    projectId: "finflow-dcab6",
-    storageBucket: "finflow-dcab6.firebasestorage.app",
-    messagingSenderId: "536136161454",
-    appId: "1:536136161454:web:885b77f96109d30850f53f",
-    measurementId: "G-MDY4MDRC16"
+    apiKey: "AIzaSyDo6nsRPV11dUZ1mJC_r-k5JMwatoyAzi0",
+    authDomain: "finflow-b060b.firebaseapp.com",
+    projectId: "finflow-b060b",
+    storageBucket: "finflow-b060b.firebasestorage.app",
+    messagingSenderId: "933463706717",
+    appId: "1:933463706717:web:62b925e9af5005b2bc91b4"
 };
 
 const app = initializeApp(firebaseConfig);

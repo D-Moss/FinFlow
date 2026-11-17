@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinFlow | Categories &amp; Settings</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Keep this order when the shared and page stylesheets are ready. -->
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="settings.css">
+    <script src="settings.js" defer></script>
+</head>
+
+<body class="finflow-app settings-page">
+    
+    <div class="dashboard-container">
+        
+        <!-- Match the dashboard sidebar structure; shared.css will own its appearance. -->
+        
+        <aside class="sidebar">
+            <div class="sidebar-logo"><h2>FinFlow</h2></div>
+
+            <nav class="sidebar-nav" aria-label="Dashboard navigation">
+                <a href="dashboard.html"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i><span>Dashboard</span></a>
+        
+                <a href="pandl.html"><i class="fa-solid fa-chart-column" aria-hidden="true"></i><span>Income &amp; Expense Report</span></a>
+        
+                <a href="monthly.html"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i><span>Monthly Reports</span></a>
+        
+                <a href="transactions.html"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i><span>Transactions</span></a>
+        
+                <a href="questions.html"><i class="fa-solid fa-circle-question" aria-hidden="true"></i><span>Client Questions</span></a>
+        
+                <a href="settings.html" class="active-link" aria-current="page"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Categories &amp; Settings</span></a>
+            </nav>
+
+            <div class="sidebar-actions">
+        
+                <a href="dashboard.html#upload-files" class="sidebar-action-link"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i><span>Upload Statements</span></a>
+        
+            </div>
+
+            <div class="sidebar-account">
+        
+                <button type="button" id="logoutBtn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i><span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+           
+            <header class="page-header settings-header">
+                <div>
+                    <h1>Categories &amp; Settings</h1>
+                    <p>Manage client accounts, bookkeeping categories, and business profiles.</p>
+                </div>
+            </header>
+
+            
+            <!-- Administrator chooses a client; client logins will be restricted to their own profile. -->
+            
+            <section class="settings-context" aria-labelledby="settingsClientTitle">
+                <div class="section-header">
+                    <h2 id="settingsClientTitle">Client Selection</h2>
+                </div>
+                <div class="field-group">
+                    <label for="settingsClientSelect">Select Client</label>
+                    <select id="settingsClientSelect" disabled>
+                        <option value="">Client profiles not connected yet</option>
+                    </select>
+                </div>
+                <p class="helper-text">Accounts and Business Settings are client-specific. Categories are managed from one master list.</p>
+            </section>
+
+            
+            <!-- Accessible tab structure. JavaScript will handle selection, focus and panels. -->
+            
+            <div class="settings-tabs" role="tablist" aria-label="Categories and settings sections">
+                <button type="button" class="settings-tab active-tab" id="accountsTab" role="tab" aria-selected="true" aria-controls="accountsPanel" tabindex="0">
+                    <i class="fa-solid fa-building-columns" aria-hidden="true"></i> Accounts
+                </button>
+                <button type="button" class="settings-tab" id="categoriesTab" role="tab" aria-selected="false" aria-controls="categoriesPanel" tabindex="-1">
+                    <i class="fa-solid fa-list-check" aria-hidden="true"></i> Categories
+                </button>
+                <button type="button" class="settings-tab" id="businessTab" role="tab" aria-selected="false" aria-controls="businessPanel" tabindex="-1">
+                    <i class="fa-solid fa-briefcase" aria-hidden="true"></i> Business Settings
+                </button>
+            </div>
+
+           
+            <!-- TAB 1: ACCOUNTS -->
+            <section class="settings-panel" id="accountsPanel" role="tabpanel" aria-labelledby="accountsTab" tabindex="0">
+                <div class="section-header">
+                    <div>
+                        <h2>Bank &amp; Credit Card Accounts</h2>
+                        <p>Keep track of accounts associated with the selected client.</p>
+                    </div>
+                    <button type="button" class="primary-btn admin-only" id="addAccountBtn" hidden>
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Account
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="settings-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Account Name</th>
+                                <th scope="col">Institution</th>
+                                <th scope="col">Account Type</th>
+                                <th scope="col">Account Ending</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="admin-only" hidden>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountsTableBody">
+                            <tr><td colspan="5" class="empty-state">No accounts to display yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="helper-text">Account records will help identify the source of uploaded statements. A bank account can contain transactions for more than one business or property.</p>
+            </section>
+
+            
+            <!-- TAB 2: CATEGORIES -->
+            <section class="settings-panel" id="categoriesPanel" role="tabpanel" aria-labelledby="categoriesTab" tabindex="0" hidden>
+                <div class="section-header">
+                    <div>
+                        <h2>Master Bookkeeping Categories</h2>
+                        <p>Categories are maintained by the DnA Financial administrator.</p>
+                    </div>
+                    <button type="button" class="primary-btn admin-only" id="addCategoryBtn" hidden>
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Category
+                    </button>
+                </div>
+                <div class="settings-filters">
+                    <div class="field-group">
+                        <label for="categoryFormFilter">Applicable Tax Form</label>
+                        <select id="categoryFormFilter">
+                            <option value="all">All Forms</option>
+                            <option value="schedule-c">Schedule C</option>
+                            <option value="schedule-e">Schedule E</option>
+                            <option value="1120">Form 1120</option>
+                            <option value="1120-s">Form 1120-S</option>
+                            <option value="1065">Form 1065</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="categorySearch">Search Categories</label>
+                        <input type="search" id="categorySearch" placeholder="Search category names">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="settings-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category Type</th>
+                                <th scope="col">Tax Category</th>
+                                <th scope="col">Detail Category</th>
+                                <th scope="col">Applicable Forms</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="admin-only" hidden>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody">
+                            <tr><td colspan="5" class="empty-state">No categories to display yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="helper-text">Categories can apply to multiple forms. Existing categories should be deactivated, rather than deleted, when historical transactions depend on them.</p>
+            </section>
+
+           
+            <!-- TAB 3: BUSINESS SETTINGS -->
+            <section class="settings-panel" id="businessPanel" role="tabpanel" aria-labelledby="businessTab" tabindex="0" hidden>
+                <div class="section-header">
+                    <div>
+                        <h2>Client Profiles</h2>
+                        <p>Find a client by name, then edit their profile and associated businesses or properties.</p>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label for="clientSearch">Search Clients</label>
+                    <input type="search" id="clientSearch" placeholder="Search by client name">
+                </div>
+                <div class="client-profile-list" id="clientProfileList">
+                    <p class="empty-state">No client profiles to display yet.</p>
+                </div>
+
+              
+                <!-- Opened for a selected client by the Business Settings Edit action. -->
+                <section class="client-editor" id="clientEditor" aria-labelledby="clientEditorTitle" hidden>
+                    <div class="section-header">
+                        <h3 id="clientEditorTitle">Edit Client Profile</h3>
+                        <button type="button" class="secondary-btn" id="closeClientEditorBtn">Close</button>
+                    </div>
+
+                    <!-- Clients may edit their own contact information. -->
+                    <form id="clientProfileForm">
+                        <h4>Client Information</h4>
+                        <div class="form-grid">
+                            <div class="field-group"><label for="clientFullName">Client Name</label><input id="clientFullName" name="fullName" type="text" autocomplete="name" required></div>
+                            <div class="field-group"><label for="clientEmail">Email Address</label><input id="clientEmail" name="email" type="email" autocomplete="email"></div>
+                            <div class="field-group"><label for="clientPhone">Phone Number</label><input id="clientPhone" name="phone" type="tel" autocomplete="tel"></div>
+                            <div class="field-group"><label for="clientAddress">Mailing Address</label><input id="clientAddress" name="address" type="text" autocomplete="street-address"></div>
+                        </div>
+                        <button type="submit" class="primary-btn" id="saveClientProfileBtn">Save Profile</button>
+                    </form>
+
+                    <div class="associated-activities">
+                        <div class="section-header">
+                            <div>
+                                <h4>Businesses &amp; Rental Properties</h4>
+                                <p>Each business or property has its own reporting classification.</p>
+                            </div>
+                            <button type="button" class="primary-btn admin-only" id="addActivityBtn" hidden><i class="fa-solid fa-plus" aria-hidden="true"></i> Add Business / Property</button>
+                        </div>
+                        <div id="activityList"><p class="empty-state">No businesses or rental properties to display yet.</p></div>
+                        <p class="helper-text">Only the administrator can add, edit, or deactivate business/property associations. Historical records remain intact.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ===================================== -->
+            <!-- FOOTER -->
+            <!-- ===================================== -->
+
+            <footer class="dashboard-footer">
+
+                <h3>FinFlow</h3>
+
+                <div class="footer-links">
+
+                    <a href="#">Privacy</a>
+
+                    <a href="#">Terms</a>
+
+                    <a href="#">Support</a>
+
+                </div>
+
+                <p>
+                    &copy; <span id="currentYear">2026</span>
+                    FinFlow. All rights reserved.
+                </p>
+
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

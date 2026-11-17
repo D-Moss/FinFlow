@@ -1,0 +1,552 @@
+
+/* =========================================
+   FINFLOW — PROFIT & LOSS
+   Page-specific styling
+   ========================================= */
+
+
+/* =========================================
+   PREVIEW NOTICE
+   ========================================= */
+
+.notice {
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    color: #416184;
+    background-color: var(--primary-light);
+    border: 1px solid #dbeafe;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+}
+
+
+/* =========================================
+   REPORT PANELS
+   ========================================= */
+
+.panel,
+.metric {
+    background-color: var(--surface);
+    border: 1px solid #edf0f5;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* =========================================
+   REPORT FILTERS
+   ========================================= */
+
+.filters {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+    gap: 20px;
+    padding: 26px;
+}
+
+.filters select {
+    background-color: #f8fafc;
+}
+
+.filters select:disabled {
+    color: var(--text-light);
+}
+
+
+/* =========================================
+   FINANCIAL OVERVIEW
+   ========================================= */
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 26px 0;
+}
+
+.metric {
+    min-width: 0;
+    padding: 24px;
+    border-top: 3px solid var(--primary);
+}
+
+.metric.income {
+    border-top-color: var(--primary);
+}
+
+.metric.expense {
+    border-top-color: var(--warning);
+}
+
+.metric.profit {
+    border-top-color: var(--success);
+}
+
+.metric span {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.metric strong {
+    display: block;
+    color: var(--text-dark);
+    font-size: clamp(20px, 2vw, 27px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+
+/* PROFIT / LOSS COLORS */
+
+#profitCard.positive,
+#profitCard.profit {
+    color: var(--success);
+}
+
+#profitCard.negative,
+#profitCard.loss {
+    color: var(--danger);
+}
+
+#profitCard.neutral {
+    color: var(--text-muted);
+}
+
+
+/* =========================================
+   PROFIT & LOSS REPORT
+   ========================================= */
+
+.report {
+    padding: 26px;
+    margin-bottom: 40px;
+}
+
+
+/* REPORT HEADER */
+
+.report-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 20px;
+}
+
+.report-heading h2 {
+    margin-bottom: 6px;
+    color: var(--text-dark);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.report-heading p {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+
+/* REPORT CONTROLS */
+
+.report-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+/* =========================================
+   REPORT SECTION TITLES
+   ========================================= */
+
+.section-title {
+    margin-top: 18px;
+    padding: 14px 16px;
+    color: var(--text-dark);
+    background-color: var(--surface-muted);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   REPORT LINE ITEMS
+   ========================================= */
+
+.line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #edf1f6;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.line > :first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.line > :last-child {
+    flex-shrink: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+
+/* SUBTOTALS */
+
+.line.total {
+    background-color: #fafbfd;
+    color: var(--text-dark);
+}
+
+.line.total strong {
+    font-weight: 600;
+}
+
+
+/* NET PROFIT / LOSS */
+
+.line.grand-total {
+    margin-top: 12px;
+    padding: 18px 16px;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    border: 1px solid #dbeafe;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.line.grand-total.positive > :last-child {
+    color: var(--success);
+}
+
+.line.grand-total.negative > :last-child {
+    color: var(--danger);
+}
+
+
+/* =========================================
+   EXPANDABLE EXPENSE CATEGORIES
+   ========================================= */
+
+.category-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 14px 16px;
+    color: var(--text);
+    background-color: var(--surface);
+    border: none;
+    border-bottom: 1px solid #edf1f6;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.category-toggle:hover {
+    background-color: #f8faff;
+}
+
+.category-toggle i {
+    width: 14px;
+    margin-right: 10px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.category-toggle > :last-child {
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   DETAILED CATEGORIES
+   ========================================= */
+
+.subcategories {
+    background-color: #fafcff;
+}
+
+.subcategories .line {
+    padding-left: 44px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+
+/* =========================================
+   RESPONSIVE — TABLETS
+   ========================================= */
+
+@media (max-width: 1100px) {
+
+    .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filters > .field-group:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .metric {
+        padding: 20px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE — MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .filters > .field-group:first-child {
+        grid-column: auto;
+    }
+
+    .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric.profit {
+        grid-column: 1 / -1;
+    }
+
+    .report-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .report-controls {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE — SMALL PHONES
+   ========================================= */
+
+@media (max-width: 500px) {
+
+    .notice {
+        padding: 12px 14px;
+    }
+
+    .filters,
+    .report {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .metrics {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .metric.profit {
+        grid-column: auto;
+    }
+
+    .metric {
+        padding: 20px;
+    }
+
+    .metric strong {
+        font-size: 25px;
+    }
+
+    .report-heading h2 {
+        font-size: 18px;
+    }
+
+    .report-controls button {
+        flex: 1;
+    }
+
+    .section-title {
+        padding: 12px;
+    }
+
+    .line {
+        padding: 12px;
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .category-toggle {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .subcategories .line {
+        padding-left: 28px;
+    }
+
+    .line.grand-total {
+        padding: 15px 12px;
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================
+   PRINT / SAVE PDF
+   ========================================= */
+
+@media print {
+
+    html,
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .sidebar,
+    .header-actions,
+    .report-controls,
+    .filters,
+    .dashboard-footer {
+        display: none !important;
+    }
+
+    .dashboard-container {
+        display: block;
+        min-height: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-header {
+        margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+        font-size: 22px;
+    }
+
+    .page-header p {
+        font-size: 11px;
+    }
+
+    .notice {
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        color: #475569;
+        background-color: white;
+        border: 1px solid #dddddd;
+        font-size: 10px;
+    }
+
+    .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 12px 0;
+    }
+
+    .metric.profit {
+        grid-column: auto;
+    }
+
+    .metric {
+        padding: 12px;
+        break-inside: avoid;
+    }
+
+    .metric strong {
+        font-size: 20px;
+    }
+
+    .panel,
+    .metric {
+        box-shadow: none;
+        border: 1px solid #dddddd;
+    }
+
+    .report {
+        padding: 16px;
+        margin-bottom: 0;
+    }
+
+    .report-heading {
+        padding-bottom: 12px;
+    }
+
+    .report-heading h2 {
+        font-size: 17px;
+    }
+
+    .section-title {
+        margin-top: 12px;
+        padding: 10px;
+        break-after: avoid;
+    }
+
+    .line,
+    .category-toggle {
+        padding: 8px 10px;
+        font-size: 11px;
+        break-inside: avoid;
+    }
+
+    .category-toggle {
+        break-after: avoid;
+    }
+
+    .category-toggle i {
+        display: none;
+    }
+
+    .subcategories[hidden] {
+        display: block !important;
+    }
+
+    .subcategories .line {
+        padding-left: 24px;
+    }
+
+    .line.grand-total {
+        font-size: 13px;
+        break-inside: avoid;
+    }
+
+    @page {
+        size: portrait;
+        margin: 12mm;
+    }
+
+}

@@ -3,115 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <title>FinFlow Dashboard</title>
-</head>
-<body>
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- DASHBOARD CSS -->
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="dashboard.css">
+
+    <title>FinFlow | Dashboard</title>
+</head>
+
+<body>
     <div class="dashboard-container">
 
+        <!-- ===================================== -->
         <!-- SIDEBAR -->
+        <!-- ===================================== -->
+
         <aside class="sidebar">
+
+            <!-- SIDEBAR LOGO -->
             <div class="sidebar-logo">
                 <h2>FinFlow</h2>
             </div>
 
-            <nav class="sidebar-nav">
+            <!-- SIDEBAR NAVIGATION -->
+            <nav class="sidebar-nav" aria-label="Dashboard navigation">
+
+                <!-- DASHBOARD -->
                 <a href="#dashboard" class="active-link">
-                    Dashboard
+                    <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                    <span>Dashboard</span>
                 </a>
-                <a href="#expense-summary">
-                    Expense Summary
+
+                <!-- INCOME & EXPENSE REPORT -->
+                <a href="pandl.html">
+                    <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                    <span>Income &amp; Expense Report</span>
                 </a>
-                <a href="#transactions">
-                    Transactions
+
+                <!-- MONTHLY REPORTS -->
+                <a href="monthly.html">
+                    <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                    <span>Monthly Reports</span>
                 </a>
-                <a href="#upload-files">
-                    Upload Files
+
+                <!-- TRANSACTIONS -->
+                <a href="transactions.html">
+                    <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+                    <span>Transactions</span>
                 </a>
+
+                <!-- CLIENT QUESTIONS -->
+                <a href="questions.html">
+                    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                    <span>Client Questions</span>
+                </a>
+
+                <!-- CATEGORIES & SETTINGS -->
+                <a href="settings.html">
+                    <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                    <span>Categories &amp; Settings</span>
+                </a>
+
             </nav>
+
+            <!-- SIDEBAR ACTIONS -->
+            <div class="sidebar-actions">
+
+                <a href="#upload-files" class="sidebar-action-link">
+                    <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                    <span>Upload Statements</span>
+                </a>
+
+            </div>
+
+            <!-- SIDEBAR ACCOUNT -->
+            <div class="sidebar-account">
+
+                <button type="button" id="logoutBtn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                    <span>Logout</span>
+                </button>
+
+            </div>
 
         </aside>
 
+
+        <!-- ===================================== -->
         <!-- MAIN CONTENT -->
+        <!-- ===================================== -->
+
         <main class="main-content" id="dashboard">
 
-            <!-- HEADER -->
+            <!-- DASHBOARD HEADER -->
             <header class="dashboard-header">
 
-                <div>
-                    <h1 id="greetingText">Good Evening 👋</h1>
+                <div class="dashboard-heading">
+                    <h1 id="greetingText">Welcome to FinFlow</h1>
+
                     <p>
-                        Here’s a quick overview of your business finances.
+                        Here's an overview of your business finances.
                     </p>
                 </div>
 
             </header>
 
-            <!-- TOP CARDS -->
-            <section class="overview-cards">
 
-                <div class="card">
-                    <span class="card-label">
-                        Total Income
-                    </span>
+            <!-- ===================================== -->
+            <!-- CLIENT & BUSINESS PROFILE -->
+            <!-- ===================================== -->
 
-                    <h3>
-                        $0.00
-                    </h3>
+            <section class="business-profile" aria-labelledby="businessProfileTitle">
+
+                <div class="section-header">
+                    <h2 id="businessProfileTitle">Business Overview</h2>
+
+                    <button type="button" id="editBusinessProfileBtn" class="profile-edit-btn">
+                        <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                        Edit Profile
+                    </button>
                 </div>
 
-                <div class="card">
-                    <span class="card-label">
-                        Total Expenses
-                    </span>
+                <!-- CLIENT SELECTOR -->
+                <div class="client-selection">
 
-                    <h3>
-                        $0.00
-                    </h3>
+                    <label for="clientSelect">
+                        Select Client
+                    </label>
+
+                    <select id="clientSelect" disabled>
+                        <option value="">No client profiles available</option>
+                    </select>
+
                 </div>
 
-                <div class="card">
-                    <span class="card-label">
-                        Profit / Loss
-                    </span>
+                <!-- BUSINESS INFORMATION -->
+                <div class="business-details">
 
-                    <h3 id="profitLossAmount" class="neutral">
-                        $0.00
-                    </h3>
-                </div>
+                    <div class="business-detail">
+                        <span class="detail-label">Client Name</span>
+                        <strong id="clientName">Not set</strong>
+                    </div>
 
-                <div class="card">
-                    <span class="card-label">
-                        Transactions
-                    </span>
+                    <div class="business-detail">
+                        <span class="detail-label">Business Name</span>
+                        <strong id="businessName">Not set</strong>
+                    </div>
 
-                    <h3>
-                        0
-                    </h3>
+                    <div class="business-detail">
+                        <span class="detail-label">Entity Type</span>
+                        <strong id="entityType">Not set</strong>
+                    </div>
+
+                    <div class="business-detail">
+
+                        <label for="reportingYear" class="detail-label">
+                            Reporting Year
+                        </label>
+
+                        <select id="reportingYear" disabled>
+                            <option value="">Not set</option>
+                        </select>
+
+                    </div>
+
                 </div>
 
             </section>
 
+
+            <!-- ===================================== -->
+            <!-- FINANCIAL OVERVIEW -->
+            <!-- ===================================== -->
+
+            <section class="financial-overview" aria-labelledby="financialOverviewTitle">
+
+                <div class="section-header">
+                    <h2 id="financialOverviewTitle">Financial Overview</h2>
+                    <span>Selected Reporting Year</span>
+                </div>
+
+                <div class="overview-cards">
+
+                    <!-- TOTAL INCOME -->
+                    <div class="card">
+                        <span class="card-label">Total Income</span>
+                        <h3 id="totalIncomeAmount">$0.00</h3>
+                    </div>
+
+                    <!-- TOTAL EXPENSES -->
+                    <div class="card">
+                        <span class="card-label">Total Expenses</span>
+                        <h3 id="totalExpensesAmount">$0.00</h3>
+                    </div>
+
+                    <!-- NET PROFIT / LOSS -->
+                    <div class="card">
+                        <span class="card-label">Net Profit / Loss</span>
+
+                        <h3 id="profitLossAmount" class="neutral">
+                            $0.00
+                        </h3>
+                    </div>
+
+                    <!-- TRANSACTION COUNT -->
+                    <div class="card">
+                        <span class="card-label">Transactions</span>
+                        <h3 id="totalTransactionsCount">0</h3>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- BOOKKEEPING OVERVIEW -->
+            <!-- ===================================== -->
+
+            <section class="bookkeeping-overview" aria-labelledby="bookkeepingOverviewTitle">
+
+                <div class="section-header">
+                    <h2 id="bookkeepingOverviewTitle">Bookkeeping Overview</h2>
+                    <span>Transaction Review Progress</span>
+                </div>
+
+                <div class="bookkeeping-cards">
+
+                    <!-- TOTAL ACCOUNTS -->
+                    <div class="card">
+                        <span class="card-label">Accounts</span>
+                        <h3 id="totalAccountsCount">0</h3>
+                    </div>
+
+                    <!-- REVIEWED TRANSACTIONS -->
+                    <div class="card">
+                        <span class="card-label">Transactions Reviewed</span>
+                        <h3 id="reviewedTransactionsCount">0</h3>
+                    </div>
+
+                    <!-- TRANSACTIONS TO REVIEW -->
+                    <div class="card">
+                        <span class="card-label">To Review</span>
+                        <h3 id="pendingTransactionsCount">0</h3>
+                    </div>
+
+                    <!-- OPEN QUESTIONS -->
+                    <div class="card">
+                        <span class="card-label">Open Questions</span>
+                        <h3 id="openQuestionsCount">0</h3>
+                    </div>
+
+                </div>
+
+                <!-- REVIEW PROGRESS -->
+                <div class="review-progress">
+
+                    <div class="review-progress-header">
+                        <h3>Transaction Review Progress</h3>
+                        <span id="reviewProgressText">0 of 0 reviewed</span>
+                    </div>
+
+                    <div class="progress-bar" role="progressbar" aria-label="Transaction review progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="reviewProgressBar">
+                        <div class="progress-fill" id="reviewProgressFill" style="width: 0%;"></div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
             <!-- EXPENSE SUMMARY -->
+            <!-- ===================================== -->
+
             <section class="expense-summary" id="expense-summary">
+
                 <div class="section-header">
                     <h2>Expense Summary</h2>
-                    <span>Year to Date</span>
+                    <span>Selected Reporting Year</span>
                 </div>
 
                 <div class="expense-list" id="expenseList"></div>
 
-                <button id="toggleExpensesBtn" class="view-all-btn">
+                <button type="button" id="toggleExpensesBtn" class="view-all-btn">
                     View all categories
                 </button>
+
             </section>
 
+
+            <!-- ===================================== -->
+            <!-- ACCOUNTS OVERVIEW -->
+            <!-- ===================================== -->
+
+            <section class="accounts-overview" aria-labelledby="accountsOverviewTitle">
+
+                <div class="section-header">
+                    <h2 id="accountsOverviewTitle">Accounts Overview</h2>
+
+                    <button type="button" id="addAccountBtn" class="section-action-btn">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        Add Account
+                    </button>
+                </div>
+
+                <div class="accounts-table-wrapper">
+
+                    <table class="accounts-table">
+
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Transactions</th>
+                                <th>Reviewed</th>
+                                <th>To Review</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="accountsTableBody">
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    No accounts have been added yet.
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th scope="row">Total</th>
+                                <td id="accountsTotalTransactions">0</td>
+                                <td id="accountsTotalReviewed">0</td>
+                                <td id="accountsTotalPending">0</td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
             <!-- LOWER GRID -->
+            <!-- ===================================== -->
+
             <section class="bottom-grid">
 
                 <!-- RECENT TRANSACTIONS -->
@@ -121,59 +367,111 @@
                         <h2>Recent Transactions</h2>
                     </div>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
+                    <div class="transaction-filters">
 
-                        <tbody>
-                            <tr>
-                                <td colspan="4" class="empty-state">
-                                    No transactions uploaded yet.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <label for="transactionReviewFilter">
+                            Review Status
+                        </label>
+
+                        <select id="transactionReviewFilter" disabled>
+                            <option value="all">All Transactions</option>
+                            <option value="pending">To Review</option>
+                            <option value="reviewed">Reviewed</option>
+                        </select>
+
+                    </div>
+
+                    <div class="transactions-table-wrapper">
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        No transactions uploaded yet.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
                 </div>
+
 
                 <!-- RIGHT COLUMN -->
                 <div class="right-column">
 
+                    <!-- QUESTIONS REQUIRING ATTENTION -->
+                    <section class="questions-summary" aria-labelledby="questionsSummaryTitle">
+
+                        <div class="section-header">
+                            <h2 id="questionsSummaryTitle">
+                                Questions Requiring Attention
+                            </h2>
+                        </div>
+
+                        <div id="questionsSummaryList">
+                            <p class="empty-message">
+                                No open questions.
+                            </p>
+                        </div>
+
+                    </section>
+
+
                     <!-- TAX REMINDER -->
                     <div class="tax-reminder">
+
                         <h2>Tax Reminder</h2>
+
                         <p>
-                            Quarterly estimated taxes may apply.
-                            Contact your tax professional for filing guidance.
+                            Quarterly estimated taxes may apply. Contact your tax professional for filing guidance.
                         </p>
+
                     </div>
 
-                    <!-- UPLOAD FILES -->
+
+                    <!-- UPLOAD STATEMENTS -->
                     <div class="upload-section" id="upload-files">
+
                         <h2>Upload Statements</h2>
 
                         <div class="upload-box">
+
                             <p>
                                 Drag and drop your PDF statement here
                             </p>
 
                             <input type="file" id="statementUpload" accept="application/pdf,.pdf" hidden>
 
-                            <button id="uploadStatementBtn" type="button">
+                            <button type="button" id="uploadStatementBtn">
                                 Upload PDF Statement
                             </button>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </section>
 
+
+            <!-- ===================================== -->
             <!-- FOOTER -->
+            <!-- ===================================== -->
+
             <footer class="dashboard-footer">
+
                 <h3>FinFlow</h3>
 
                 <div class="footer-links">
@@ -182,20 +480,30 @@
                     <a href="#">Support</a>
                 </div>
 
-                <p class="footer-copy">
-                    © <span id="currentYear"></span> FinFlow. All rights reserved.
+                <p>
+                    &copy; <span id="currentYear">2026</span>
+                    FinFlow. All rights reserved.
                 </p>
+
             </footer>
+
         </main>
+
     </div>
+
+
+    <!-- ===================================== -->
+    <!-- SCRIPTS -->
+    <!-- ===================================== -->
 
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-    <!-- Firebase -->
+    <!-- FIREBASE / AUTHENTICATION -->
     <script type="module" src="index.js"></script>
 
-    <!-- Dashboard JS -->
+    <!-- DASHBOARD JAVASCRIPT -->
     <script src="dashboard.js"></script>
+
 </body>
 </html>

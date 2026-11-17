@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinFlow | Questions</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <!-- PAGE STYLES -->
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="questions.css">
+
+    <!-- PAGE JAVASCRIPT -->
+    <script src="questions.js" defer></script>
+
+</head>
+
+<body class="finflow-app questions-page">
+
+    <div class="dashboard-container">
+
+    <!-- ===================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <h2>FinFlow</h2>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Dashboard navigation">
+
+            <a href="dashboard.html">
+                <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="pandl.html">
+                <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                <span>Income &amp; Expense Report</span>
+            </a>
+
+            <a href="monthly.html">
+                <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                <span>Monthly Reports</span>
+            </a>
+
+            <a href="transactions.html">
+                <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a
+                href="questions.html"
+                class="active-link"
+                aria-current="page"
+            >
+                <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                <span>Client Questions</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                <span>Categories &amp; Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-actions">
+
+            <a href="dashboard.html#upload-files" class="sidebar-action-link">
+                <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                <span>Upload Statements</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-account">
+
+            <button
+                type="button"
+                id="logoutBtn"
+                class="sidebar-logout"
+            >
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                <span>Logout</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ===================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================== -->
+
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+
+        <header class="page-header">
+
+            <div>
+                <h1>Questions</h1>
+
+                <p>
+                    Review transaction questions and communicate
+                    with DnA Financial.
+                </p>
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    id="askQuestionBtn"
+                    class="primary-btn"
+                >
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    Ask a Question
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ===================================== -->
+        <!-- QUESTION SUMMARY -->
+        <!-- ===================================== -->
+
+        <section
+            class="questions-overview"
+            aria-label="Question overview"
+        >
+
+            <div class="overview-cards">
+
+                <article class="summary-card">
+
+                    <span>Total Questions</span>
+
+                    <h2 id="totalQuestionsCount">0</h2>
+
+                </article>
+
+                <article class="summary-card">
+
+                    <span>Open Questions</span>
+
+                    <h2 id="openQuestionsCount">0</h2>
+
+                </article>
+
+                <article class="summary-card">
+
+                    <span>Awaiting Response</span>
+
+                    <h2 id="awaitingResponseCount">0</h2>
+
+                </article>
+
+                <article class="summary-card">
+
+                    <span>Resolved Questions</span>
+
+                    <h2 id="resolvedQuestionsCount">0</h2>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- QUESTION TABS -->
+        <!-- ===================================== -->
+
+        <section class="questions-panel">
+
+            <div
+                class="question-tabs"
+                role="tablist"
+                aria-label="Question categories"
+            >
+
+                <button
+                    type="button"
+                    id="transactionQuestionsTab"
+                    class="tab-btn active-tab"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="transactionQuestionsPanel"
+                >
+                    <i
+                        class="fa-solid fa-arrow-right-arrow-left"
+                        aria-hidden="true"
+                    ></i>
+
+                    Transaction Questions
+                </button>
+
+                <button
+                    type="button"
+                    id="clientQuestionsTab"
+                    class="tab-btn"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="clientQuestionsPanel"
+                    tabindex="-1"
+                >
+                    <i
+                        class="fa-solid fa-comments"
+                        aria-hidden="true"
+                    ></i>
+
+                    Client Questions
+                </button>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- TRANSACTION QUESTIONS -->
+            <!-- ===================================== -->
+
+            <section
+                id="transactionQuestionsPanel"
+                class="tab-panel"
+                role="tabpanel"
+                aria-labelledby="transactionQuestionsTab"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Transaction Questions</h2>
+
+                        <p>
+                            Review transactions that need clarification
+                            before finalizing their categories.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- TRANSACTION QUESTION FILTERS -->
+
+                <div class="question-filters">
+
+                    <div class="filter-group">
+
+                        <label for="transactionClientFilter">
+                            Client
+                        </label>
+
+                        <select
+                            id="transactionClientFilter"
+                            disabled
+                        >
+                            <option value="all">
+                                All Clients
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label for="transactionStatusFilter">
+                            Status
+                        </label>
+
+                        <select id="transactionStatusFilter">
+
+                            <option value="all">
+                                All Statuses
+                            </option>
+
+                            <option value="needs-review">
+                                Needs Review
+                            </option>
+
+                            <option value="awaiting-client">
+                                Awaiting Client Response
+                            </option>
+
+                            <option value="client-responded">
+                                Client Responded
+                            </option>
+
+                            <option value="resolved">
+                                Resolved
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label for="transactionQuestionSearch">
+                            Search
+                        </label>
+
+                        <input
+                            type="search"
+                            id="transactionQuestionSearch"
+                            placeholder="Search transactions..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- TRANSACTION QUESTIONS TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table class="questions-table">
+
+                        <thead>
+
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Transaction</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="transactionQuestionsTableBody">
+
+                            <tr>
+
+                                <td colspan="6" class="empty-state">
+
+                                    <i
+                                        class="fa-solid fa-circle-check"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <p>
+                                        No transaction questions
+                                        are available.
+                                    </p>
+
+                                    <span>
+                                        Transactions requiring clarification
+                                        will appear here.
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- CLIENT QUESTIONS -->
+            <!-- ===================================== -->
+
+            <section
+                id="clientQuestionsPanel"
+                class="tab-panel"
+                role="tabpanel"
+                aria-labelledby="clientQuestionsTab"
+                hidden
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Client Questions</h2>
+
+                        <p>
+                            View questions, responses, and previous
+                            conversations with DnA Financial.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- CLIENT QUESTION FILTERS -->
+
+                <div class="question-filters">
+
+                    <div class="filter-group">
+
+                        <label for="clientQuestionClientFilter">
+                            Client
+                        </label>
+
+                        <select
+                            id="clientQuestionClientFilter"
+                            disabled
+                        >
+                            <option value="all">
+                                All Clients
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label for="clientQuestionStatusFilter">
+                            Status
+                        </label>
+
+                        <select id="clientQuestionStatusFilter">
+
+                            <option value="all">
+                                All Statuses
+                            </option>
+
+                            <option value="new">
+                                New
+                            </option>
+
+                            <option value="in-progress">
+                                In Progress
+                            </option>
+
+                            <option value="awaiting-response">
+                                Awaiting Response
+                            </option>
+
+                            <option value="resolved">
+                                Resolved
+                            </option>
+
+                            <option value="reopened">
+                                Reopened
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label for="clientQuestionSearch">
+                            Search
+                        </label>
+
+                        <input
+                            type="search"
+                            id="clientQuestionSearch"
+                            placeholder="Search questions..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- CLIENT QUESTIONS TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table class="questions-table">
+
+                        <thead>
+
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Question Type</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="clientQuestionsTableBody">
+
+                            <tr>
+
+                                <td colspan="6" class="empty-state">
+
+                                    <i
+                                        class="fa-regular fa-comments"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <p>
+                                        No client questions yet.
+                                    </p>
+
+                                    <span>
+                                        Questions submitted through FinFlow
+                                        will appear here.
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- QUESTION DETAILS -->
+        <!-- ===================================== -->
+
+        <section
+            id="questionDetailsSection"
+            class="question-details-panel"
+            aria-labelledby="questionDetailsTitle"
+            hidden
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2 id="questionDetailsTitle">
+                        Question Details
+                    </h2>
+
+                    <p id="questionReference">
+                        Question reference
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="closeQuestionDetailsBtn"
+                    class="secondary-btn"
+                >
+                    Close
+                </button>
+
+            </div>
+
+
+            <!-- QUESTION INFORMATION -->
+
+            <div class="question-information">
+
+                <div class="detail-item">
+
+                    <span>Client</span>
+
+                    <strong id="detailClientName">—</strong>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <span>Business / Property</span>
+
+                    <strong id="detailBusinessName">—</strong>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <span>Submitted</span>
+
+                    <strong id="detailSubmittedDate">—</strong>
+
+                </div>
+
+                <div class="detail-item">
+
+                    <span>Status</span>
+
+                    <strong id="detailQuestionStatus">—</strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- LINKED TRANSACTION -->
+
+            <section
+                id="linkedTransactionSection"
+                class="linked-transaction"
+                aria-labelledby="linkedTransactionTitle"
+                hidden
+            >
+
+                <h3 id="linkedTransactionTitle">
+                    Related Transaction
+                </h3>
+
+                <div class="transaction-reference-details">
+
+                    <div>
+                        <span>Date</span>
+                        <strong id="linkedTransactionDate">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Description</span>
+                        <strong id="linkedTransactionDescription">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Amount</span>
+                        <strong id="linkedTransactionAmount">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Category</span>
+                        <strong id="linkedTransactionCategory">—</strong>
+                    </div>
+
+                </div>
+
+                <a
+                    id="viewLinkedTransaction"
+                    href="transactions.html"
+                    class="text-link"
+                    hidden
+                >
+                    View Transaction
+                </a>
+
+            </section>
+
+
+            <!-- CONVERSATION HISTORY -->
+
+            <section
+                class="conversation-section"
+                aria-labelledby="conversationTitle"
+            >
+
+                <h3 id="conversationTitle">
+                    Conversation History
+                </h3>
+
+                <div
+                    id="conversationHistory"
+                    class="conversation-history"
+                    aria-live="polite"
+                >
+
+                    <p class="empty-message">
+                        No conversation history available.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- REPLY FORM -->
+
+            <form id="questionReplyForm" hidden>
+
+                <label for="questionReplyMessage">
+                    Reply
+                </label>
+
+                <textarea
+                    id="questionReplyMessage"
+                    name="reply"
+                    rows="5"
+                    placeholder="Type your response..."
+                    required
+                ></textarea>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Send Reply
+                </button>
+
+            </form>
+
+
+            <!-- ADMINISTRATIVE NOTES -->
+
+            <section
+                id="internalNotesSection"
+                class="internal-notes-section"
+                aria-labelledby="internalNotesTitle"
+                hidden
+            >
+
+                <h3 id="internalNotesTitle">
+                    Internal Notes
+                </h3>
+
+                <p>
+                    These notes are visible only to authorized
+                    DnA Financial staff.
+                </p>
+
+                <div id="internalNotesHistory"></div>
+
+                <form id="internalNotesForm">
+
+                    <label for="internalNoteInput">
+                        Add Internal Note
+                    </label>
+
+                    <textarea
+                        id="internalNoteInput"
+                        rows="4"
+                        placeholder="Enter an internal note..."
+                        required
+                    ></textarea>
+
+                    <button
+                        type="submit"
+                        class="secondary-btn"
+                    >
+                        Save Note
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- QUESTION ACTIONS -->
+
+            <div
+                id="questionAdminActions"
+                class="question-actions"
+                hidden
+            >
+
+                <label for="questionStatusSelect">
+                    Update Status
+                </label>
+
+                <select id="questionStatusSelect">
+                    <option value="">Select Status</option>
+                </select>
+
+                <button
+                    type="button"
+                    id="updateQuestionStatusBtn"
+                    class="secondary-btn"
+                >
+                    Update Status
+                </button>
+
+                <button
+                    type="button"
+                    id="markQuestionResolvedBtn"
+                    class="primary-btn"
+                >
+                    Mark Resolved
+                </button>
+
+            </div>
+
+
+            <!-- CLIENT REOPEN ACTION -->
+
+            <div
+                id="questionClientActions"
+                class="question-actions"
+                hidden
+            >
+
+                <button
+                    type="button"
+                    id="reopenQuestionBtn"
+                    class="secondary-btn"
+                    hidden
+                >
+                    Reopen Question
+                </button>
+
+            </div>
+
+
+            <!-- QUESTION ACTIVITY LOG -->
+
+            <section
+                id="questionActivitySection"
+                class="question-activity-section"
+                aria-labelledby="questionActivityTitle"
+                hidden
+            >
+
+                <h3 id="questionActivityTitle">
+                    Activity History
+                </h3>
+
+                <div id="questionActivityLog"></div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ===================================== -->
+        <!-- ASK A QUESTION DIALOG -->
+        <!-- ===================================== -->
+
+        <div
+            id="askQuestionModal"
+            class="modal-overlay"
+            hidden
+        >
+
+            <div
+                class="modal-box"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="askQuestionTitle"
+            >
+
+                <button
+                    type="button"
+                    id="closeAskQuestionBtn"
+                    class="modal-close"
+                    aria-label="Close question form"
+                >
+                    &times;
+                </button>
+
+                <h2 id="askQuestionTitle">
+                    Ask a Question
+                </h2>
+
+                <p>
+                    Send your question directly to DnA Financial.
+                </p>
+
+
+                <form id="askQuestionForm">
+
+                    <!-- QUESTION TYPE -->
+
+                    <div class="form-group">
+
+                        <label for="questionType">
+                            What is your question about?
+                        </label>
+
+                        <select
+                            id="questionType"
+                            name="questionType"
+                            required
+                        >
+
+                            <option value="">
+                                Select Question Type
+                            </option>
+
+                            <option value="general">
+                                General Bookkeeping Question
+                            </option>
+
+                            <option value="transaction">
+                                Question About a Transaction
+                            </option>
+
+                            <option value="report">
+                                Question About a Financial Report
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BUSINESS / PROPERTY -->
+
+                    <div class="form-group">
+
+                        <label for="questionBusinessSelect">
+                            Business / Property
+                        </label>
+
+                        <select
+                            id="questionBusinessSelect"
+                            name="businessId"
+                            disabled
+                        >
+                            <option value="">
+                                Business profiles not connected yet
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <!-- TRANSACTION SELECTION -->
+
+                    <div
+                        id="questionTransactionFields"
+                        class="transaction-question-fields"
+                        hidden
+                    >
+
+                        <h3>
+                            Select a Transaction
+                        </h3>
+
+                        <p>
+                            Choose the transaction you are asking about.
+                            You do not need to upload a screenshot.
+                        </p>
+
+                        <div class="form-group">
+
+                            <label for="questionTransactionSearch">
+                                Find Transaction
+                            </label>
+
+                            <input
+                                type="search"
+                                id="questionTransactionSearch"
+                                placeholder="Search by date or merchant..."
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="questionTransactionSelect">
+                                Transaction
+                            </label>
+
+                            <select
+                                id="questionTransactionSelect"
+                                name="transactionId"
+                                disabled
+                            >
+
+                                <option value="">
+                                    Transactions not connected yet
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="form-group">
+
+                        <label for="questionSubject">
+                            Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="questionSubject"
+                            name="subject"
+                            maxlength="150"
+                            placeholder="Enter a short subject"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- QUESTION -->
+
+                    <div class="form-group">
+
+                        <label for="questionMessage">
+                            Your Question
+                        </label>
+
+                        <textarea
+                            id="questionMessage"
+                            name="message"
+                            rows="6"
+                            placeholder="Please describe your question..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- FORM ACTIONS -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            id="cancelQuestionBtn"
+                            class="secondary-btn"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            id="submitQuestionBtn"
+                            class="primary-btn"
+                        >
+                            Submit Question
+                        </button>
+
+                    </div>
+
+                    <p
+                        id="questionFormMessage"
+                        class="form-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- FOOTER -->
+        <!-- ===================================== -->
+
+        <footer class="dashboard-footer">
+
+            <h3>FinFlow</h3>
+
+            <div class="footer-links">
+
+                <a href="#">Privacy</a>
+
+                <a href="#">Terms</a>
+
+                <a href="#">Support</a>
+
+            </div>
+
+            <p>
+                &copy; <span id="currentYear">2026</span>
+                FinFlow. All rights reserved.
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
