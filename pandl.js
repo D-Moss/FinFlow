@@ -1,4 +1,3 @@
-
 /* =========================================
    FINFLOW — INCOME & EXPENSE REPORT
    ========================================= */
@@ -12,20 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const expandAllBtn = document.getElementById("expandAll");
     const collapseAllBtn = document.getElementById("collapseAll");
     const printReportBtn = document.getElementById("printReportBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
 
     const currentYear = new Date().getFullYear();
-
-
-    /* =====================================
-       AUTOMATIC FOOTER YEAR
-       ===================================== */
-
-    const footerYear = document.getElementById("currentYear");
-
-    if (footerYear) {
-        footerYear.textContent = currentYear;
-    }
 
 
     /* =====================================
@@ -298,23 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     });
-
-
-    /* =====================================
-       LOGOUT
-       ===================================== */
-
-    if (logoutBtn) {
-
-        logoutBtn.addEventListener("click", () => {
-
-            alert(
-                "Logout functionality will be connected to authentication."
-            );
-
-        });
-
-    }
 
 
     /* =====================================
